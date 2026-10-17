@@ -189,7 +189,7 @@ def modified_ttest(Xg, Xm, coords, n_classes=None):
     return r, fdist.sf(F, 1, n_eff - 2)
 
 
-def mefisto(G_counts, M_int, coords, K=10, seed=0, n_inducing=500, iters=1000):
+def mefisto(G_counts, M_int, coords, K=10, seed=0, frac_inducing=0.2, iters=1000):
     """MEFISTO（Velten et al., Nat Methods 2022，mofapy2）。两个视图（基因、代谢物），空间坐标作为协变量。
 
     MEFISTO 不直接给配对检验；按多组学因子模型的常规读法，基因 j 与代谢物 k 的关联分数取
@@ -204,7 +204,7 @@ def mefisto(G_counts, M_int, coords, K=10, seed=0, n_inducing=500, iters=1000):
     ent.set_model_options(factors=K)
     ent.set_train_options(iter=iters, seed=seed, quiet=True, verbose=False)
     ent.set_covariates([np.asarray(coords, float)], covariates_names=["x", "y"])
-    ent.set_smooth_options(sparseGP=True, n_inducing=n_inducing, scale_cov=False)
+    ent.set_smooth_options(sparseGP=True, frac_inducing=frac_inducing, scale_cov=False)
     ent.build()
     ent.run()
     W = ent.model.nodes["W"].getExpectation()
