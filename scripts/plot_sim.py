@@ -114,8 +114,8 @@ def fig2():
         yy = y + (h / 2 + 0.02) * (1 - 2 * i)
         axes[0].barh(yy, v, height=h, color=SERIES[i], label=name, xerr=e,
                      error_kw={"ecolor": INK2, "lw": 1, "capsize": 0})
-        for a, b in zip(yy, v):
-            axes[0].text(b + 2, a, f"{b:.1f}%", va="center", fontsize=8.5, color=INK2)
+        for a, b, c in zip(yy, v, e):
+            axes[0].text(b + c + 1.5, a, f"{b:.1f}%", va="center", fontsize=8.5, color=INK2)
     axes[0].axvline(5, color=INK, lw=1, ls="--")
     axes[0].set_title("误报率（p < 0.05，虚线 = 5%）", loc="left")
     axes[0].set_xlim(0, 105)
@@ -125,11 +125,11 @@ def fig2():
         v = np.array([avg[m][key] for m in methods]) * 100
         e = np.array([sd[m][key] for m in methods]) * 100
         ax.barh(y, v, height=0.55, color=SERIES[0], xerr=e, error_kw={"ecolor": INK2, "lw": 1, "capsize": 0})
-        for a, b in zip(y, v):
-            ax.text(b + 2, a, f"{b:.1f}%", va="center", fontsize=8.5, color=INK2)
+        for a, b, c in zip(y, v, e):
+            ax.text(min(b + c, 100) + 1.5, a, f"{b:.1f}%", va="center", fontsize=8.5, color=INK2)
         if ref:
             ax.axvline(ref, color=INK, lw=1, ls="--")
-        ax.set_title(title, loc="left"); ax.set_xlim(0, 115)
+        ax.set_title(title, loc="left"); ax.set_xlim(0, 118)
     axes[0].set_yticks(y); axes[0].set_yticklabels([LABEL[m] for m in methods])
     for t, m in zip(axes[0].get_yticklabels(), methods):
         if m == "简化版":
