@@ -112,3 +112,101 @@ def mantis(Yg, Ym, coords, CT=None, seed=0, n_bins=10, sampler_l=4 * np.sqrt(2),
         cols = bins == b
         p[:, cols] = _pooled_empirical_p(real[:, cols], null[:, cols])
     return p
+
+
+def _logcpm(G):
+    G = np.asarray(G, dtype=float)
+    return np.log1p(G / G.sum(1, keepdims=True) * 1e4)
+
+
+def liana_global(G_counts, M_int, coords, bandwidth=3.0, nz_prop=0.05, chunk=10):
+    """LIANA+（Dimitrov et al., Nat Cell Biol 2024）的全局双变量指标，按其官方 API 调用。
+
+    返回 {"morans": (score, p), "lee": (score, None)}，形状 基因 × 代谢物。
+    Moran's R 的解析 p 值即 SpatialDM（Li et al., Nat Commun 2023）的全局检验，LIANA+ 内置了同一实现。
+    表达比例低于 nz_prop 的基因被 LIANA+ 过滤，这些配对记为 score 0、p 1。
+    """
+    import anndata as ad
+    import pandas as pd
+    import liana as li
+    Xg = _logcpm(G_counts)
+    Xm = np.log(np.asarray(M_int, float))
+    p, q = Xg.shape[1], Xm.shape[1]
+    gn = [f"g{j}" for j in range(p)]
+    mn = [f"m{k}" for k in range(q)]
+    adata = ad.AnnData(np.hstack([Xg, Xm - Xm.min() + 1e-3]).astype(np.float32),
+                       var=pd.DataFrame(index=gn + mn))
+    adata.obsm["spatial"] = np.asarray(coords, float)
+    li.ut.spatial_neighbors(adata, bandwidth=bandwidth, cutoff=0.1)
+    out = {"morans": (np.zeros((p, q)), np.ones((p, q))), "lee": (np.zeros((p, q)), None)}
+    # 一次放入全部 p×q 配对会占用几十 GB 内存，按代谢物分块调用
+    for start in range(0, q, chunk):
+        mk = mn[start:start + chunk]
+        resource = pd.DataFrame({"ligand": np.repeat(gn, len(mk)), "receptor": np.tile(mk, p)})
+        for name in ["morans", "lee"]:
+            res = li.mt.bivariate(adata, resource=resource, local_name=None, global_name=name,
+                                  n_perms=0 if name == "morans" else None, nz_prop=nz_prop,
+                                  use_raw=False)
+            gi = res["ligand"].str[1:].astype(int).to_numpy()
+            mi = res["receptor"].str[1:].astype(int).to_numpy()
+            out[name][0][gi, mi] = res[name].to_numpy()
+            if name == "morans":
+                out[name][1][gi, mi] = res[f"{name}_pvals"].to_numpy()
+    return out
+
+
+def modified_ttest(Xg, Xm, coords, n_classes=None):
+    """Dutilleul (1993) 修正 t 检验，按 R 包 SpatialPack::modified.ttest 的思路实现并向量化。
+
+    用分距离等级的 Moran 相关图估计两变量各自的空间自相关，得到每对的有效样本量
+    n_eff = 1 + n² / (n + Σ_k n_k I_x(k) I_y(k))，再用 F(1, n_eff − 2) 检验相关系数。
+    返回 (r, p)，形状 基因 × 代谢物。
+    """
+    from scipy.stats import f as fdist
+    X = _zscore(Xg); Y = _zscore(Xm)
+    n = len(coords)
+    D = cdist(coords, coords)
+    if n_classes is None:
+        n_classes = int(np.ceil(np.log2(n * (n - 1) / 2) + 1))  # Sturges，与 SpatialPack 一致
+    off = D[np.triu_indices(n, 1)]
+    edges = np.linspace(0, off.max() + 1e-9, n_classes + 1)
+    cls = np.digitize(D, edges[1:-1])
+    np.fill_diagonal(cls, -1)
+    Ig, Im, nk = [], [], []
+    for k in range(n_classes):
+        A = (cls == k).astype(float)
+        cnt = A.sum()
+        if cnt == 0:
+            continue
+        nk.append(cnt)
+        Ig.append((X * (A @ X)).sum(0) / cnt)   # 标准化后 Σx² = n，所以 I(k) = (n/W_k) Σ x_i x_j / n
+        Im.append((Y * (A @ Y)).sum(0) / cnt)
+    Ig = np.array(Ig); Im = np.array(Im); nk = np.array(nk)
+    trace = n + (Ig * nk[:, None]).T @ Im          # p × q：tr(Σx Σy)
+    n_eff = np.clip(1 + n ** 2 / trace, 3, n)
+    r = X.T @ Y / n
+    F = r ** 2 * (n_eff - 2) / np.clip(1 - r ** 2, 1e-12, None)
+    return r, fdist.sf(F, 1, n_eff - 2)
+
+
+def mefisto(G_counts, M_int, coords, K=10, seed=0, n_inducing=500, iters=1000):
+    """MEFISTO（Velten et al., Nat Methods 2022，mofapy2）。两个视图（基因、代谢物），空间坐标作为协变量。
+
+    MEFISTO 不直接给配对检验；按多组学因子模型的常规读法，基因 j 与代谢物 k 的关联分数取
+    Σ_r w_g,jr w_m,kr（共享因子载荷乘积，即我们原方案的读法）。返回 分数矩阵 基因 × 代谢物。
+    """
+    from mofapy2.run.entry_point import entry_point
+    Xg = _zscore(_logcpm(G_counts))
+    Xm = _zscore(np.log(np.asarray(M_int, float)))
+    ent = entry_point()
+    ent.set_data_options(scale_views=True)
+    ent.set_data_matrix([[Xg], [Xm]], views_names=["gene", "metabolite"])
+    ent.set_model_options(factors=K)
+    ent.set_train_options(iter=iters, seed=seed, quiet=True, verbose=False)
+    ent.set_covariates([np.asarray(coords, float)], covariates_names=["x", "y"])
+    ent.set_smooth_options(sparseGP=True, n_inducing=n_inducing, scale_cov=False)
+    ent.build()
+    ent.run()
+    W = ent.model.nodes["W"].getExpectation()
+    Wg, Wm = W[0], W[1]
+    return Wg @ Wm.T
