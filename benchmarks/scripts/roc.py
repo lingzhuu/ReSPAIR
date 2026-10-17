@@ -1,4 +1,6 @@
-"""ROC, AUC and power at 5% false-positive rate.
+"""Supplementary ROC: ablations of ReSPAIR (each step on its own), with plain Pearson as reference.
+
+The main comparison against published methods is compare.py.
 
 Two comparisons:
 - all pairs: true links vs every pair without a link
@@ -20,7 +22,7 @@ from respair.simulate import simulate
 from run_sim import all_pvals
 from plot_sim import SERIES, INK, INK2, MUTED, GRID, SURF  # same colours and fonts
 
-METHODS = ["Pearson", "MANTIS-SCI", "MANTIS-SPC-CT", "Z-only + Pearson", "Z-only + spectral test",
+METHODS = ["Pearson", "Z-only + Pearson", "Z-only + spectral test",
            "Hidden factors + Pearson", "ReSPAIR"]
 LABEL = {m: m for m in METHODS}
 COLORS = SERIES + ["#008300", "#6250d6"]
@@ -43,7 +45,7 @@ if __name__ == "__main__":
     res = {s: {m: [] for m in METHODS} for s in ["all pairs", "confounded pairs only"]}
     for seed in range(n_seeds):
         d = simulate(seed=seed, link_strength=link)
-        P, _, _ = all_pvals(d)
+        P, _, _ = all_pvals(d, with_mantis=False)
         truth = d["truth"]
         sets = {"all pairs": ~truth, "confounded pairs only": d["conf_pair"] & ~truth}
         for sname, neg in sets.items():
@@ -53,7 +55,7 @@ if __name__ == "__main__":
 
     summary = {s: {m: {k: [float(np.mean([r[k] for r in v])), float(np.std([r[k] for r in v]))]
                        for k in ["AUC", "TPR@5%"]} for m, v in res[s].items()} for s in res}
-    with open(os.path.join(ROOT, "results", f"roc{tag}.json"), "w") as f:
+    with open(os.path.join(ROOT, "results", f"ablation_roc{tag}.json"), "w") as f:
         json.dump(summary, f, indent=1)
 
     fig, axes = plt.subplots(1, 2, figsize=(15, 7))
@@ -72,9 +74,9 @@ if __name__ == "__main__":
         ax.set_title(title, loc="left")
         ax.grid(color=GRID, lw=0.6); ax.set_axisbelow(True)
         ax.legend(frameon=False, loc="lower right", fontsize=8.5)
-    fig.suptitle(f"ROC curves (simulation, link strength {link}, mean of {n_seeds} seeds)", fontsize=14, fontweight="bold", x=0.01, ha="left")
+    fig.suptitle(f"Supplementary: ReSPAIR ablations, ROC curves (simulation, link strength {link}, mean of {n_seeds} seeds)", fontsize=14, fontweight="bold", x=0.01, ha="left")
     fig.tight_layout(rect=(0, 0, 1, 0.94))
-    fig.savefig(os.path.join(ROOT, "results", "figures", f"fig_ROC{tag}.png"), dpi=160)
+    fig.savefig(os.path.join(ROOT, "results", "figures", f"fig_ablation_ROC{tag}.png"), dpi=160)
     for s in summary:
         for m in METHODS:
             print(s, m, summary[s][m])
