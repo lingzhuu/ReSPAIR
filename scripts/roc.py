@@ -5,7 +5,7 @@
 - 只看混杂配对：真实联系 vs 受未标注混杂影响、但没有联系的配对（更难）
 按 p 值排序，所以和 p 值是否校准无关。
 
-用法：python3 scripts/roc.py [种子数]
+用法：python3 scripts/roc.py [种子数] [联系强度，默认 0.5]
 """
 import sys, os, json
 import numpy as np
@@ -40,9 +40,11 @@ def roc_stats(p, pos, neg):
 
 if __name__ == "__main__":
     n_seeds = int(sys.argv[1]) if len(sys.argv) > 1 else 5
+    link = float(sys.argv[2]) if len(sys.argv) > 2 else 0.5
+    tag = "" if link == 0.5 else f"_link{link}"
     res = {s: {m: [] for m in METHODS} for s in ["全部配对", "只看混杂配对"]}
     for seed in range(n_seeds):
-        d = simulate(seed=seed)
+        d = simulate(seed=seed, link_strength=link)
         P, _, _ = all_pvals(d)
         truth = d["truth"]
         sets = {"全部配对": ~truth, "只看混杂配对": d["conf_pair"] & ~truth}
@@ -53,7 +55,7 @@ if __name__ == "__main__":
 
     summary = {s: {m: {k: [float(np.mean([r[k] for r in v])), float(np.std([r[k] for r in v]))]
                        for k in ["AUC", "TPR@5%"]} for m, v in res[s].items()} for s in res}
-    with open(os.path.join(ROOT, "results", "roc.json"), "w") as f:
+    with open(os.path.join(ROOT, "results", f"roc{tag}.json"), "w") as f:
         json.dump(summary, f, ensure_ascii=False, indent=1)
 
     fig, axes = plt.subplots(1, 2, figsize=(15, 7))
@@ -72,9 +74,9 @@ if __name__ == "__main__":
         ax.set_title(title, loc="left")
         ax.grid(color=GRID, lw=0.6); ax.set_axisbelow(True)
         ax.legend(frameon=False, loc="lower right", fontsize=8.5)
-    fig.suptitle(f"ROC 曲线（模拟，{n_seeds} 个种子平均）", fontsize=14, fontweight="bold", x=0.01, ha="left")
+    fig.suptitle(f"ROC 曲线（模拟，联系强度 {link}，{n_seeds} 个种子平均）", fontsize=14, fontweight="bold", x=0.01, ha="left")
     fig.tight_layout(rect=(0, 0, 1, 0.94))
-    fig.savefig(os.path.join(ROOT, "results", "figures", "fig_ROC.png"), dpi=160)
+    fig.savefig(os.path.join(ROOT, "results", "figures", f"fig_ROC{tag}.png"), dpi=160)
     for s in summary:
         for m in METHODS:
             print(s, m, summary[s][m])
