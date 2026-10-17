@@ -5,6 +5,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Full estimator `respair.fit_full` (`respair.full`): Poisson–log-normal gene likelihood, continuous GP hidden
+  factors re-estimated jointly with the loadings and a sparse W, conditional (isozyme-aware) pair test, propagation of
+  the uncertainty in F, optional reaction-network prior, and separate gene / metabolite grids.
+- `benchmarks/scripts/full_vs_simple.py`: full vs simplified estimator on the same simulations.
+
 ### Changed
 - Repository reorganised into a `src/` layout with `hatchling` packaging, tests, CI and Sphinx docs.
 - Simulation and benchmark scripts moved to `benchmarks/`; all text, result keys and figures are in English.

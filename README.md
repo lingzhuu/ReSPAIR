@@ -31,7 +31,7 @@ M = Z B_mᵀ + F Λ_mᵀ + E_g Wᵀ + E_m
 where `Z` is known structure (e.g. cell-type proportions), `F` are hidden spatial factors treated as confounding,
 and the sparse matrix `W` holds the links to be tested: does metabolite *k* follow the *local residual* of gene *j*?
 
-The current release implements the **simplified (step-wise) estimator**:
+The default `respair.fit` is the **simplified (step-wise) estimator**:
 
 1. Normalise genes with analytic Pearson residuals and metabolites with log + standardisation.
 2. Regress out `Z` and `K` hidden factors from a jointly weighted PCA of both modalities (`K` chosen from the
@@ -78,6 +78,20 @@ hits = respair.bh(res["p"], alpha=0.1)      # Benjamini–Hochberg
 ```
 
 Both modalities must be on the same spots; aggregate MSI pixels to the transcriptomics grid first.
+
+### Full estimator
+
+`respair.fit_full` fits the same model jointly (count likelihood for genes, GP hidden factors, sparse `W`,
+isozyme-aware conditional test, optional reaction-network prior) and accepts metabolites on their own grid:
+
+```python
+res = respair.fit_full(d["G"], d["M"], d["coords"], coords_m=None, Z=d["Z"], neg_genes=d["neg_genes"],
+                       prior_pairs=None)   # optional n_genes × n_metabolites boolean network prior
+res["p"], res["pip"], res["W"]
+```
+
+It is about 8 times slower and, on simulations, gains a few points of power over the simplified estimator, mostly
+when the data deviate from the model. See [docs/full_model.md](docs/full_model.md).
 
 ## Simulation benchmark
 

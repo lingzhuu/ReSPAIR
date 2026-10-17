@@ -62,7 +62,9 @@ There are two versions, corresponding to point 5 of the proposal ("simple versio
 
 Because the gene residuals are essentially uncorrelated after confounding has been removed ($D_g$ approximately diagonal), the "marginal" residual correlation here is equivalent to testing whether the corresponding entry of $W$ is zero; there is no need to run a 30,000-dimensional regression for each metabolite. The original proposal's advantage of "fit once, compute all combinations together" is retained.
 
-### Full version (later)
+### Full version
+
+Implemented as `respair.fit_full`; see {doc}`full_model` for what it does and how it compares with the simplified version.
 
 Estimate $F$, $\Lambda$ and $W$ jointly in a single model: a sparse / inducing-point GP for $F$, an L1 or spike-and-slab prior on $W$, and a negative binomial likelihood for the genes. The benefits are that the estimation uncertainty in $F$ propagates to $W$, and that reaction-network priors can be used (Section 5).
 
@@ -122,8 +124,8 @@ After confounding is removed, the correlation among pair statistics comes mainly
 | 7. Two-sided spatial test not designed | Frequency-decomposition correction, validated in a small simulation ✔ |
 | 9. Orthogonality constraint only blocks linear relationships | $Z^{\top} F_s = 0$ is no longer needed; nonlinear tissue effects are absorbed by the latent patterns ✔ |
 | 10. Uncertainty in / circularity of $Z$ | Errors in estimating $Z$ are absorbed by the latent patterns; $Z$ is used mainly for interpretation (partly ✔) |
-| 11. Gaussian noise | Use negative binomial / Pearson residuals (to be implemented) |
-| 12. Different grids on the two sides | MSI pixels still need to be aggregated to Visium spots first (unresolved; in the full version a GP can be observed at each modality's own coordinates) |
+| 11. Gaussian noise | Pearson residuals (simplified version); Poisson–log-normal likelihood (full version) ✔ |
+| 12. Different grids on the two sides | Simplified version: aggregate MSI pixels to Visium spots first. Full version: the GP factors are evaluated at each modality's own coordinates (partly ✔) |
 | 13. Multi-scale analysis limited by resolution | Decomposition by frequency band, with the lower scale limit stated according to resolution ✔ |
 | 8. Circular simulation design | Still to be designed; see below |
 

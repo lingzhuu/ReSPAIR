@@ -9,6 +9,7 @@
    :toctree: generated
 
    fit
+   fit_full
 ```
 
 ## Building blocks
@@ -29,6 +30,21 @@
    pvals
    bh
    lambda_gc
+```
+
+## Full estimator
+
+```{eval-rst}
+.. currentmodule:: respair.full
+
+.. autosummary::
+   :toctree: generated
+
+   GPBasis
+   choose_length
+   kernel_map
+   conditional_test
+   two_groups_pip
 ```
 
 ## Simulation and baselines
