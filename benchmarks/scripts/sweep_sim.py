@@ -1,6 +1,6 @@
-"""扫描混杂强度和联系强度，结果存到 results/sweep.json。
+"""Sweep confounder strength and link strength; writes results/sweep.json.
 
-用法：python3 scripts/sweep_sim.py [每个设置的种子数]
+Usage: python benchmarks/scripts/sweep_sim.py [n_seeds per setting]
 """
 import sys, os, json
 import numpy as np
@@ -15,7 +15,7 @@ LINK = [0.1, 0.15, 0.2, 0.3, 0.5]
 def one(seed, **kw):
     d = simulate(seed=seed, **kw)
     P, _, _ = all_pvals(d)
-    return {m: evaluate(truth=d["truth"], conf_pair=d["conf_pair"], p=P[m]) for m in MAIN + ["只扣已知结构+空间检验"]}
+    return {m: evaluate(truth=d["truth"], conf_pair=d["conf_pair"], p=P[m]) for m in MAIN + ["Z-only + spectral test"]}
 
 
 def avg(runs):
@@ -24,12 +24,12 @@ def avg(runs):
 
 if __name__ == "__main__":
     n = int(sys.argv[1]) if len(sys.argv) > 1 else 2
-    out = {"混杂强度": {}, "联系强度": {}}
+    out = {"confounder strength": {}, "link strength": {}}
     for c in CONF:
-        out["混杂强度"][str(c)] = avg([one(s, conf_strength=c) for s in range(n)])
+        out["confounder strength"][str(c)] = avg([one(s, conf_strength=c) for s in range(n)])
         print("conf", c, flush=True)
     for w in LINK:
-        out["联系强度"][str(w)] = avg([one(s, link_strength=w) for s in range(n)])
+        out["link strength"][str(w)] = avg([one(s, link_strength=w) for s in range(n)])
         print("link", w, flush=True)
     with open(os.path.join(ROOT, "results", "sweep.json"), "w") as f:
-        json.dump(out, f, ensure_ascii=False, indent=1)
+        json.dump(out, f, indent=1)

@@ -9,14 +9,7 @@ structure and every hidden spatial pattern.
 installation
 quickstart
 api
+model
 benchmarks
 changelog
-```
-
-```{toctree}
-:maxdepth: 1
-:caption: 中文文档
-
-模型说明
-原方案评估
 ```

@@ -16,9 +16,7 @@
 in spatial transcriptomics + spatial metabolomics data measured on the same tissue section, **after removing known
 tissue structure and every hidden spatial pattern** that moves many molecules together.
 
-[中文说明 / Chinese README](README.zh-CN.md)
-
-<p align="center"><img src="benchmarks/results/figures/fig1_示意.png" width="720" alt="ReSPAIR overview"></p>
+<p align="center"><img src="benchmarks/results/figures/fig1_overview.png" width="720" alt="ReSPAIR overview"></p>
 
 ## Why
 
@@ -99,8 +97,7 @@ re-implementation of the bioRxiv preprint.
 
 ## Documentation
 
-- Model and design rationale (Chinese): [docs/模型说明.md](docs/模型说明.md)
-- Review of the original proposal (Chinese): [docs/原方案评估.md](docs/原方案评估.md)
+- Model and design rationale: [docs/model.md](docs/model.md)
 - API reference: built with Sphinx from `docs/` (`pip install -e ".[doc]" && make -C docs html`)
 
 ## Roadmap

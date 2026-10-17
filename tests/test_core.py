@@ -23,7 +23,7 @@ def test_spatial_basis_orthonormal():
     coords = np.column_stack([xx.ravel(), yy.ravel()]).astype(float)
     evals, U = core.spatial_basis(coords, k=4)
     assert U.shape == (100, 99)
-    assert np.all(np.diff(evals) >= -1e-10)  # 频率从低到高
+    assert np.all(np.diff(evals) >= -1e-10)  # low to high frequency
     np.testing.assert_allclose(U.T @ U, np.eye(99), atol=1e-8)
 
 

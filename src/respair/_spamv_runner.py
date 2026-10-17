@@ -1,4 +1,4 @@
-"""在 SpaMV 的虚拟环境里运行：读入 npz，训练 SpaMV，输出 基因 × 代谢物 的共享主题载荷乘积。"""
+"""Run inside the SpaMV environment: read an npz, train SpaMV, save the gene × metabolite product of shared-topic loadings."""
 import sys
 import numpy as np
 import anndata as ad

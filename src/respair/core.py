@@ -1,14 +1,16 @@
-"""简化版：低秩混杂 + 稀疏成对联系的空间转录组–代谢组联合检验。
+"""Simplified estimator: low-rank confounding + sparse pairwise links between spatial transcriptomics and metabolomics.
 
-流程
-1. 归一化：基因用解析 Pearson 残差（近似负二项），代谢物取 log 后标准化。
-2. 扣除已知结构 Z 和 K 个隐藏模式 F（对拼接后的两块数据做加权 PCA）。
-3. 残差投影到空间频率基上，T_jk = sum_l g_jl m_kl。
-4. 零假设方差 Var0 = sum_l s_g,jl s_m,kl（按频带平滑的功率谱），z = T / sqrt(Var0)。
-5. K 默认按奇异值谱选：数出比“平台”（第 15–25 个奇异值的中位数）高 10% 以上的奇异值个数，再多留 2 个。
-   多扣几个模式的代价很小（稀疏的成对联系不会被大范围的模式吸收），少扣会留下混杂，所以宁多勿少。
-   （早期版本用负对照 lambda_GC 的中位数选 K：只影响少数配对的混杂会被中位数漏掉，K 被选成 0。）
-6. 经验校准：按负对照配对 |z| 的 95% 分位数把所有 z 缩放到名义水平。
+Steps
+1. Normalise: analytic Pearson residuals for genes (approximately negative binomial), log + standardise for metabolites.
+2. Remove known structure Z and K hidden factors F (weighted PCA of both blocks concatenated).
+3. Project residuals onto the spatial frequency basis, T_jk = sum_l g_jl m_kl.
+4. Null variance Var0 = sum_l s_g,jl s_m,kl (band-smoothed power spectra), z = T / sqrt(Var0).
+5. By default K comes from the singular-value spectrum: count singular values more than 10% above the "plateau"
+   (median of singular values 15–25) and add 2. Removing a few extra factors costs little (sparse pairwise links are
+   not absorbed by broad patterns), while removing too few leaves confounding, so err on the high side.
+   (An earlier version chose K from the median negative-control lambda_GC; confounding that touches only a few pairs
+   is invisible to the median and K came out as 0.)
+6. Empirical calibration: rescale all z so the 95% quantile of negative-control |z| matches the nominal level.
 """
 import numpy as np
 from scipy import sparse
@@ -16,10 +18,10 @@ from scipy.sparse.csgraph import laplacian
 from scipy.spatial import cKDTree
 from scipy.stats import norm
 
-# ---------- 归一化 ----------
+# ---------- normalisation ----------
 
 def pearson_residuals(counts, theta=100.0):
-    """解析 Pearson 残差（Lause et al. 2021）。counts: n × p。"""
+    """Analytic Pearson residuals (Lause et al. 2021). counts: n × p."""
     counts = np.asarray(counts, dtype=float)
     n = counts.shape[0]
     total = counts.sum()
@@ -44,10 +46,10 @@ def standardize(X):
     return X / sd
 
 
-# ---------- 空间频率基 ----------
+# ---------- spatial frequency basis ----------
 
 def spatial_basis(coords, k=8):
-    """kNN 图拉普拉斯的特征向量，按频率（特征值）从低到高排列。去掉常数分量。"""
+    """Eigenvectors of the kNN-graph Laplacian, ordered from low to high frequency, without the constant one."""
     coords = np.asarray(coords, dtype=float)
     n = len(coords)
     tree = cKDTree(coords)
@@ -61,7 +63,7 @@ def spatial_basis(coords, k=8):
     return evals[1:], U[:, 1:]
 
 
-# ---------- 扣除混杂 ----------
+# ---------- confounder removal ----------
 
 def _residualize(X, C):
     if C is None or C.shape[1] == 0:
@@ -72,7 +74,7 @@ def _residualize(X, C):
 
 
 def select_K(Rg, Rm, buffer=2, ratio=1.1):
-    """按两块数据加权拼接后的奇异值谱选 K。"""
+    """Choose K from the singular-value spectrum of both blocks, weighted and concatenated."""
     Xg = standardize(Rg) / np.sqrt(Rg.shape[1])
     Xm = standardize(Rm) / np.sqrt(Rm.shape[1])
     s = np.linalg.svd(np.hstack([Xg, Xm]), compute_uv=False)
@@ -81,7 +83,7 @@ def select_K(Rg, Rm, buffer=2, ratio=1.1):
 
 
 def hidden_factors(Rg, Rm, K):
-    """对拼接矩阵做加权 PCA，两块数据各自总方差相同。返回 n × K 的因子得分。"""
+    """Weighted PCA of the concatenated blocks, each with equal total variance. Returns n × K factor scores."""
     if K == 0:
         return np.zeros((Rg.shape[0], 0))
     Xg = standardize(Rg) / np.sqrt(Rg.shape[1])
@@ -91,10 +93,10 @@ def hidden_factors(Rg, Rm, K):
     return U[:, :K] * s[:K]
 
 
-# ---------- 检验 ----------
+# ---------- test ----------
 
 def band_power(Y_hat, band_size):
-    """Y_hat: L × p（频率分量 × 特征）。返回每个分量的局部平均功率，形状同 Y_hat。"""
+    """Y_hat: L × p (frequency components × features). Returns the local mean power of each component, shaped like Y_hat."""
     L = Y_hat.shape[0]
     P = np.empty_like(Y_hat)
     for start in range(0, L, band_size):
@@ -104,7 +106,7 @@ def band_power(Y_hat, band_size):
 
 
 def spectral_z(Eg, Em, U, band_size=10, scales=None):
-    """返回 z（p × q）。scales: 频率分量的分段边界列表，若给出则同时返回各尺度的 z。"""
+    """Return z (p × q). scales: list of (start, stop) frequency ranges; if given, z per scale is returned too."""
     G_hat = U.T @ standardize(Eg)
     M_hat = U.T @ standardize(Em)
     T = G_hat.T @ M_hat
@@ -123,7 +125,7 @@ def spectral_z(Eg, Em, U, band_size=10, scales=None):
 
 
 def naive_z(Eg, Em):
-    """普通 Pearson 相关的 z（Fisher 变换），不做空间校正。"""
+    """z of plain Pearson correlation (Fisher transform), no spatial correction."""
     n = Eg.shape[0]
     r = standardize(Eg).T @ standardize(Em) / n
     r = np.clip(r, -0.999999, 0.999999)
@@ -135,17 +137,17 @@ def pvals(z):
 
 
 def calibration_factor(z_neg, q=0.95):
-    """负对照 ``|z|`` 的 q 分位数与标准正态对应分位数之比。"""
+    """Ratio of the q quantile of negative-control ``|z|`` to the matching standard-normal quantile."""
     return np.quantile(np.abs(z_neg), q) / norm.isf((1 - q) / 2)
 
 
 def lambda_gc(z):
-    """膨胀系数：z² 的中位数 / χ²₁ 的中位数。"""
+    """Genomic inflation factor: median z² / median of χ²₁."""
     return np.median(z ** 2) / 0.4549364
 
 
 def bh(p, alpha=0.1):
-    """Benjamini–Hochberg，返回布尔数组。"""
+    """Benjamini–Hochberg; returns a boolean array."""
     flat = p.ravel()
     m = flat.size
     order = np.argsort(flat)
@@ -157,7 +159,7 @@ def bh(p, alpha=0.1):
     return rej.reshape(p.shape)
 
 
-# ---------- 主流程 ----------
+# ---------- main entry point ----------
 
 def fit(G_counts, M_int, coords, Z=None, K=None,
         neg_genes=None, band_size=10, knn=8, gene_resid=None, met_resid=None,
@@ -193,7 +195,7 @@ def fit(G_counts, M_int, coords, Z=None, K=None,
         ``z`` and ``p`` (``p × q``), ``z_scale`` (z on large / medium / small spatial scales),
         ``K``, calibration factor ``c``, hidden factors ``F``, residuals ``Eg`` / ``Em`` and ``z_uncalibrated``.
 
-    中文说明见 ``docs/模型说明.md``。
+    See ``docs/model.md`` for the model and its rationale.
     """
     Yg = pearson_residuals(G_counts) if gene_resid is None else gene_resid
     Ym = standardize(log_standardize(M_int)) if met_resid is None else met_resid

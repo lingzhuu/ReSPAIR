@@ -1,10 +1,12 @@
-"""对比方法。
+"""Baseline methods for the benchmark.
 
-MANTIS 按其公开代码（github.com/yuhaotuo/MANTIS，v0.55，tools/_spc.py 与 _sampler.py）的流程复现，
-做了两处为速度的改动，统计量和零分布的构造不变：
-- 保持空间自相关的置换：原代码用 networkx 图上的模拟退火逐对交换；这里用稠密权重矩阵向量化实现同一个目标
-  （让置换后 x' W x 等于原值），贪心接受使目标差变小的交换。
-- 每个代谢物生成 1 个置换（与原代码默认一致），零分布按代谢物空间自相关分 10 箱汇总。
+MANTIS follows its public code (github.com/yuhaotuo/MANTIS, v0.55, tools/_spc.py and _sampler.py), with two changes
+for speed; the statistic and the construction of the null are unchanged:
+- Autocorrelation-preserving permutation: the original uses simulated annealing with pairwise swaps on a networkx
+  graph; here the same objective (keep x' W x equal to its original value) is vectorised on a dense weight matrix and
+  swaps that reduce the gap are accepted greedily.
+- One permutation per metabolite (the original default); the null is pooled over 10 bins of metabolite
+  spatial autocorrelation.
 """
 import numpy as np
 from scipy.spatial.distance import cdist
@@ -28,7 +30,7 @@ def gaussian_W(coords, l2, row_norm=True, zero_diag=True):
 
 
 def sampler_W(coords, l):
-    """MANTIS 采样器的权重：距离 <= l 权重为 1，之外为高斯衰减。"""
+    """MANTIS sampler weights: 1 within distance l, Gaussian decay beyond."""
     D = cdist(coords, coords)
     W = np.where(D <= l, 1.0, np.exp(-D ** 2 / (2 * l * l)))
     np.fill_diagonal(W, 0.0)
@@ -36,7 +38,7 @@ def sampler_W(coords, l):
 
 
 def autocorr_preserving_shuffle(x, W, rng, max_steps=60000, rel_tol=1e-3):
-    """返回 x 的一个置换，使 x' W x 接近原值（MANTIS 零分布的思路）。"""
+    """Return a permutation of x whose x' W x is close to the original (the MANTIS null)."""
     xc = x - x.mean()
     target = xc @ W @ xc
     y = xc[rng.permutation(len(xc))]
@@ -51,7 +53,7 @@ def autocorr_preserving_shuffle(x, W, rng, max_steps=60000, rel_tol=1e-3):
         if u == v:
             continue
         a, b = y[u], y[v]
-        # 交换 u, v 后 y'Wy 的变化
+        # change in y'Wy after swapping u and v
         delta = 2 * (b - a) * (S[u] - S[v] - W[u, v] * (b - a))
         if abs(cur + delta - target) < abs(cur - target):
             y[u], y[v] = b, a
@@ -83,7 +85,7 @@ def _pooled_empirical_p(real, null):
 
 
 def mantis(Yg, Ym, coords, CT=None, seed=0, n_bins=10, sampler_l=4 * np.sqrt(2), spc_l2=10.0):
-    """MANTIS 的 SCI（CT=None）或 SPC-CT（给出细胞类型比例 CT）。返回 p 值矩阵（基因 × 代谢物）。"""
+    """MANTIS SCI (CT=None) or SPC-CT (with cell-type proportions CT). Returns a gene × metabolite p-value matrix."""
     rng = np.random.default_rng(seed)
     X0 = _zscore(Yg)
     Y0 = _zscore(Ym)
@@ -102,7 +104,7 @@ def mantis(Yg, Ym, coords, CT=None, seed=0, n_bins=10, sampler_l=4 * np.sqrt(2),
     Yn = _zscore(_lasso_resid(_zscore(Ynull), P, 0.06))
     null = Xs.T @ (W @ Yn) / n
 
-    # 按代谢物的空间自相关分箱，箱内汇总零分布
+    # bin metabolites by spatial autocorrelation and pool the null within bins
     Yc = Y0 - Y0.mean(0)
     M0 = np.einsum("ik,ij,jk->k", Yc, Ws, Yc)
     edges = np.unique(np.quantile(M0, np.linspace(0, 1, n_bins + 1)))
@@ -120,11 +122,11 @@ def _logcpm(G):
 
 
 def liana_global(G_counts, M_int, coords, bandwidth=3.0, nz_prop=0.05, chunk=10):
-    """LIANA+（Dimitrov et al., Nat Cell Biol 2024）的全局双变量指标，按其官方 API 调用。
+    """Global bivariate metrics of LIANA+ (Dimitrov et al., Nat Cell Biol 2024), via its official API.
 
-    返回 {"morans": (score, p), "lee": (score, None)}，形状 基因 × 代谢物。
-    Moran's R 的解析 p 值即 SpatialDM（Li et al., Nat Commun 2023）的全局检验，LIANA+ 内置了同一实现。
-    表达比例低于 nz_prop 的基因被 LIANA+ 过滤，这些配对记为 score 0、p 1。
+    Returns {"morans": (score, p), "lee": (score, None)}, each gene × metabolite.
+    The analytic p-value of Moran's R is the global test of SpatialDM (Li et al., Nat Commun 2023), built into LIANA+.
+    Genes expressed in fewer than nz_prop of spots are filtered by LIANA+; their pairs get score 0 and p 1.
     """
     import anndata as ad
     import pandas as pd
@@ -139,7 +141,7 @@ def liana_global(G_counts, M_int, coords, bandwidth=3.0, nz_prop=0.05, chunk=10)
     adata.obsm["spatial"] = np.asarray(coords, float)
     li.ut.spatial_neighbors(adata, bandwidth=bandwidth, cutoff=0.1)
     out = {"morans": (np.zeros((p, q)), np.ones((p, q))), "lee": (np.zeros((p, q)), None)}
-    # 一次放入全部 p×q 配对会占用几十 GB 内存，按代谢物分块调用
+    # all p×q pairs at once need tens of GB of memory, so call in chunks of metabolites
     for start in range(0, q, chunk):
         mk = mn[start:start + chunk]
         resource = pd.DataFrame({"ligand": np.repeat(gn, len(mk)), "receptor": np.tile(mk, p)})
@@ -156,18 +158,18 @@ def liana_global(G_counts, M_int, coords, bandwidth=3.0, nz_prop=0.05, chunk=10)
 
 
 def modified_ttest(Xg, Xm, coords, n_classes=None):
-    """Dutilleul (1993) 修正 t 检验，按 R 包 SpatialPack::modified.ttest 的思路实现并向量化。
+    """Dutilleul (1993) modified t-test, vectorised after R SpatialPack::modified.ttest.
 
-    用分距离等级的 Moran 相关图估计两变量各自的空间自相关，得到每对的有效样本量
-    n_eff = 1 + n² / (n + Σ_k n_k I_x(k) I_y(k))，再用 F(1, n_eff − 2) 检验相关系数。
-    返回 (r, p)，形状 基因 × 代谢物。
+    Moran correlograms over distance classes estimate each variable's autocorrelation, giving the effective sample size
+    n_eff = 1 + n² / (n + Σ_k n_k I_x(k) I_y(k)), and the correlation is tested against F(1, n_eff − 2).
+    Returns (r, p), each gene × metabolite.
     """
     from scipy.stats import f as fdist
     X = _zscore(Xg); Y = _zscore(Xm)
     n = len(coords)
     D = cdist(coords, coords)
     if n_classes is None:
-        n_classes = int(np.ceil(np.log2(n * (n - 1) / 2) + 1))  # Sturges，与 SpatialPack 一致
+        n_classes = int(np.ceil(np.log2(n * (n - 1) / 2) + 1))  # Sturges, as in SpatialPack
     off = D[np.triu_indices(n, 1)]
     edges = np.linspace(0, off.max() + 1e-9, n_classes + 1)
     cls = np.digitize(D, edges[1:-1])
@@ -179,10 +181,10 @@ def modified_ttest(Xg, Xm, coords, n_classes=None):
         if cnt == 0:
             continue
         nk.append(cnt)
-        Ig.append((X * (A @ X)).sum(0) / cnt)   # 标准化后 Σx² = n，所以 I(k) = (n/W_k) Σ x_i x_j / n
+        Ig.append((X * (A @ X)).sum(0) / cnt)   # after standardising Σx² = n, so I(k) = (n/W_k) Σ x_i x_j / n
         Im.append((Y * (A @ Y)).sum(0) / cnt)
     Ig = np.array(Ig); Im = np.array(Im); nk = np.array(nk)
-    trace = n + (Ig * nk[:, None]).T @ Im          # p × q：tr(Σx Σy)
+    trace = n + (Ig * nk[:, None]).T @ Im          # p × q: tr(Σx Σy)
     n_eff = np.clip(1 + n ** 2 / trace, 3, n)
     r = X.T @ Y / n
     F = r ** 2 * (n_eff - 2) / np.clip(1 - r ** 2, 1e-12, None)
@@ -190,10 +192,10 @@ def modified_ttest(Xg, Xm, coords, n_classes=None):
 
 
 def mefisto(G_counts, M_int, coords, K=10, seed=0, frac_inducing=0.2, iters=1000):
-    """MEFISTO（Velten et al., Nat Methods 2022，mofapy2）。两个视图（基因、代谢物），空间坐标作为协变量。
+    """MEFISTO (Velten et al., Nat Methods 2022; mofapy2) with two views (genes, metabolites) and spatial coordinates as covariates.
 
-    MEFISTO 不直接给配对检验；按多组学因子模型的常规读法，基因 j 与代谢物 k 的关联分数取
-    Σ_r w_g,jr w_m,kr（共享因子载荷乘积，即我们原方案的读法）。返回 分数矩阵 基因 × 代谢物。
+    MEFISTO has no pairwise test; following the usual reading of multi-omics factor models, the score for gene j and metabolite k is
+    Σ_r w_g,jr w_m,kr (product of shared-factor loadings). Returns a gene × metabolite score matrix.
     """
     from mofapy2.run.entry_point import entry_point
     Xg = _zscore(_logcpm(G_counts))
@@ -213,11 +215,11 @@ def mefisto(G_counts, M_int, coords, K=10, seed=0, frac_inducing=0.2, iters=1000
 
 
 def misty(G_counts, M_int, coords, bandwidth=3.0):
-    """MISTy（Tanevski et al., Genome Biol 2022），用 LIANA+ 的 Python 实现。
+    """MISTy (Tanevski et al., Genome Biol 2022), Python implementation from LIANA+.
 
-    每个代谢物作为目标，基因作为预测变量，juxta（近邻）和 para（核加权邻域）两个视图，
-    set_diag=True 让本格子也计入。线性模型。配对分数取两个视图里重要性绝对值的最大值。
-    返回 分数矩阵 基因 × 代谢物。
+    Each metabolite is a target and genes are predictors, with juxta (nearest neighbours) and para (kernel-weighted) views;
+    set_diag=True includes the spot itself. Linear model. The pair score is the larger absolute importance across views.
+    Returns a gene × metabolite score matrix.
     """
     import anndata as ad
     import pandas as pd
@@ -244,10 +246,10 @@ def misty(G_counts, M_int, coords, bandwidth=3.0):
 
 
 def spamv(G_counts, M_int, coords, python, epochs=30, zs_dim=10, seed=0, workdir=None):
-    """SpaMV（Nat Commun 2025）。共享主题的特征载荷乘积 Σ_k β_RNA[g,k] β_MSI[m,k] 作为配对分数。
+    """SpaMV (Nat Commun 2025). The pair score is the product of shared-topic loadings Σ_k β_RNA[g,k] β_MSI[m,k].
 
-    SpaMV 依赖 torch，装在单独的虚拟环境里，这里通过子进程调用（python 为该环境的解释器）。
-    CPU 上默认的 400+400 轮训练要数小时，benchmark 用 epochs 轮（两个阶段各 epochs 轮）。
+    SpaMV needs torch and lives in a separate environment; it is called in a subprocess (python = that interpreter).
+    The default 400+400 epochs take hours on CPU, so the benchmark trains for `epochs` in each of the two stages.
     """
     import subprocess, tempfile, os
     workdir = workdir or tempfile.mkdtemp()
