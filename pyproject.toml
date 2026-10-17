@@ -1,0 +1,13 @@
+[project]
+name = "respair"
+version = "0.1.0"
+description = "Pair-specific gene–metabolite links in spatial multi-omics, after removing low-rank tissue confounding"
+requires-python = ">=3.9"
+dependencies = ["numpy", "scipy"]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["respair"]
