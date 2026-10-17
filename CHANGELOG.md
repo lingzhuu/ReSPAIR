@@ -13,6 +13,6 @@ All notable changes to this project are documented here. The format follows
 ## [0.1.0]
 
 ### Added
-- Baseline wrappers in `respair.benchmarks`: LIANA+/SpatialDM, Lee's L, Dutilleul modified t-test, MEFISTO, MISTy, SpaMV.
+- Baseline wrappers in `respair.benchmarks`: LIANA+/SpatialDM, Lee's L, Dutilleul modified t-test.
 - Simplified ReSPAIR estimator (`respair.fit`): hidden-factor removal, spectral pair test, negative-control calibration.
 - Simulator (`respair.simulate`) and MANTIS re-implementation (`respair.benchmarks`).

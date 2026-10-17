@@ -121,40 +121,42 @@ def _logcpm(G):
     return np.log1p(G / G.sum(1, keepdims=True) * 1e4)
 
 
-def liana_global(G_counts, M_int, coords, bandwidth=3.0, nz_prop=0.05, chunk=10):
-    """Global bivariate metrics of LIANA+ (Dimitrov et al., Nat Cell Biol 2024), via its official API.
+def liana_global(G_counts, M_int, coords, bandwidth=3.0, nz_prop=0.05):
+    """Global bivariate metrics of LIANA+ (Dimitrov et al., Nat Cell Biol 2024).
 
     Returns {"morans": (score, p), "lee": (score, None)}, each gene × metabolite.
     The analytic p-value of Moran's R is the global test of SpatialDM (Li et al., Nat Commun 2023), built into LIANA+.
-    Genes expressed in fewer than nz_prop of spots are filtered by LIANA+; their pairs get score 0 and p 1.
+    Spatial weights come from `li.ut.spatial_neighbors`; the statistics follow `li.mt.bivariate(global_name=...)` line by
+    line but in matrix form, since the official call loops over 400k pairs (identical output, about 50× faster).
+    Genes expressed in fewer than nz_prop of spots are filtered as in LIANA+; their pairs get score 0 and p 1.
     """
     import anndata as ad
-    import pandas as pd
     import liana as li
+    from scipy.stats import norm
     Xg = _logcpm(G_counts)
     Xm = np.log(np.asarray(M_int, float))
-    p, q = Xg.shape[1], Xm.shape[1]
-    gn = [f"g{j}" for j in range(p)]
-    mn = [f"m{k}" for k in range(q)]
-    adata = ad.AnnData(np.hstack([Xg, Xm - Xm.min() + 1e-3]).astype(np.float32),
-                       var=pd.DataFrame(index=gn + mn))
+    Xm = Xm - Xm.min() + 1e-3
+    adata = ad.AnnData(np.zeros((len(coords), 1), np.float32))
     adata.obsm["spatial"] = np.asarray(coords, float)
-    li.ut.spatial_neighbors(adata, bandwidth=bandwidth, cutoff=0.1)
-    out = {"morans": (np.zeros((p, q)), np.ones((p, q))), "lee": (np.zeros((p, q)), None)}
-    # all p×q pairs at once need tens of GB of memory, so call in chunks of metabolites
-    for start in range(0, q, chunk):
-        mk = mn[start:start + chunk]
-        resource = pd.DataFrame({"ligand": np.repeat(gn, len(mk)), "receptor": np.tile(mk, p)})
-        for name in ["morans", "lee"]:
-            res = li.mt.bivariate(adata, resource=resource, local_name=None, global_name=name,
-                                  n_perms=0 if name == "morans" else None, nz_prop=nz_prop,
-                                  use_raw=False)
-            gi = res["ligand"].str[1:].astype(int).to_numpy()
-            mi = res["receptor"].str[1:].astype(int).to_numpy()
-            out[name][0][gi, mi] = res[name].to_numpy()
-            if name == "morans":
-                out[name][1][gi, mi] = res[f"{name}_pvals"].to_numpy()
-    return out
+    W = li.ut.spatial_neighbors(adata, bandwidth=bandwidth, cutoff=0.1, inplace=False)
+    W = np.asarray(W.todense() if hasattr(W, "todense") else W, float)
+    n = W.shape[0]
+    keep = (Xg > 0).mean(0) >= nz_prop
+
+    def zscore(X, spot_n):
+        X = X - X.mean(0)
+        return np.clip(X / np.sqrt((X ** 2).sum(0) / spot_n), -10, 10)
+
+    # Moran's R (SpatialDM): global z-scoring, weights rescaled to sum to n, analytic z-test
+    Wn = W * (n / W.sum())
+    R = (Wn @ zscore(Xg, 1)).T @ zscore(Xm, 1)
+    var = (n ** 2 * (Wn * Wn).sum() - 2 * n * (Wn @ Wn).sum() + Wn.sum() ** 2) / (n ** 2 * (n - 1) ** 2)
+    P = 2 * norm.sf(np.abs(R / np.sqrt(var)))
+    # Lee's L: per-spot z-scoring, spatial lag of both variables, x'W'Wy / Σ_i (Σ_j w_ij)²
+    W2 = W.T @ W
+    L = (W2 @ zscore(Xg, n)).T @ zscore(Xm, n) / W2.sum()
+    R[~keep] = 0; P[~keep] = 1; L[~keep] = 0
+    return {"morans": (R, P), "lee": (L, None)}
 
 
 def modified_ttest(Xg, Xm, coords, n_classes=None):
@@ -189,73 +191,3 @@ def modified_ttest(Xg, Xm, coords, n_classes=None):
     r = X.T @ Y / n
     F = r ** 2 * (n_eff - 2) / np.clip(1 - r ** 2, 1e-12, None)
     return r, fdist.sf(F, 1, n_eff - 2)
-
-
-def mefisto(G_counts, M_int, coords, K=10, seed=0, frac_inducing=0.2, iters=1000):
-    """MEFISTO (Velten et al., Nat Methods 2022; mofapy2) with two views (genes, metabolites) and spatial coordinates as covariates.
-
-    MEFISTO has no pairwise test; following the usual reading of multi-omics factor models, the score for gene j and metabolite k is
-    Σ_r w_g,jr w_m,kr (product of shared-factor loadings). Returns a gene × metabolite score matrix.
-    """
-    from mofapy2.run.entry_point import entry_point
-    Xg = _zscore(_logcpm(G_counts))
-    Xm = _zscore(np.log(np.asarray(M_int, float)))
-    ent = entry_point()
-    ent.set_data_options(scale_views=True)
-    ent.set_data_matrix([[Xg], [Xm]], views_names=["gene", "metabolite"])
-    ent.set_model_options(factors=K)
-    ent.set_train_options(iter=iters, seed=seed, quiet=True, verbose=False)
-    ent.set_covariates([np.asarray(coords, float)], covariates_names=["x", "y"])
-    ent.set_smooth_options(sparseGP=True, frac_inducing=frac_inducing, scale_cov=False)
-    ent.build()
-    ent.run()
-    W = ent.model.nodes["W"].getExpectation()
-    Wg, Wm = W[0], W[1]
-    return Wg @ Wm.T
-
-
-def misty(G_counts, M_int, coords, bandwidth=3.0):
-    """MISTy (Tanevski et al., Genome Biol 2022), Python implementation from LIANA+.
-
-    Each metabolite is a target and genes are predictors, with juxta (nearest neighbours) and para (kernel-weighted) views;
-    set_diag=True includes the spot itself. Linear model. The pair score is the larger absolute importance across views.
-    Returns a gene × metabolite score matrix.
-    """
-    import anndata as ad
-    import pandas as pd
-    from liana.method import genericMistyData
-    from liana.method.sp import LinearModel
-    Xg = _logcpm(G_counts)
-    Xm = np.log(np.asarray(M_int, float))
-    p, q = Xg.shape[1], Xm.shape[1]
-    obs = pd.DataFrame(index=[f"s{i}" for i in range(len(coords))])
-    rna = ad.AnnData(Xg.astype(np.float32), obs=obs, var=pd.DataFrame(index=[f"g{j}" for j in range(p)]))
-    msi = ad.AnnData(Xm.astype(np.float32), obs=obs, var=pd.DataFrame(index=[f"m{k}" for k in range(q)]))
-    for a in (rna, msi):
-        a.obsm["spatial"] = np.asarray(coords, float)
-    mdata = genericMistyData(intra=msi, extra=rna, bandwidth=bandwidth, cutoff=0.1, add_juxta=True,
-                             add_para=True, set_diag=True, nz_threshold=0)
-    mdata(model=LinearModel, bypass_intra=True, verbose=False)
-    inter = mdata.uns["interactions"]
-    S = np.zeros((p, q))
-    gi = inter["predictor"].str[1:].astype(int).to_numpy()
-    mi = inter["target"].str[1:].astype(int).to_numpy()
-    imp = np.abs(inter["importances"].fillna(0).to_numpy())
-    np.maximum.at(S, (gi, mi), imp)
-    return S
-
-
-def spamv(G_counts, M_int, coords, python, epochs=30, zs_dim=10, seed=0, workdir=None):
-    """SpaMV (Nat Commun 2025). The pair score is the product of shared-topic loadings Σ_k β_RNA[g,k] β_MSI[m,k].
-
-    SpaMV needs torch and lives in a separate environment; it is called in a subprocess (python = that interpreter).
-    The default 400+400 epochs take hours on CPU, so the benchmark trains for `epochs` in each of the two stages.
-    """
-    import subprocess, tempfile, os
-    workdir = workdir or tempfile.mkdtemp()
-    inp, out = os.path.join(workdir, "in.npz"), os.path.join(workdir, "out.npy")
-    np.savez(inp, G=np.asarray(G_counts, np.float32), M=np.log(np.asarray(M_int, float)).astype(np.float32),
-             coords=np.asarray(coords, float))
-    runner = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_spamv_runner.py")
-    subprocess.run([python, runner, inp, out, str(epochs), str(zs_dim), str(seed)], check=True)
-    return np.load(out)

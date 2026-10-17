@@ -24,3 +24,6 @@ data/
 
 # OS
 .DS_Store
+
+# Benchmark cache (per-seed rankings)
+benchmarks/cache/

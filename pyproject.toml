@@ -61,7 +61,6 @@ ignore = [
 "tests/**" = ["E402"]
 # baseline wrappers import their optional dependencies inside functions
 "src/respair/benchmarks.py" = ["E401", "I001"]
-"src/respair/_spamv_runner.py" = ["E401", "I001"]
 
 [tool.coverage.run]
 source = ["respair"]
