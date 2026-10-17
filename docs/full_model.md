@@ -50,7 +50,35 @@ semi-synthetic data from `semisim.py`). Power is the detection rate of true link
 all unlinked pairs. Both estimators have a realised false-positive rate of 5.0% at p < 0.05 in every scenario.
 Full numbers: `benchmarks/results/full_vs_simple*.json`; figure: `benchmarks/results/figures/fig_full_vs_simple.png`.
 
-RESULTS_TABLE
+| Scenario | Power, simplified | Power, full | AUC, simplified | AUC, full |
+|---|---|---|---|---|
+| *Benchmark simulation and variants (5 seeds)* | | | | |
+| base (link 0.5) | 100.0% | 100.0% | 1.000 | 1.000 |
+| base (link 0.2) | 96.3% | 96.9% | 0.989 | 0.991 |
+| low depth (link 0.2) | 63.7% | 64.5% | 0.889 | 0.889 |
+| isozyme decoys (link 0.2) | 96.0% | 96.1% | 0.991 | 0.991 |
+| isozyme decoys: true links vs decoy pairs | 24.0% | 28.9% | 0.682 | 0.754 |
+| shifted grid (link 0.2) | 86.9% | 92.4% | 0.963 | 0.979 |
+| network prior (link 0.2) | 95.6% | 96.5% | 0.990 | 0.992 |
+| network prior, ranked by posterior inclusion probability | 98.5% | 98.8% | 0.997 | 0.998 |
+| link on total signal (link 0.2) | 85.1% | 90.8% | 0.956 | 0.975 |
+| nonlinear link (link 0.2) | 93.1% | 94.5% | 0.984 | 0.986 |
+| many weak programs (link 0.2) | 91.1% | 95.6% | 0.977 | 0.988 |
+| zero-inflated metabolites (link 0.2) | 91.1% | 93.6% | 0.976 | 0.982 |
+| *Misspecified scenarios from `misspec.py` (link 0.5, 3 seeds)* | | | | |
+| ReSPAIR's model (default) | 100.0% | 100.0% | 1.000 | 1.000 |
+| links on total expression | 98.9% | 99.6% | 0.998 | 0.999 |
+| threshold links | 100.0% | 100.0% | 1.000 | 1.000 |
+| many confounders | 99.8% | 100.0% | 1.000 | 1.000 |
+| cell-type drift | 100.0% | 100.0% | 1.000 | 1.000 |
+| misregistration (1 spot) | 88.2% | 91.3% | 0.966 | 0.974 |
+| low MSI resolution (2×2) | 99.3% | 99.6% | 0.999 | 0.999 |
+| MSI dropout (30%) | 95.6% | 96.2% | 0.988 | 0.992 |
+| *Semi-synthetic on the SMA section, `semisim.py` (3 seeds)* | | | | |
+| links on whole gene expression, strength 0.5 | 87.1% | 91.8% | 0.956 | 0.979 |
+| links on whole gene expression, strength 0.3 | 69.5% | 71.3% | 0.898 | 0.916 |
+| links on whole gene expression, strength 0.15 | 33.6% | 33.2% | 0.734 | 0.730 |
+| links on fine-scale gene signal, strength 0.5 | 98.2% | 99.3% | 0.994 | 0.998 |
 
 What this shows, and what it does not:
 
@@ -67,5 +95,9 @@ What this shows, and what it does not:
   true links and 3 wrong pairs per true link. The same empirical-Bayes step gives the simplified estimator nearly the
   same gain (98.5%), so this is a property of using a prior, not of the joint fit, and it depends entirely on how
   good the network is.
-- Propagating the uncertainty in $F$ changes almost nothing: with thousands of genes, $F$ is well determined, and
-  the between-draw share of the test variance is under 1%.
+- Propagating the uncertainty in $F$ changes little: with thousands of genes, $F$ is well determined. The
+  between-draw share of the test variance is under 1% at the default depth and about 4% at low depth.
+- The 5.0% false-positive rate is partly by construction: both estimators rescale z so that negative-control genes
+  are at the nominal level.
+- On the semi-synthetic data the full estimator gains about 5 points of power at link strength 0.5, 2 points at 0.3,
+  and nothing at 0.15, where both detect about a third of the links.

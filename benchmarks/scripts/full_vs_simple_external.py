@@ -47,4 +47,4 @@ for name, kw in (MIS if which == "mis" else SEMI).items():
         print(name, seed, f"{time.time()-t:.0f}s", rows["simplified"][-1], rows["full"][-1], flush=True)
     res[name] = {m: {k: (np.mean([x[k] for x in v], 0).tolist()) for k in v[0]} for m, v in rows.items()}
     res[name]["per_seed"] = rows
-    json.dump({"link": link, "seeds": n_seeds, "results": res}, open(out, "w"), indent=1)
+    json.dump({"link": link if which == "mis" else "per scenario", "seeds": n_seeds, "results": res}, open(out, "w"), indent=1)
