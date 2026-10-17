@@ -18,5 +18,7 @@ python benchmarks/scripts/plot_sim.py    # figures                -> results/fig
 | `scripts/plot_sim.py` | figures 1–4 |
 | `results/` | committed outputs used in the README and manuscript |
 
-The simulator is `respair.simulate.simulate`; the MANTIS re-implementation used as a baseline is
-`respair.benchmarks.mantis` (needs scikit-learn).
+The simulator is `respair.simulate.simulate`. Baselines live in `respair.benchmarks`: the MANTIS re-implementation
+(needs scikit-learn) and wrappers for LIANA+/SpatialDM, Lee's L, the Dutilleul modified t-test, MEFISTO, MISTy and
+SpaMV. Each wrapper imports its own package only when called, so install the ones you need (`liana`, `mofapy2`;
+SpaMV runs in its own environment via `_spamv_runner.py`).
