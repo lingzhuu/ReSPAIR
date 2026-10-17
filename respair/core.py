@@ -5,7 +5,9 @@
 2. 扣除已知结构 Z 和 K 个隐藏模式 F（对拼接后的两块数据做加权 PCA）。
 3. 残差投影到空间频率基上，T_jk = sum_l g_jl m_kl。
 4. 零假设方差 Var0 = sum_l s_g,jl s_m,kl（按频带平滑的功率谱），z = T / sqrt(Var0)。
-5. K 用负对照配对选：取负对照 z 的膨胀系数 lambda_GC 首次低于阈值的最小 K。
+5. K 默认按奇异值谱选：数出比“平台”（第 15–25 个奇异值的中位数）高 10% 以上的奇异值个数，再多留 2 个。
+   多扣几个模式的代价很小（稀疏的成对联系不会被大范围的模式吸收），少扣会留下混杂，所以宁多勿少。
+   （早期版本用负对照 lambda_GC 的中位数选 K：只影响少数配对的混杂会被中位数漏掉，K 被选成 0。）
 6. 经验校准：按负对照配对 |z| 的 95% 分位数把所有 z 缩放到名义水平。
 """
 import numpy as np
@@ -68,6 +70,15 @@ def _residualize(X, C):
     C1 = np.column_stack([np.ones(len(C)), C])
     beta, *_ = np.linalg.lstsq(C1, X, rcond=None)
     return X - C1 @ beta
+
+
+def select_K(Rg, Rm, buffer=2, ratio=1.1):
+    """按两块数据加权拼接后的奇异值谱选 K。"""
+    Xg = standardize(Rg) / np.sqrt(Rg.shape[1])
+    Xm = standardize(Rm) / np.sqrt(Rm.shape[1])
+    s = np.linalg.svd(np.hstack([Xg, Xm]), compute_uv=False)
+    plateau = np.median(s[15:25])
+    return int((s > ratio * plateau).sum()) + buffer
 
 
 def hidden_factors(Rg, Rm, K):
@@ -149,14 +160,15 @@ def bh(p, alpha=0.1):
 
 # ---------- 主流程 ----------
 
-def fit(G_counts, M_int, coords, Z=None, K=None, K_grid=range(0, 31, 2),
-        neg_genes=None, gc_target=1.1, band_size=10, knn=8, gene_resid=None, met_resid=None,
+def fit(G_counts, M_int, coords, Z=None, K=None,
+        neg_genes=None, band_size=10, knn=8, gene_resid=None, met_resid=None,
         calibrate=True):
     """
     G_counts: n × p 基因计数；M_int: n × q 代谢物强度；coords: n × 2；Z: n × c 已知结构（可选）。
-    K: 隐藏模式个数；为 None 时用负对照基因 neg_genes（索引）按 lambda_GC 自动选。
+    K: 隐藏模式个数；为 None 时按奇异值谱自动选（见模块说明第 5 步）。
+    neg_genes: 负对照基因索引，用于第 6 步校准。
     calibrate: 有负对照时按负对照经验分布缩放 z（见 calibration_factor）。
-    返回 dict：z, p, K, lambda_gc 曲线, 校准系数 c, 基, 因子。
+    返回 dict：z, p, K, 校准系数 c, 因子 F, 残差 Eg/Em, 未校准的 z。
     """
     Yg = pearson_residuals(G_counts) if gene_resid is None else gene_resid
     Ym = standardize(log_standardize(M_int)) if met_resid is None else met_resid
@@ -164,27 +176,9 @@ def fit(G_counts, M_int, coords, Z=None, K=None, K_grid=range(0, 31, 2),
     Rm = _residualize(Ym, Z)
     evals, U = spatial_basis(coords, k=knn)
 
-    # 预先算出最大 K 的因子，较小的 K 取前几列
-    Kmax = K if K is not None else max(K_grid)
-    F_all = hidden_factors(Rg, Rm, Kmax)
-
-    curve = {}
     if K is None:
-        if neg_genes is None:
-            raise ValueError("自动选 K 需要负对照基因 neg_genes")
-        for k in K_grid:
-            F = F_all[:, :k]
-            Eg = _residualize(Rg[:, neg_genes], F)
-            Em = _residualize(Rm, F)
-            z = spectral_z(Eg, Em, U, band_size)["z"]
-            curve[k] = lambda_gc(z)
-            if curve[k] < gc_target:
-                K = k
-                break
-        if K is None:
-            K = min(curve, key=curve.get)
-
-    F = F_all[:, :K]
+        K = select_K(Rg, Rm)
+    F = hidden_factors(Rg, Rm, K)
     Eg = _residualize(Rg, F)
     Em = _residualize(Rm, F)
     nL = U.shape[1]
@@ -194,5 +188,5 @@ def fit(G_counts, M_int, coords, Z=None, K=None, K_grid=range(0, 31, 2),
     c = calibration_factor(z[neg_genes]) if (calibrate and neg_genes is not None) else 1.0
     z = z / c
     return {"z": z, "p": pvals(z), "z_scale": [zs / c for zs in res["z_scale"]],
-            "scales": scales, "K": K, "gc_curve": curve, "c": float(c), "F": F, "evals": evals,
+            "scales": scales, "K": K, "c": float(c), "F": F, "evals": evals,
             "Eg": Eg, "Em": Em, "z_uncalibrated": res["z"]}
