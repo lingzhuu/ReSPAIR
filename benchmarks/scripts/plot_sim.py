@@ -59,10 +59,10 @@ def fig1(d, fit, Yg, Ym):
     tj, tk = np.argwhere(d["truth"])[np.argmax(np.abs(fit["z"][d["truth"]]))]
 
     fig, axes = plt.subplots(2, 4, figsize=(15, 7.4), gridspec_kw={"width_ratios": [1, 1, 1, 1.1]})
-    spatial(axes[0, 0], d["H"], side, "Unlabeled confounder (hypoxia-like gradient)")
+    spatial(axes[0, 0], d["H"], side, "Unlabeled confounder\n(hypoxia-like gradient)")
     spatial(axes[0, 1], Yg[:, j], side, f"Gene {j} (confounded)\nraw")
     spatial(axes[0, 2], Ym[:, k], side, f"Metabolite {k} (confounded)\nraw")
-    scatter(axes[0, 3], Yg[:, j], Ym[:, k], "No true link, yet strongly correlated in raw data", SERIES[1])
+    scatter(axes[0, 3], Yg[:, j], Ym[:, k], "No true link, yet\ncorrelated in raw data", SERIES[1])
 
     zjk = fit["z"][j, k]
     axes[1, 0].axis("off")
@@ -119,8 +119,8 @@ def fig2():
     axes[0].set_title("False-positive rate (p < 0.05, dashed = 5%)", loc="left")
     axes[0].set_xlim(0, 105)
     axes[0].legend(frameon=False, loc="lower right")
-    for ax, key, ref, title in [(axes[1], "BH empirical FDR", 10, "Empirical FDR after BH(0.1) (dashed = 10%)"),
-                                (axes[2], "BH power", None, "Power for true links after BH(0.1)")]:
+    for ax, key, ref, title in [(axes[1], "BH empirical FDR", 10, "Empirical FDR, BH(0.1)\n(dashed = 10%)"),
+                                (axes[2], "BH power", None, "Power for true links,\nBH(0.1)")]:
         v = np.array([avg[m][key] for m in methods]) * 100
         e = np.array([sd[m][key] for m in methods]) * 100
         ax.barh(y, v, height=0.55, color=SERIES[0], xerr=e, error_kw={"ecolor": INK2, "lw": 1, "capsize": 0})

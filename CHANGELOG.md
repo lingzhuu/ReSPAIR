@@ -7,7 +7,8 @@ All notable changes to this project are documented here. The format follows
 
 ### Changed
 - Repository reorganised into a `src/` layout with `hatchling` packaging, tests, CI and Sphinx docs.
-- Simulation and benchmark scripts moved to `benchmarks/`.
+- Simulation and benchmark scripts moved to `benchmarks/`; all text, result keys and figures are in English.
+- `benchmarks/results/sim_5seeds.json` regenerated with the current spectrum-based choice of K (was K = 4).
 
 ## [0.1.0]
 
