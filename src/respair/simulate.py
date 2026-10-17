@@ -20,15 +20,16 @@ def simulate(seed=0, side=50, p=2000, q=200, n_conf_genes=300, n_conf_mets=40,
              misalign=0, msi_block=1, msi_dropout=0.0):
     """Simulate one data set. The defaults follow ReSPAIR's model; the remaining options break its assumptions.
 
-    link_on       "local": links act on the gene's local residual (the model); "total": on the gene's whole
-                  log-expression, including tissue structure and hidden factors
-    link_fn       "linear" or "threshold": the metabolite responds only where the gene signal is above its median
-    n_extra_conf  extra unlabeled confounders (each its own GP and gene/metabolite set), so confounding is not low-rank
-                  in the sense of a few strong factors
-    ct_drift      cell-type effects drift along one tissue axis (Z × space interaction, not removed by regressing on Z)
-    misalign      metabolite map shifted by this many spots relative to genes (registration error)
-    msi_block     metabolites measured at block × block lower resolution
-    msi_dropout   fraction of metabolite values replaced by the detection floor (below limit of detection)
+    - ``link_on``: ``"local"`` links act on the gene's local residual (the model); ``"total"`` on the gene's whole
+      log-expression, including tissue structure and hidden factors.
+    - ``link_fn``: ``"linear"``, or ``"threshold"`` (the metabolite responds only where the gene is above its median).
+    - ``n_extra_conf``: extra unlabeled confounders, each with its own GP and gene/metabolite set, so confounding is
+      not a few strong factors.
+    - ``ct_drift``: cell-type effects drift along one tissue axis (Z × space interaction, not removed by regressing
+      on Z).
+    - ``misalign``: metabolite map shifted by this many spots relative to genes (registration error).
+    - ``msi_block``: metabolites measured at block × block lower resolution.
+    - ``msi_dropout``: fraction of metabolite values replaced by the detection floor.
     """
     rng = np.random.default_rng(seed)
     rng2 = np.random.default_rng(seed + 10_000)  # misspecification draws, so the defaults reproduce earlier data
@@ -137,16 +138,17 @@ def semi_synthetic(G_real, M_real, coords, seed=0, p=2000, q=200, n_links=150, l
                    conf_quantile=0.9):
     """Semi-synthetic data on a real tissue section: real genes, metabolites built from real metabolite maps.
 
-    Genes are the real counts (top `p` by Pearson-residual variance), so their tissue structure, hidden programs,
-    noise and spatial autocorrelation are all real. Each of the `q` metabolites keeps the large-scale map of a real
-    metabolite (Gaussian-kernel smoothing, `smooth_bw` spots, not a low-rank fit), plus noise with the real residual
-    variance and short-range autocorrelation, plus planted links to real genes. Real zeros are kept as zeros.
+    Genes are the real counts (top ``p`` by Pearson-residual variance), so their tissue structure, hidden programs,
+    noise and spatial autocorrelation are all real. Each of the ``q`` metabolites keeps the large-scale map of a real
+    metabolite (Gaussian-kernel smoothing over ``smooth_bw`` spots, not a low-rank fit), plus noise with the real
+    residual variance and short-range autocorrelation, plus planted links to real genes. Real zeros stay zeros.
 
-    link_on        "total": the metabolite follows the gene's whole log-expression (not ReSPAIR's model);
-                   "local": only the gene's fine-scale part (expression minus its smoothed map; ReSPAIR's model)
-    link_strength  link effect in units of the metabolite's standard deviation
-    Annotated structure Z is k-means regions (`n_regions`) on gene PCs, as an analyst would have. Confounded null pairs
-    are unlinked pairs whose smoothed gene and metabolite maps are most correlated (top 1 − `conf_quantile`).
+    - ``link_on``: ``"total"`` links follow the gene's whole log-expression (not ReSPAIR's model); ``"local"`` only
+      its fine-scale part, expression minus its smoothed map (ReSPAIR's model).
+    - ``link_strength``: link effect in units of the metabolite's standard deviation.
+
+    Annotated structure Z is k-means regions (``n_regions``) on gene PCs, as an analyst would have. Confounded null
+    pairs are unlinked pairs whose smoothed gene and metabolite maps are most correlated (top 1 − ``conf_quantile``).
     """
     from sklearn.cluster import KMeans
 
