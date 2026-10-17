@@ -1,0 +1,16 @@
+name: Bug report
+description: Something does not work as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: A minimal code example and the full error message.
+    validations:
+      required: true
+  - type: textarea
+    id: versions
+    attributes:
+      label: Versions
+      description: Output of `python -c "import respair, numpy, scipy; print(respair.__version__, numpy.__version__, scipy.__version__)"`

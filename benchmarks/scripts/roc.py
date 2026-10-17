@@ -14,8 +14,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, roc_auc_score
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, ROOT)
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # benchmarks/
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 from respair.simulate import simulate
 from run_sim import all_pvals

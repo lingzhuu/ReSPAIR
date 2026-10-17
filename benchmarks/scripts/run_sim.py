@@ -5,8 +5,7 @@
 """
 import sys, os, json
 import numpy as np
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, ROOT)
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # benchmarks/
 from respair import core as sj
 from respair import benchmarks as bm
 from respair.simulate import simulate

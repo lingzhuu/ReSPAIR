@@ -16,7 +16,6 @@ from scipy.sparse.csgraph import laplacian
 from scipy.spatial import cKDTree
 from scipy.stats import norm
 
-
 # ---------- 归一化 ----------
 
 def pearson_residuals(counts, theta=100.0):
@@ -136,7 +135,7 @@ def pvals(z):
 
 
 def calibration_factor(z_neg, q=0.95):
-    """负对照 |z| 的 q 分位数与标准正态对应分位数之比。"""
+    """负对照 ``|z|`` 的 q 分位数与标准正态对应分位数之比。"""
     return np.quantile(np.abs(z_neg), q) / norm.isf((1 - q) / 2)
 
 
@@ -163,12 +162,38 @@ def bh(p, alpha=0.1):
 def fit(G_counts, M_int, coords, Z=None, K=None,
         neg_genes=None, band_size=10, knn=8, gene_resid=None, met_resid=None,
         calibrate=True):
-    """
-    G_counts: n × p 基因计数；M_int: n × q 代谢物强度；coords: n × 2；Z: n × c 已知结构（可选）。
-    K: 隐藏模式个数；为 None 时按奇异值谱自动选（见模块说明第 5 步）。
-    neg_genes: 负对照基因索引，用于第 6 步校准。
-    calibrate: 有负对照时按负对照经验分布缩放 z（见 calibration_factor）。
-    返回 dict：z, p, K, 校准系数 c, 因子 F, 残差 Eg/Em, 未校准的 z。
+    """Test every gene–metabolite pair for a pair-specific spatial link.
+
+    Parameters
+    ----------
+    G_counts
+        ``n × p`` gene counts (spots × genes).
+    M_int
+        ``n × q`` metabolite intensities on the same spots.
+    coords
+        ``n × 2`` spatial coordinates.
+    Z
+        ``n × c`` known tissue structure (e.g. cell-type proportions), optional.
+    K
+        Number of hidden factors to remove. ``None`` picks it from the singular-value spectrum.
+    neg_genes
+        Indices of negative-control genes, used to calibrate the z-scores.
+    band_size
+        Number of Laplacian eigenvectors per frequency band when estimating the null power spectrum.
+    knn
+        Number of neighbours for the spatial kNN graph.
+    gene_resid, met_resid
+        Pre-normalised ``n × p`` / ``n × q`` matrices that replace the default normalisation.
+    calibrate
+        If ``True`` and ``neg_genes`` is given, rescale z so negative-control pairs are at nominal level.
+
+    Returns
+    -------
+    dict
+        ``z`` and ``p`` (``p × q``), ``z_scale`` (z on large / medium / small spatial scales),
+        ``K``, calibration factor ``c``, hidden factors ``F``, residuals ``Eg`` / ``Em`` and ``z_uncalibrated``.
+
+    中文说明见 ``docs/模型说明.md``。
     """
     Yg = pearson_residuals(G_counts) if gene_resid is None else gene_resid
     Ym = standardize(log_standardize(M_int)) if met_resid is None else met_resid
