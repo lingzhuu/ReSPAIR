@@ -1,0 +1,582 @@
+{
+ "link strength": 0.5,
+ "seeds": 3,
+ "mean over seeds": {
+  "ReSPAIR's model (default)": {
+   "Pearson": {
+    "all pairs": {
+     "AUC": 0.8876586775596405,
+     "TPR@5%": 0.5333333333333333
+    },
+    "confounded pairs only": {
+     "AUC": 0.7160755781937906,
+     "TPR@5%": 0.21333333333333335
+    }
+   },
+   "MANTIS-SCI": {
+    "all pairs": {
+     "AUC": 0.5434550206327373,
+     "TPR@5%": 0.07111111111111111
+    },
+    "confounded pairs only": {
+     "AUC": 0.3338153862876841,
+     "TPR@5%": 0.02165727699530517
+    }
+   },
+   "MANTIS-SPC-CT": {
+    "all pairs": {
+     "AUC": 0.7523896072138162,
+     "TPR@5%": 0.20444444444444443
+    },
+    "confounded pairs only": {
+     "AUC": 0.11633753197445378,
+     "TPR@5%": 0.0
+    }
+   },
+   "SpatialDM (Moran's R)": {
+    "all pairs": {
+     "AUC": 0.5256752976810749,
+     "TPR@5%": 0.05175806984321874
+    },
+    "confounded pairs only": {
+     "AUC": 0.2954596356893399,
+     "TPR@5%": 0.022287938112270294
+    }
+   },
+   "Lee's L": {
+    "all pairs": {
+     "AUC": 0.497439006294027,
+     "TPR@5%": 0.04666666666666667
+    },
+    "confounded pairs only": {
+     "AUC": 0.28038131091503565,
+     "TPR@5%": 0.024444444444444446
+    }
+   },
+   "Modified t-test": {
+    "all pairs": {
+     "AUC": 0.9221981632000888,
+     "TPR@5%": 0.8133333333333334
+    },
+    "confounded pairs only": {
+     "AUC": 0.8559244077359788,
+     "TPR@5%": 0.6866666666666666
+    }
+   },
+   "ReSPAIR": {
+    "all pairs": {
+     "AUC": 0.9999332027288012,
+     "TPR@5%": 1.0
+    },
+    "confounded pairs only": {
+     "AUC": 0.9999257170136765,
+     "TPR@5%": 1.0
+    }
+   }
+  },
+  "links on total expression": {
+   "Pearson": {
+    "all pairs": {
+     "AUC": 0.9128352743389883,
+     "TPR@5%": 0.6222222222222221
+    },
+    "confounded pairs only": {
+     "AUC": 0.7803309339255969,
+     "TPR@5%": 0.3088888888888889
+    }
+   },
+   "MANTIS-SCI": {
+    "all pairs": {
+     "AUC": 0.6440274436246926,
+     "TPR@5%": 0.1688888888888889
+    },
+    "confounded pairs only": {
+     "AUC": 0.4635506826041524,
+     "TPR@5%": 0.07079084967320261
+    }
+   },
+   "MANTIS-SPC-CT": {
+    "all pairs": {
+     "AUC": 0.7988430105734095,
+     "TPR@5%": 0.2777777777777778
+    },
+    "confounded pairs only": {
+     "AUC": 0.23618249502772434,
+     "TPR@5%": 0.0314135101010101
+    }
+   },
+   "SpatialDM (Moran's R)": {
+    "all pairs": {
+     "AUC": 0.6294682561516124,
+     "TPR@5%": 0.08236717198871524
+    },
+    "confounded pairs only": {
+     "AUC": 0.4269371167061056,
+     "TPR@5%": 0.039438513232923446
+    }
+   },
+   "Lee's L": {
+    "all pairs": {
+     "AUC": 0.6190035707834882,
+     "TPR@5%": 0.14222222222222222
+    },
+    "confounded pairs only": {
+     "AUC": 0.4367538225961772,
+     "TPR@5%": 0.07111111111111111
+    }
+   },
+   "Modified t-test": {
+    "all pairs": {
+     "AUC": 0.9524195128728827,
+     "TPR@5%": 0.8711111111111111
+    },
+    "confounded pairs only": {
+     "AUC": 0.8978415297220735,
+     "TPR@5%": 0.6911111111111111
+    }
+   },
+   "ReSPAIR": {
+    "all pairs": {
+     "AUC": 0.9979841107081823,
+     "TPR@5%": 0.9888888888888888
+    },
+    "confounded pairs only": {
+     "AUC": 0.9978646214886155,
+     "TPR@5%": 0.9866666666666667
+    }
+   }
+  },
+  "threshold links": {
+   "Pearson": {
+    "all pairs": {
+     "AUC": 0.8944001945173885,
+     "TPR@5%": 0.5711111111111111
+    },
+    "confounded pairs only": {
+     "AUC": 0.7324324422211208,
+     "TPR@5%": 0.2355555555555556
+    }
+   },
+   "MANTIS-SCI": {
+    "all pairs": {
+     "AUC": 0.5383965792727828,
+     "TPR@5%": 0.06666666666666667
+    },
+    "confounded pairs only": {
+     "AUC": 0.33171075894460483,
+     "TPR@5%": 0.015555555555555557
+    }
+   },
+   "MANTIS-SPC-CT": {
+    "all pairs": {
+     "AUC": 0.7378438025370624,
+     "TPR@5%": 0.19555555555555557
+    },
+    "confounded pairs only": {
+     "AUC": 0.11114086733553268,
+     "TPR@5%": 0.0
+    }
+   },
+   "SpatialDM (Moran's R)": {
+    "all pairs": {
+     "AUC": 0.5138153585372293,
+     "TPR@5%": 0.04930285646102698
+    },
+    "confounded pairs only": {
+     "AUC": 0.28571455331124435,
+     "TPR@5%": 0.021143350701175206
+    }
+   },
+   "Lee's L": {
+    "all pairs": {
+     "AUC": 0.49139357258972116,
+     "TPR@5%": 0.044444444444444446
+    },
+    "confounded pairs only": {
+     "AUC": 0.2753625506955717,
+     "TPR@5%": 0.017777777777777778
+    }
+   },
+   "Modified t-test": {
+    "all pairs": {
+     "AUC": 0.925907993275256,
+     "TPR@5%": 0.8288888888888889
+    },
+    "confounded pairs only": {
+     "AUC": 0.8661721001675122,
+     "TPR@5%": 0.7133333333333334
+    }
+   },
+   "ReSPAIR": {
+    "all pairs": {
+     "AUC": 0.9999588790240784,
+     "TPR@5%": 1.0
+    },
+    "confounded pairs only": {
+     "AUC": 0.9999535042238384,
+     "TPR@5%": 1.0
+    }
+   }
+  },
+  "many confounders": {
+   "Pearson": {
+    "all pairs": {
+     "AUC": 0.831158634487933,
+     "TPR@5%": 0.4177777777777778
+    },
+    "confounded pairs only": {
+     "AUC": 0.6981466103795713,
+     "TPR@5%": 0.18444444444444444
+    }
+   },
+   "MANTIS-SCI": {
+    "all pairs": {
+     "AUC": 0.5215959318077612,
+     "TPR@5%": 0.05333333333333334
+    },
+    "confounded pairs only": {
+     "AUC": 0.3818264900464139,
+     "TPR@5%": 0.022222222222222223
+    }
+   },
+   "MANTIS-SPC-CT": {
+    "all pairs": {
+     "AUC": 0.6291454767760132,
+     "TPR@5%": 0.06888888888888889
+    },
+    "confounded pairs only": {
+     "AUC": 0.2596384992484338,
+     "TPR@5%": 0.0044444444444444444
+    }
+   },
+   "SpatialDM (Moran's R)": {
+    "all pairs": {
+     "AUC": 0.4963393105747989,
+     "TPR@5%": 0.047058199158984175
+    },
+    "confounded pairs only": {
+     "AUC": 0.3417646991625423,
+     "TPR@5%": 0.02607938200658022
+    }
+   },
+   "Lee's L": {
+    "all pairs": {
+     "AUC": 0.4792204799021856,
+     "TPR@5%": 0.04
+    },
+    "confounded pairs only": {
+     "AUC": 0.330174057203457,
+     "TPR@5%": 0.02
+    }
+   },
+   "Modified t-test": {
+    "all pairs": {
+     "AUC": 0.8720584719269725,
+     "TPR@5%": 0.7133333333333334
+    },
+    "confounded pairs only": {
+     "AUC": 0.8110896742783466,
+     "TPR@5%": 0.5688888888888889
+    }
+   },
+   "ReSPAIR": {
+    "all pairs": {
+     "AUC": 0.9996224195184306,
+     "TPR@5%": 0.9977777777777778
+    },
+    "confounded pairs only": {
+     "AUC": 0.9996029468985349,
+     "TPR@5%": 0.9977777777777778
+    }
+   }
+  },
+  "cell-type drift": {
+   "Pearson": {
+    "all pairs": {
+     "AUC": 0.8527145068289497,
+     "TPR@5%": 0.46444444444444444
+    },
+    "confounded pairs only": {
+     "AUC": 0.6900335361148477,
+     "TPR@5%": 0.2111111111111111
+    }
+   },
+   "MANTIS-SCI": {
+    "all pairs": {
+     "AUC": 0.5340560460172564,
+     "TPR@5%": 0.06
+    },
+    "confounded pairs only": {
+     "AUC": 0.344149908148578,
+     "TPR@5%": 0.02
+    }
+   },
+   "MANTIS-SPC-CT": {
+    "all pairs": {
+     "AUC": 0.6042351381768163,
+     "TPR@5%": 0.10000000000000002
+    },
+    "confounded pairs only": {
+     "AUC": 0.1599828325710094,
+     "TPR@5%": 0.006136507936507937
+    }
+   },
+   "SpatialDM (Moran's R)": {
+    "all pairs": {
+     "AUC": 0.5184589304322454,
+     "TPR@5%": 0.05027133963426438
+    },
+    "confounded pairs only": {
+     "AUC": 0.316284961319446,
+     "TPR@5%": 0.024229811562294947
+    }
+   },
+   "Lee's L": {
+    "all pairs": {
+     "AUC": 0.4984528698261848,
+     "TPR@5%": 0.03333333333333333
+    },
+    "confounded pairs only": {
+     "AUC": 0.30053325667826547,
+     "TPR@5%": 0.006666666666666667
+    }
+   },
+   "Modified t-test": {
+    "all pairs": {
+     "AUC": 0.8803279229711144,
+     "TPR@5%": 0.7444444444444445
+    },
+    "confounded pairs only": {
+     "AUC": 0.8098532010578644,
+     "TPR@5%": 0.6066666666666667
+    }
+   },
+   "ReSPAIR": {
+    "all pairs": {
+     "AUC": 0.9998535728676031,
+     "TPR@5%": 1.0
+    },
+    "confounded pairs only": {
+     "AUC": 0.9998521361380145,
+     "TPR@5%": 1.0
+    }
+   }
+  },
+  "misregistration (1 spot)": {
+   "Pearson": {
+    "all pairs": {
+     "AUC": 0.6852580773345561,
+     "TPR@5%": 0.12
+    },
+    "confounded pairs only": {
+     "AUC": 0.41554463846593875,
+     "TPR@5%": 0.035555555555555556
+    }
+   },
+   "MANTIS-SCI": {
+    "all pairs": {
+     "AUC": 0.5397101913217457,
+     "TPR@5%": 0.06666666666666667
+    },
+    "confounded pairs only": {
+     "AUC": 0.3314098170956523,
+     "TPR@5%": 0.013628352490421457
+    }
+   },
+   "MANTIS-SPC-CT": {
+    "all pairs": {
+     "AUC": 0.7400373334444862,
+     "TPR@5%": 0.20444444444444443
+    },
+    "confounded pairs only": {
+     "AUC": 0.1277785986697226,
+     "TPR@5%": 0.0022222222222222222
+    }
+   },
+   "SpatialDM (Moran's R)": {
+    "all pairs": {
+     "AUC": 0.5230538368554875,
+     "TPR@5%": 0.050843542662517865
+    },
+    "confounded pairs only": {
+     "AUC": 0.29555509277073244,
+     "TPR@5%": 0.022029603138438752
+    }
+   },
+   "Lee's L": {
+    "all pairs": {
+     "AUC": 0.4929259805760493,
+     "TPR@5%": 0.04666666666666667
+    },
+    "confounded pairs only": {
+     "AUC": 0.27989310975161946,
+     "TPR@5%": 0.022222222222222223
+    }
+   },
+   "Modified t-test": {
+    "all pairs": {
+     "AUC": 0.7514102232781738,
+     "TPR@5%": 0.4911111111111111
+    },
+    "confounded pairs only": {
+     "AUC": 0.5943649491523003,
+     "TPR@5%": 0.23111111111111113
+    }
+   },
+   "ReSPAIR": {
+    "all pairs": {
+     "AUC": 0.9659527378322427,
+     "TPR@5%": 0.8822222222222221
+    },
+    "confounded pairs only": {
+     "AUC": 0.9650377632657072,
+     "TPR@5%": 0.88
+    }
+   }
+  },
+  "low MSI resolution (2\u00d72)": {
+   "Pearson": {
+    "all pairs": {
+     "AUC": 0.7950232559432008,
+     "TPR@5%": 0.26222222222222225
+    },
+    "confounded pairs only": {
+     "AUC": 0.555019457551376,
+     "TPR@5%": 0.07777777777777778
+    }
+   },
+   "MANTIS-SCI": {
+    "all pairs": {
+     "AUC": 0.5438915982382283,
+     "TPR@5%": 0.07111111111111111
+    },
+    "confounded pairs only": {
+     "AUC": 0.33550019242977536,
+     "TPR@5%": 0.014790322580645164
+    }
+   },
+   "MANTIS-SPC-CT": {
+    "all pairs": {
+     "AUC": 0.7677308129437428,
+     "TPR@5%": 0.22666666666666666
+    },
+    "confounded pairs only": {
+     "AUC": 0.11995057252846882,
+     "TPR@5%": 0.0
+    }
+   },
+   "SpatialDM (Moran's R)": {
+    "all pairs": {
+     "AUC": 0.5288311366762536,
+     "TPR@5%": 0.05453684284724122
+    },
+    "confounded pairs only": {
+     "AUC": 0.3178695394446597,
+     "TPR@5%": 0.02642646623822964
+    }
+   },
+   "Lee's L": {
+    "all pairs": {
+     "AUC": 0.49563558556680976,
+     "TPR@5%": 0.04666666666666667
+    },
+    "confounded pairs only": {
+     "AUC": 0.2857808697967588,
+     "TPR@5%": 0.022222222222222223
+    }
+   },
+   "Modified t-test": {
+    "all pairs": {
+     "AUC": 0.84850269962347,
+     "TPR@5%": 0.66
+    },
+    "confounded pairs only": {
+     "AUC": 0.7407559959320951,
+     "TPR@5%": 0.4955555555555556
+    }
+   },
+   "ReSPAIR": {
+    "all pairs": {
+     "AUC": 0.998987420282606,
+     "TPR@5%": 0.9933333333333333
+    },
+    "confounded pairs only": {
+     "AUC": 0.9988776346948919,
+     "TPR@5%": 0.991111111111111
+    }
+   }
+  },
+  "MSI dropout (30%)": {
+   "Pearson": {
+    "all pairs": {
+     "AUC": 0.873611282008531,
+     "TPR@5%": 0.5088888888888888
+    },
+    "confounded pairs only": {
+     "AUC": 0.7031765802923635,
+     "TPR@5%": 0.18666666666666668
+    }
+   },
+   "MANTIS-SCI": {
+    "all pairs": {
+     "AUC": 0.5395161018715351,
+     "TPR@5%": 0.06222222222222223
+    },
+    "confounded pairs only": {
+     "AUC": 0.3283246225744085,
+     "TPR@5%": 0.015555555555555557
+    }
+   },
+   "MANTIS-SPC-CT": {
+    "all pairs": {
+     "AUC": 0.6911305878593361,
+     "TPR@5%": 0.1822222222222222
+    },
+    "confounded pairs only": {
+     "AUC": 0.13147637409779542,
+     "TPR@5%": 0.0
+    }
+   },
+   "SpatialDM (Moran's R)": {
+    "all pairs": {
+     "AUC": 0.5246778486376835,
+     "TPR@5%": 0.03982658502746693
+    },
+    "confounded pairs only": {
+     "AUC": 0.2759504090133515,
+     "TPR@5%": 0.013298038755482813
+    }
+   },
+   "Lee's L": {
+    "all pairs": {
+     "AUC": 0.5018388284495575,
+     "TPR@5%": 0.05111111111111111
+    },
+    "confounded pairs only": {
+     "AUC": 0.28024555957885794,
+     "TPR@5%": 0.024444444444444446
+    }
+   },
+   "Modified t-test": {
+    "all pairs": {
+     "AUC": 0.9045827740958415,
+     "TPR@5%": 0.7422222222222222
+    },
+    "confounded pairs only": {
+     "AUC": 0.8243581678905126,
+     "TPR@5%": 0.6066666666666667
+    }
+   },
+   "ReSPAIR": {
+    "all pairs": {
+     "AUC": 0.98777959512595,
+     "TPR@5%": 0.9555555555555556
+    },
+    "confounded pairs only": {
+     "AUC": 0.9861473746877429,
+     "TPR@5%": 0.9466666666666667
+    }
+   }
+  }
+ }
+}

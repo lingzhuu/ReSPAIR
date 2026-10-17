@@ -1,0 +1,294 @@
+{
+ "data": "SMA mouse brain V11L12-038_D1 (Vicari et al. 2024)",
+ "seeds": 5,
+ "mean over seeds": {
+  "links on whole gene expression, strength 0.5": {
+   "Pearson": {
+    "all pairs": {
+     "AUC": 0.8196795818093525,
+     "TPR@5%": 0.2950604026845638
+    },
+    "confounded pairs only": {
+     "AUC": 0.4634868788736357,
+     "TPR@5%": 0.041378076062639824
+    }
+   },
+   "MANTIS-SCI": {
+    "all pairs": {
+     "AUC": 0.5812471385890399,
+     "TPR@5%": 0.10811633109619687
+    },
+    "confounded pairs only": {
+     "AUC": 0.21162386098196384,
+     "TPR@5%": 0.015753477030881955
+    }
+   },
+   "MANTIS-SPC-CT": {
+    "all pairs": {
+     "AUC": 0.5795084509294546,
+     "TPR@5%": 0.1094586129753915
+    },
+    "confounded pairs only": {
+     "AUC": 0.2432332777146768,
+     "TPR@5%": 0.013342281879194631
+    }
+   },
+   "SpatialDM (Moran's R)": {
+    "all pairs": {
+     "AUC": 0.5929152796832075,
+     "TPR@5%": 0.09228977016417272
+    },
+    "confounded pairs only": {
+     "AUC": 0.22054986312547564,
+     "TPR@5%": 0.01842211125176543
+    }
+   },
+   "Lee's L": {
+    "all pairs": {
+     "AUC": 0.5903610261944792,
+     "TPR@5%": 0.09879194630872483
+    },
+    "confounded pairs only": {
+     "AUC": 0.22485566048194663,
+     "TPR@5%": 0.0200089485458613
+    }
+   },
+   "Modified t-test": {
+    "all pairs": {
+     "AUC": 0.8330544687107156,
+     "TPR@5%": 0.46989709172259503
+    },
+    "confounded pairs only": {
+     "AUC": 0.6055363523604707,
+     "TPR@5%": 0.18824161073825502
+    }
+   },
+   "ReSPAIR": {
+    "all pairs": {
+     "AUC": 0.9490286611760463,
+     "TPR@5%": 0.8531633109619687
+    },
+    "confounded pairs only": {
+     "AUC": 0.9463155958078151,
+     "TPR@5%": 0.8451633109619687
+    }
+   }
+  },
+  "links on whole gene expression, strength 0.3": {
+   "Pearson": {
+    "all pairs": {
+     "AUC": 0.6904704146913311,
+     "TPR@5%": 0.1294944071588367
+    },
+    "confounded pairs only": {
+     "AUC": 0.27544210681004555,
+     "TPR@5%": 0.01734228187919463
+    }
+   },
+   "MANTIS-SCI": {
+    "all pairs": {
+     "AUC": 0.5441286904570756,
+     "TPR@5%": 0.069413870246085
+    },
+    "confounded pairs only": {
+     "AUC": 0.15312299870527513,
+     "TPR@5%": 0.007763027799940552
+    }
+   },
+   "MANTIS-SPC-CT": {
+    "all pairs": {
+     "AUC": 0.5372142567487901,
+     "TPR@5%": 0.06540492170022372
+    },
+    "confounded pairs only": {
+     "AUC": 0.1875971211041571,
+     "TPR@5%": 0.006666666666666666
+    }
+   },
+   "SpatialDM (Moran's R)": {
+    "all pairs": {
+     "AUC": 0.5537417148289685,
+     "TPR@5%": 0.06484072845077223
+    },
+    "confounded pairs only": {
+     "AUC": 0.15772607829483007,
+     "TPR@5%": 0.012121842841058635
+    }
+   },
+   "Lee's L": {
+    "all pairs": {
+     "AUC": 0.553564244033588,
+     "TPR@5%": 0.06272930648769576
+    },
+    "confounded pairs only": {
+     "AUC": 0.16053129837868335,
+     "TPR@5%": 0.013342281879194631
+    }
+   },
+   "Modified t-test": {
+    "all pairs": {
+     "AUC": 0.7064436633411761,
+     "TPR@5%": 0.24964653243847876
+    },
+    "confounded pairs only": {
+     "AUC": 0.3960186390769135,
+     "TPR@5%": 0.06007158836689038
+    }
+   },
+   "ReSPAIR": {
+    "all pairs": {
+     "AUC": 0.892899131062331,
+     "TPR@5%": 0.6916241610738255
+    },
+    "confounded pairs only": {
+     "AUC": 0.8876525119892497,
+     "TPR@5%": 0.6662729306487696
+    }
+   }
+  },
+  "links on whole gene expression, strength 0.15": {
+   "Pearson": {
+    "all pairs": {
+     "AUC": 0.5633877854313172,
+     "TPR@5%": 0.06538702460850113
+    },
+    "confounded pairs only": {
+     "AUC": 0.1570298481344167,
+     "TPR@5%": 0.006666666666666666
+    }
+   },
+   "MANTIS-SCI": {
+    "all pairs": {
+     "AUC": 0.5225292000404161,
+     "TPR@5%": 0.048026845637583894
+    },
+    "confounded pairs only": {
+     "AUC": 0.11844329230738168,
+     "TPR@5%": 0.005118181818181819
+    }
+   },
+   "MANTIS-SPC-CT": {
+    "all pairs": {
+     "AUC": 0.5167038029017377,
+     "TPR@5%": 0.03468456375838926
+    },
+    "confounded pairs only": {
+     "AUC": 0.15551249887106872,
+     "TPR@5%": 0.002666666666666667
+    }
+   },
+   "SpatialDM (Moran's R)": {
+    "all pairs": {
+     "AUC": 0.5269382009005403,
+     "TPR@5%": 0.045007377907934354
+    },
+    "confounded pairs only": {
+     "AUC": 0.11912092912579515,
+     "TPR@5%": 0.008120268861500394
+    }
+   },
+   "Lee's L": {
+    "all pairs": {
+     "AUC": 0.5285853649170905,
+     "TPR@5%": 0.045369127516778525
+    },
+    "confounded pairs only": {
+     "AUC": 0.12472201989041609,
+     "TPR@5%": 0.005333333333333334
+    }
+   },
+   "Modified t-test": {
+    "all pairs": {
+     "AUC": 0.5671283197290757,
+     "TPR@5%": 0.10145861297539152
+    },
+    "confounded pairs only": {
+     "AUC": 0.22090537584510006,
+     "TPR@5%": 0.01736017897091723
+    }
+   },
+   "ReSPAIR": {
+    "all pairs": {
+     "AUC": 0.7358312238732696,
+     "TPR@5%": 0.33248322147651005
+    },
+    "confounded pairs only": {
+     "AUC": 0.7274607363682807,
+     "TPR@5%": 0.3124474272930649
+    }
+   }
+  },
+  "links on fine-scale gene signal, strength 0.5": {
+   "Pearson": {
+    "all pairs": {
+     "AUC": 0.8112060364891043,
+     "TPR@5%": 0.2723221476510067
+    },
+    "confounded pairs only": {
+     "AUC": 0.42805693810090506,
+     "TPR@5%": 0.03869351230425056
+    }
+   },
+   "MANTIS-SCI": {
+    "all pairs": {
+     "AUC": 0.5150255205528271,
+     "TPR@5%": 0.04231855225311605
+    },
+    "confounded pairs only": {
+     "AUC": 0.10759742528442418,
+     "TPR@5%": 0.004
+    }
+   },
+   "MANTIS-SPC-CT": {
+    "all pairs": {
+     "AUC": 0.5082147813713019,
+     "TPR@5%": 0.032008948545861296
+    },
+    "confounded pairs only": {
+     "AUC": 0.14361997773721052,
+     "TPR@5%": 0.002666666666666667
+    }
+   },
+   "SpatialDM (Moran's R)": {
+    "all pairs": {
+     "AUC": 0.508001971088545,
+     "TPR@5%": 0.03955489284470827
+    },
+    "confounded pairs only": {
+     "AUC": 0.10092589593788011,
+     "TPR@5%": 0.0067654018544060085
+    }
+   },
+   "Lee's L": {
+    "all pairs": {
+     "AUC": 0.5075745135480803,
+     "TPR@5%": 0.04136912751677852
+    },
+    "confounded pairs only": {
+     "AUC": 0.10618913363814328,
+     "TPR@5%": 0.002666666666666667
+    }
+   },
+   "Modified t-test": {
+    "all pairs": {
+     "AUC": 0.8248037963656019,
+     "TPR@5%": 0.5139239373601789
+    },
+    "confounded pairs only": {
+     "AUC": 0.6074402059792733,
+     "TPR@5%": 0.24432214765100674
+    }
+   },
+   "ReSPAIR": {
+    "all pairs": {
+     "AUC": 0.9922960994357354,
+     "TPR@5%": 0.9773154362416108
+    },
+    "confounded pairs only": {
+     "AUC": 0.9916031020891612,
+     "TPR@5%": 0.9733154362416107
+    }
+   }
+  }
+ }
+}

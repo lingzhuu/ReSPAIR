@@ -6,6 +6,9 @@ Scripts that reproduce the simulation results and figures. They are not part of 
 pip install -e ".[benchmarks]"           # from the repository root
 python benchmarks/scripts/compare.py --seeds 5 --link 0.5  # main benchmark: published methods vs ReSPAIR
 python benchmarks/scripts/compare.py --seeds 5 --link 0.2  # harder setting
+python benchmarks/scripts/misspec.py 3 0.5                 # scenarios that break ReSPAIR's assumptions
+python benchmarks/scripts/prepare_sma.py <SMA dir> aligned.npz  # align the real SMA section (Visium + MALDI)
+python benchmarks/scripts/semisim.py aligned.npz 5         # semi-synthetic benchmark on the real section
 python benchmarks/scripts/run_sim.py 5   # all methods, 5 seeds   -> results/sim_5seeds.json
 python benchmarks/scripts/roc.py 5 0.5   # ablation ROC (supplement) -> results/ablation_roc.json
 python benchmarks/scripts/sweep_sim.py 2 # confounder / link sweep -> results/sweep.json
@@ -15,6 +18,9 @@ python benchmarks/scripts/plot_sim.py    # figures                -> results/fig
 | Path | Content |
 |---|---|
 | `scripts/compare.py` | main benchmark: AUC and power at 5% FPR of published methods vs ReSPAIR |
+| `scripts/misspec.py` | same benchmark when the simulation breaks ReSPAIR's assumptions (7 scenarios) |
+| `scripts/prepare_sma.py` | aligns SMA sample V11L12-038_D1 (Vicari et al. 2024; copy in the MAGPIE tutorial repository) to Visium spots |
+| `scripts/semisim.py` | semi-synthetic benchmark: real genes, metabolites built from real maps, planted links |
 | `scripts/run_sim.py` | false-positive rate, power and BH FDR for every method and ablation |
 | `scripts/roc.py` | supplementary: ROC of ReSPAIR's ablations (each step on its own) |
 | `scripts/sweep_sim.py` | sweep over confounder strength and link strength |

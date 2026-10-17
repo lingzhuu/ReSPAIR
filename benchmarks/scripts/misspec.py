@@ -62,7 +62,7 @@ if __name__ == "__main__":
         json.dump({"link strength": link, "seeds": n_seeds, "mean over seeds": out}, f, indent=1)
 
     names = list(SCENARIOS)
-    fig, axes = plt.subplots(2, 2, figsize=(15, 9), sharey=True)
+    fig, axes = plt.subplots(2, 2, figsize=(16, 10))
     panels = [("all pairs", "AUC"), ("all pairs", "TPR@5%"), ("confounded pairs only", "AUC"),
               ("confounded pairs only", "TPR@5%")]
     y = np.arange(len(names))[::-1]
@@ -76,11 +76,12 @@ if __name__ == "__main__":
         ax.grid(axis="x", color=GRID, lw=0.6); ax.set_axisbelow(True)
         for yy in y[:-1] - 0.5:
             ax.axhline(yy, color=GRID, lw=0.6)
-        what = "AUC" if metric == "AUC" else "power at 5% FPR"
+        what = "AUC" if metric == "AUC" else "Power at 5% FPR"
         vs = "all unlinked pairs" if sname == "all pairs" else "confounded unlinked pairs"
-        ax.set_title(f"{what}, true links vs {vs}", loc="left")
-    axes[0, 0].legend(frameon=False, loc="upper left", bbox_to_anchor=(0, -1.35), ncol=7, fontsize=9)
+        ax.set_title(f"{what}\ntrue links vs {vs}", loc="left", fontsize=11)
+    handles, labels = axes[0, 0].get_legend_handles_labels()
+    fig.legend(handles, labels, frameon=False, loc="lower center", ncol=7, fontsize=9.5)
     fig.suptitle(f"Robustness when the simulation breaks ReSPAIR's assumptions (link strength {link}, {n_seeds} seeds)",
                  fontsize=13.5, fontweight="bold", x=0.01, ha="left", color=INK2)
-    fig.tight_layout(rect=(0, 0.04, 1, 0.95))
+    fig.tight_layout(rect=(0, 0.05, 1, 0.95))
     fig.savefig(os.path.join(ROOT, "results", "figures", "fig_misspec.png"), dpi=160)

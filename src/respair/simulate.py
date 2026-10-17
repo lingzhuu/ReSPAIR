@@ -133,7 +133,8 @@ def _kernel_smoother(coords, bandwidth):
 
 
 def semi_synthetic(G_real, M_real, coords, seed=0, p=2000, q=200, n_links=150, link_strength=0.5,
-                   link_on="total", n_neg=500, n_regions=8, smooth_bw=2.0, noise_bw=0.6, conf_quantile=0.9):
+                   link_on="total", n_neg=500, n_regions=8, smooth_bw=2.0, noise_bw=0.6, signal_bw=0.8,
+                   conf_quantile=0.9):
     """Semi-synthetic data on a real tissue section: real genes, metabolites built from real metabolite maps.
 
     Genes are the real counts (top `p` by Pearson-residual variance), so their tissue structure, hidden programs,
@@ -170,7 +171,9 @@ def semi_synthetic(G_real, M_real, coords, seed=0, p=2000, q=200, n_links=150, l
     E = _kernel_smoother(coords, noise_bw) @ rng.standard_normal((n, q))
     E = E / E.std(0) * sd_res
     # gene signal that drives the links
-    lg = np.log1p(G / G.sum(1, keepdims=True) * 1e4)
+    # the metabolite must not copy the gene's sequencing noise, so links use a denoised expression (kernel-smoothed over
+    # the spot and its immediate neighbours, `signal_bw` spots) rather than the observed counts
+    lg = _kernel_smoother(coords, signal_bw) @ np.log1p(G / G.sum(1, keepdims=True) * 1e4)
     if link_on == "local":
         lg = lg - S @ lg
     sig = (lg - lg.mean(0)) / np.where(lg.std(0) > 0, lg.std(0), 1)

@@ -1,7 +1,7 @@
 """Semi-synthetic benchmark on a real tissue section (SMA mouse brain, Visium + MALDI-MSI).
 
 Genes are the real counts; metabolites keep the large-scale maps of real metabolites, with real residual variance,
-real zeros and planted links to real genes (see `respair.simulate.semi_synthetic`). Run prepare_sma.py first.
+real zeros and planted links to the denoised expression of real genes (see `respair.simulate.semi_synthetic`). Run prepare_sma.py first.
 Scenarios: links on the gene's whole expression (not ReSPAIR's model) at two strengths, and links on the gene's
 fine-scale part only (ReSPAIR's model) as reference.
 
@@ -23,6 +23,7 @@ from plot_sim import GRID, INK, MUTED, SURF
 SCENARIOS = {
     "links on whole gene expression, strength 0.5": {"link_on": "total", "link_strength": 0.5},
     "links on whole gene expression, strength 0.3": {"link_on": "total", "link_strength": 0.3},
+    "links on whole gene expression, strength 0.15": {"link_on": "total", "link_strength": 0.15},
     "links on fine-scale gene signal, strength 0.5": {"link_on": "local", "link_strength": 0.5},
 }
 COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#1f1f1e"]
@@ -49,7 +50,7 @@ if __name__ == "__main__":
         json.dump({"data": "SMA mouse brain V11L12-038_D1 (Vicari et al. 2024)", "seeds": n_seeds,
                    "mean over seeds": out}, f, indent=1)
 
-    fig, axes = plt.subplots(2, len(SCENARIOS), figsize=(6.2 * len(SCENARIOS), 11))
+    fig, axes = plt.subplots(2, len(SCENARIOS), figsize=(5.6 * len(SCENARIOS), 11))
     for c, name in enumerate(SCENARIOS):
         for r, sname in enumerate(["all pairs", "confounded pairs only"]):
             ax = axes[r, c]
