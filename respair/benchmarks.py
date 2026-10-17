@@ -210,3 +210,50 @@ def mefisto(G_counts, M_int, coords, K=10, seed=0, frac_inducing=0.2, iters=1000
     W = ent.model.nodes["W"].getExpectation()
     Wg, Wm = W[0], W[1]
     return Wg @ Wm.T
+
+
+def misty(G_counts, M_int, coords, bandwidth=3.0):
+    """MISTy（Tanevski et al., Genome Biol 2022），用 LIANA+ 的 Python 实现。
+
+    每个代谢物作为目标，基因作为预测变量，juxta（近邻）和 para（核加权邻域）两个视图，
+    set_diag=True 让本格子也计入。线性模型。配对分数取两个视图里重要性绝对值的最大值。
+    返回 分数矩阵 基因 × 代谢物。
+    """
+    import anndata as ad
+    import pandas as pd
+    from liana.method import genericMistyData
+    from liana.method.sp import LinearModel
+    Xg = _logcpm(G_counts)
+    Xm = np.log(np.asarray(M_int, float))
+    p, q = Xg.shape[1], Xm.shape[1]
+    obs = pd.DataFrame(index=[f"s{i}" for i in range(len(coords))])
+    rna = ad.AnnData(Xg.astype(np.float32), obs=obs, var=pd.DataFrame(index=[f"g{j}" for j in range(p)]))
+    msi = ad.AnnData(Xm.astype(np.float32), obs=obs, var=pd.DataFrame(index=[f"m{k}" for k in range(q)]))
+    for a in (rna, msi):
+        a.obsm["spatial"] = np.asarray(coords, float)
+    mdata = genericMistyData(intra=msi, extra=rna, bandwidth=bandwidth, cutoff=0.1, add_juxta=True,
+                             add_para=True, set_diag=True, nz_threshold=0)
+    mdata(model=LinearModel, bypass_intra=True, verbose=False)
+    inter = mdata.uns["interactions"]
+    S = np.zeros((p, q))
+    gi = inter["predictor"].str[1:].astype(int).to_numpy()
+    mi = inter["target"].str[1:].astype(int).to_numpy()
+    imp = np.abs(inter["importances"].fillna(0).to_numpy())
+    np.maximum.at(S, (gi, mi), imp)
+    return S
+
+
+def spamv(G_counts, M_int, coords, python, epochs=30, zs_dim=10, seed=0, workdir=None):
+    """SpaMV（Nat Commun 2025）。共享主题的特征载荷乘积 Σ_k β_RNA[g,k] β_MSI[m,k] 作为配对分数。
+
+    SpaMV 依赖 torch，装在单独的虚拟环境里，这里通过子进程调用（python 为该环境的解释器）。
+    CPU 上默认的 400+400 轮训练要数小时，benchmark 用 epochs 轮（两个阶段各 epochs 轮）。
+    """
+    import subprocess, tempfile, os
+    workdir = workdir or tempfile.mkdtemp()
+    inp, out = os.path.join(workdir, "in.npz"), os.path.join(workdir, "out.npy")
+    np.savez(inp, G=np.asarray(G_counts, np.float32), M=np.log(np.asarray(M_int, float)).astype(np.float32),
+             coords=np.asarray(coords, float))
+    runner = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_spamv_runner.py")
+    subprocess.run([python, runner, inp, out, str(epochs), str(zs_dim), str(seed)], check=True)
+    return np.load(out)
