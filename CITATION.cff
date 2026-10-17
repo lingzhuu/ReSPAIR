@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use ReSPAIR, please cite it as below."
+title: "ReSPAIR: pair-specific gene–metabolite links in spatial multi-omics"
+type: software
+authors:
+  - name: "Lingzhu"
+license: MIT
+version: 0.1.0
+repository-code: "https://github.com/lingzhuu/ReSPAIR"
+keywords:
+  - spatial transcriptomics
+  - spatial metabolomics
+  - multi-omics

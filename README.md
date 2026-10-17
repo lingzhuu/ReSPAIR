@@ -1,58 +1,116 @@
 # ReSPAIR
 
-在同一块组织的空间转录组和空间代谢组数据上，找出**扣除组织结构和所有隐藏空间模式之后**仍然存在的、成对特异的基因–代谢物联系。
+[![Tests][badge-tests]][tests]
+[![Documentation][badge-docs]][documentation]
+[![License: MIT][badge-license]](LICENSE)
+[![Python][badge-python]](pyproject.toml)
 
-当前是**简化版**（分步估计）。模型、设计理由和完整版计划见 [docs/模型说明.md](docs/模型说明.md)；对原方案的评估见 [docs/原方案评估.md](docs/原方案评估.md)。
+[badge-tests]: https://img.shields.io/github/actions/workflow/status/lingzhuu/ReSPAIR/test.yaml?branch=main&label=tests
+[badge-docs]: https://img.shields.io/readthedocs/respair
+[badge-license]: https://img.shields.io/badge/license-MIT-blue.svg
+[badge-python]: https://img.shields.io/badge/python-3.10%2B-blue.svg
+[tests]: https://github.com/lingzhuu/ReSPAIR/actions/workflows/test.yaml
+[documentation]: https://respair.readthedocs.io
 
-## 模型
+**ReSPAIR** finds *pair-specific* gene–metabolite links
+in spatial transcriptomics + spatial metabolomics data measured on the same tissue section, **after removing known
+tissue structure and every hidden spatial pattern** that moves many molecules together.
+
+<p align="center"><img src="benchmarks/results/figures/fig1_overview.png" width="720" alt="ReSPAIR overview"></p>
+
+## Why
+
+Plain correlation between a gene and a metabolite map is dominated by tissue regions and unlabeled gradients
+(hypoxia, inflammation, section artefacts). ReSPAIR models both modalities as
 
 ```
 G = Z B_gᵀ + F Λ_gᵀ + E_g
 M = Z B_mᵀ + F Λ_mᵀ + E_g Wᵀ + E_m
 ```
 
-隐藏模式 F 不分共享和私有，统一当作混杂扣除；要检验的是稀疏矩阵 W 的单个元素（代谢物 k 是否跟随基因 j 的局部残差）。
+where `Z` is known structure (e.g. cell-type proportions), `F` are hidden spatial factors treated as confounding,
+and the sparse matrix `W` holds the links to be tested: does metabolite *k* follow the *local residual* of gene *j*?
 
-## 简化版流程（`respair/core.py`）
+The current release implements the **simplified (step-wise) estimator**:
 
-1. 归一化：基因用解析 Pearson 残差，代谢物取 log 后标准化
-2. 扣除已知结构 Z（可选）和 K 个隐藏模式 F（两块数据加权拼接后做 PCA）
-3. 残差投影到空间频率基（kNN 图拉普拉斯特征向量），T = Ĝᵀ M̂，一次矩阵乘法得到所有配对
-4. 零假设方差按频带功率谱估计（同时考虑两边的空间自相关），也是一次矩阵乘法
-5. K 用负对照基因自动选：负对照配对的膨胀系数 λ_GC 首次低于 1.1 的最小 K
-6. 经验校准：按负对照配对 |z| 的 95% 分位数把所有 z 缩放到名义水平（`res["c"]` 是缩放系数，模拟中约 1.02–1.04）
+1. Normalise genes with analytic Pearson residuals and metabolites with log + standardisation.
+2. Regress out `Z` and `K` hidden factors from a jointly weighted PCA of both modalities (`K` chosen from the
+   singular-value spectrum).
+3. Project residuals onto a spatial frequency basis (kNN-graph Laplacian eigenvectors) and test all pairs at once,
+   with a null variance from the band-wise power spectrum of both sides (accounts for spatial autocorrelation).
+4. Optionally calibrate z-scores with negative-control genes.
+
+## Installation
+
+ReSPAIR needs Python ≥ 3.10.
+
+```bash
+pip install git+https://github.com/lingzhuu/ReSPAIR.git
+```
+
+For development (tests, benchmark scripts):
+
+```bash
+git clone https://github.com/lingzhuu/ReSPAIR.git
+cd ReSPAIR
+pip install -e ".[dev]"
+pre-commit install
+```
+
+## Quick start
 
 ```python
 import respair
-res = respair.fit(G_counts, M_intensity, coords, Z=cell_type_props, neg_genes=neg_idx)
-res["z"], res["p"], res["K"]          # 基因 × 代谢物
-res["z_scale"]                         # 大 / 中 / 小三个空间尺度上的 z
+from respair.simulate import simulate
+
+d = simulate(seed=0)                        # or your own data, see below
+res = respair.fit(
+    d["G"],                                 # n_spots × n_genes counts
+    d["M"],                                 # n_spots × n_metabolites intensities
+    d["coords"],                            # n_spots × 2 coordinates
+    Z=d["Z"],                               # known structure, e.g. cell-type proportions (optional)
+    neg_genes=d["neg_genes"],               # negative-control gene indices (optional)
+)
+res["z"], res["p"]                          # n_genes × n_metabolites
+res["K"]                                    # number of hidden factors removed
+res["z_scale"]                              # z on large / medium / small spatial scales
+hits = respair.bh(res["p"], alpha=0.1)      # Benjamini–Hochberg
 ```
 
-## 模拟结果
+Both modalities must be on the same spots; aggregate MSI pixels to the transcriptomics grid first.
 
-运行：`python3 scripts/run_sim.py 5`（约 1 分钟）。结果存在 [results/sim_5seeds.json](results/sim_5seeds.json)。
+## Simulation benchmark
 
-设定：50×50 网格，2000 个基因、200 个代谢物；3 种细胞类型比例作为已知结构；**一个未标注、同时影响 300 个基因和 40 个代谢物的平滑混杂**（类似缺氧梯度）；另有基因私有 3 个、代谢物私有 2 个隐藏模式；150 对真实联系；负二项计数噪声。5 个随机种子的平均：
+50 × 50 grid, 2,000 genes, 200 metabolites, 3 cell types as known structure, one unlabeled smooth confounder
+affecting 300 genes and 40 metabolites, private hidden factors on each side, 150 true links (strength 0.5),
+negative-binomial counts. Mean over 5 seeds:
 
-| 做法 | 混杂配对误报率 | 其他零配对误报率 | 真实联系检出率 | BH(0.1) 实际 FDR |
+| Method | AUC (all null pairs) | Power at 5% FPR | AUC (confounded pairs only) | Power at 5% FPR |
 |---|---|---|---|---|
-| 普通相关 | 82.5% | 58.8% | 96% | 99.9% |
-| 只扣已知结构 + 普通相关 | 88.1% | 20.0% | 100% | 99.7% |
-| 只扣已知结构 + 空间检验 | 70.1% | 5.6% | 99% | 91.2% |
-| 扣隐藏模式 + 普通相关 | 16.7% | 14.7% | 100% | 98.9% |
-| 简化版（未校准） | 6.1% | 5.6% | 100% | 12.8% |
-| **简化版（负对照校准）** | **5.4%** | **5.0%** | **100%** | **7.8%** |
+| Pearson correlation | 0.888 | 0.544 | 0.763 | 0.275 |
+| MANTIS-SCI | 0.539 | 0.069 | 0.389 | 0.029 |
+| MANTIS-SPC-CT | 0.762 | 0.203 | 0.194 | 0.000 |
+| **ReSPAIR (simplified)** | **1.000** | **1.000** | **1.000** | **1.000** |
 
-误报率是名义水平 5% 下的结果。“混杂配对”指基因和代谢物都受未标注混杂影响、但没有真实联系的配对。
+Ablations, false-positive rates and FDR are in [`benchmarks/`](benchmarks/README.md); MANTIS is our
+re-implementation of the bioRxiv preprint.
 
-结论：只扣已知结构时，未标注的共享混杂造成七成以上误报，空间检验也救不回来；两步缺一不可。
+## Documentation
 
-## 已知问题和下一步
+- Model and design rationale: [docs/model.md](docs/model.md)
+- API reference: built with Sphinx from `docs/` (`pip install -e ".[doc]" && make -C docs html`)
 
-- 未校准时误报率略高（约 5.6%）。已排除频带宽度（3–20 结果相同）和联系泄漏；在纯零假设的独立空间场上误报率是 5.1%，所以多出的部分来自计数残差或没扣完的平滑私有模式。目前用负对照经验校准解决，混杂配对仍略高（5.4%），说明 K=4 时共享混杂有少量残留。
-- 当前模拟的联系强度偏强，检出率接近 100%，需要加入更弱的联系、更多混杂、离子抑制等场景。
-- 负对照在模拟里是指定的；真实数据需要定义（如核糖体、剪接因子等非代谢基因）。
-- 空间基用稠密特征分解，n 超过约 1 万个光斑时需要改成稀疏方法。
-- 两边格子不同（MSI 像素 vs Visium 光斑）还没处理，需要先聚合。
-- 尚未在真实数据（Vicari 等纹状体 SMA 数据）上运行。
+## Roadmap
+
+- Full (joint) estimator of `F` and `W`.
+- AnnData / SpatialData input.
+- Sparse eigensolvers for > 10k spots; mismatched grids (MSI pixels vs. Visium spots).
+- Application to the striatum SMA dataset of Vicari et al.
+
+## Citation
+
+A manuscript is in preparation. Until then, please cite the software via [CITATION.cff](CITATION.cff).
+
+## License
+
+[MIT](LICENSE)

@@ -1,0 +1,10 @@
+name: Feature request
+description: Suggest a new feature or analysis
+labels: [enhancement]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What would you like ReSPAIR to do?
+    validations:
+      required: true

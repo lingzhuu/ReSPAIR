@@ -1,0 +1,476 @@
+{
+ "per seed": [
+  {
+   "Pearson": {
+    "FPR confounded pairs": 0.8809305428166431,
+    "FPR other null pairs": 0.5488955981199256,
+    "power (p<0.05)": 0.9533333333333334,
+    "BH discoveries": 227785,
+    "BH empirical FDR": 0.9993634348179204,
+    "BH power": 0.9666666666666667
+   },
+   "MANTIS-SCI": {
+    "FPR confounded pairs": 0.5243058450762945,
+    "FPR other null pairs": 0.198356610812748,
+    "power (p<0.05)": 0.2733333333333333,
+    "BH discoveries": 35812,
+    "BH empirical FDR": 0.9994136043784206,
+    "BH power": 0.14
+   },
+   "MANTIS-SPC-CT": {
+    "FPR confounded pairs": 0.7407654465104644,
+    "FPR other null pairs": 0.014528550470920984,
+    "power (p<0.05)": 0.16666666666666666,
+    "BH discoveries": 318,
+    "BH empirical FDR": 1.0,
+    "BH power": 0.0
+   },
+   "ReSPAIR": {
+    "FPR confounded pairs": 0.054615192195447346,
+    "FPR other null pairs": 0.050369079325627744,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 153,
+    "BH empirical FDR": 0.06535947712418301,
+    "BH power": 0.9533333333333334
+   },
+   "Z-only + Pearson": {
+    "FPR confounded pairs": 0.9474693571249896,
+    "FPR other null pairs": 0.19346821122217725,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 53288,
+    "BH empirical FDR": 0.9971851073412401,
+    "BH power": 1.0
+   },
+   "Z-only + spectral test": {
+    "FPR confounded pairs": 0.7823730509463854,
+    "FPR other null pairs": 0.05114256027350286,
+    "power (p<0.05)": 0.9733333333333334,
+    "BH discoveries": 3999,
+    "BH empirical FDR": 0.9652413103275819,
+    "BH power": 0.9266666666666666
+   },
+   "Hidden factors + Pearson": {
+    "FPR confounded pairs": 0.15408988576669724,
+    "FPR other null pairs": 0.13656837442665726,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 9921,
+    "BH empirical FDR": 0.9848805563955246,
+    "BH power": 1.0
+   },
+   "ReSPAIR (uncalibrated)": {
+    "FPR confounded pairs": 0.06295338947719503,
+    "FPR other null pairs": 0.05892635687895281,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 182,
+    "BH empirical FDR": 0.1978021978021978,
+    "BH power": 0.9733333333333334
+   },
+   "_K": 10,
+   "_c": 1.0352649405069179
+  },
+  {
+   "Pearson": {
+    "FPR confounded pairs": 0.8603701233744582,
+    "FPR other null pairs": 0.56986649615577,
+    "power (p<0.05)": 0.9733333333333334,
+    "BH discoveries": 236496,
+    "BH empirical FDR": 0.9993826534064001,
+    "BH power": 0.9733333333333334
+   },
+   "MANTIS-SCI": {
+    "FPR confounded pairs": 0.4776592197399133,
+    "FPR other null pairs": 0.2064952275856379,
+    "power (p<0.05)": 0.24,
+    "BH discoveries": 29258,
+    "BH empirical FDR": 0.9995556770797731,
+    "BH power": 0.08666666666666667
+   },
+   "MANTIS-SPC-CT": {
+    "FPR confounded pairs": 0.6653884628209403,
+    "FPR other null pairs": 0.015601231391193593,
+    "power (p<0.05)": 0.08,
+    "BH discoveries": 220,
+    "BH empirical FDR": 1.0,
+    "BH power": 0.0
+   },
+   "ReSPAIR": {
+    "FPR confounded pairs": 0.05251750583527843,
+    "FPR other null pairs": 0.049634656339756715,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 160,
+    "BH empirical FDR": 0.08125,
+    "BH power": 0.98
+   },
+   "Z-only + Pearson": {
+    "FPR confounded pairs": 0.9259753251083694,
+    "FPR other null pairs": 0.20246536067695575,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 57267,
+    "BH empirical FDR": 0.9973806904499973,
+    "BH power": 1.0
+   },
+   "Z-only + spectral test": {
+    "FPR confounded pairs": 0.8074358119373124,
+    "FPR other null pairs": 0.053615535742831066,
+    "power (p<0.05)": 0.9866666666666667,
+    "BH discoveries": 6457,
+    "BH empirical FDR": 0.9781632336998606,
+    "BH power": 0.94
+   },
+   "Hidden factors + Pearson": {
+    "FPR confounded pairs": 0.15446815605201733,
+    "FPR other null pairs": 0.1352931773296137,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 9821,
+    "BH empirical FDR": 0.9848284288768965,
+    "BH power": 0.9933333333333333
+   },
+   "ReSPAIR (uncalibrated)": {
+    "FPR confounded pairs": 0.060936978992997666,
+    "FPR other null pairs": 0.05850139485476494,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 176,
+    "BH empirical FDR": 0.16477272727272727,
+    "BH power": 0.98
+   },
+   "_K": 10,
+   "_c": 1.037207315783959
+  },
+  {
+   "Pearson": {
+    "FPR confounded pairs": 0.88863882637326,
+    "FPR other null pairs": 0.6009776900011087,
+    "power (p<0.05)": 0.96,
+    "BH discoveries": 250625,
+    "BH empirical FDR": 0.9994254364089775,
+    "BH power": 0.96
+   },
+   "MANTIS-SCI": {
+    "FPR confounded pairs": 0.3741768775527215,
+    "FPR other null pairs": 0.12559913162976694,
+    "power (p<0.05)": 0.16666666666666666,
+    "BH discoveries": 10087,
+    "BH empirical FDR": 0.9994051749776941,
+    "BH power": 0.04
+   },
+   "MANTIS-SPC-CT": {
+    "FPR confounded pairs": 0.8365424689505709,
+    "FPR other null pairs": 0.016379917133553176,
+    "power (p<0.05)": 0.16,
+    "BH discoveries": 3025,
+    "BH empirical FDR": 1.0,
+    "BH power": 0.0
+   },
+   "ReSPAIR": {
+    "FPR confounded pairs": 0.054596982578978076,
+    "FPR other null pairs": 0.050328346048631824,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 158,
+    "BH empirical FDR": 0.10126582278481013,
+    "BH power": 0.9466666666666667
+   },
+   "Z-only + Pearson": {
+    "FPR confounded pairs": 0.9650746019838293,
+    "FPR other null pairs": 0.19517188213060102,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 54580,
+    "BH empirical FDR": 0.9972883840234518,
+    "BH power": 0.9866666666666667
+   },
+   "Z-only + spectral test": {
+    "FPR confounded pairs": 0.8366258231224473,
+    "FPR other null pairs": 0.05218987606129126,
+    "power (p<0.05)": 0.9933333333333333,
+    "BH discoveries": 5675,
+    "BH empirical FDR": 0.9744493392070485,
+    "BH power": 0.9666666666666667
+   },
+   "Hidden factors + Pearson": {
+    "FPR confounded pairs": 0.15895640576810868,
+    "FPR other null pairs": 0.13475981879732785,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 9500,
+    "BH empirical FDR": 0.9842105263157894,
+    "BH power": 1.0
+   },
+   "ReSPAIR (uncalibrated)": {
+    "FPR confounded pairs": 0.06368258731349503,
+    "FPR other null pairs": 0.057725478467357476,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 177,
+    "BH empirical FDR": 0.1864406779661017,
+    "BH power": 0.96
+   },
+   "_K": 10,
+   "_c": 1.0317844375753984
+  },
+  {
+   "Pearson": {
+    "FPR confounded pairs": 0.7097016169361561,
+    "FPR other null pairs": 0.564826273939544,
+    "power (p<0.05)": 0.9733333333333334,
+    "BH discoveries": 232580,
+    "BH empirical FDR": 0.9993722590076533,
+    "BH power": 0.9733333333333334
+   },
+   "MANTIS-SCI": {
+    "FPR confounded pairs": 0.2357892982163694,
+    "FPR other null pairs": 0.15843672328620195,
+    "power (p<0.05)": 0.19333333333333333,
+    "BH discoveries": 12495,
+    "BH empirical FDR": 0.9994397759103641,
+    "BH power": 0.04666666666666667
+   },
+   "MANTIS-SPC-CT": {
+    "FPR confounded pairs": 0.287547924654109,
+    "FPR other null pairs": 0.0195744768623083,
+    "power (p<0.05)": 0.11333333333333333,
+    "BH discoveries": 0,
+    "BH empirical FDR": 0.0,
+    "BH power": 0.0
+   },
+   "ReSPAIR": {
+    "FPR confounded pairs": 0.048841473578929824,
+    "FPR other null pairs": 0.049415756525685056,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 154,
+    "BH empirical FDR": 0.032467532467532464,
+    "BH power": 0.9933333333333333
+   },
+   "Z-only + Pearson": {
+    "FPR confounded pairs": 0.7372062010335055,
+    "FPR other null pairs": 0.21194682507760693,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 58664,
+    "BH empirical FDR": 0.9974430655938906,
+    "BH power": 1.0
+   },
+   "Z-only + spectral test": {
+    "FPR confounded pairs": 0.4935822637106184,
+    "FPR other null pairs": 0.06561007807101678,
+    "power (p<0.05)": 0.9933333333333333,
+    "BH discoveries": 616,
+    "BH empirical FDR": 0.7662337662337663,
+    "BH power": 0.96
+   },
+   "Hidden factors + Pearson": {
+    "FPR confounded pairs": 0.1390231705284214,
+    "FPR other null pairs": 0.1364051236038489,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 10231,
+    "BH empirical FDR": 0.9854364187273972,
+    "BH power": 0.9933333333333333
+   },
+   "ReSPAIR (uncalibrated)": {
+    "FPR confounded pairs": 0.059009834972495415,
+    "FPR other null pairs": 0.05950465641533369,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 170,
+    "BH empirical FDR": 0.12352941176470589,
+    "BH power": 0.9933333333333333
+   },
+   "_K": 10,
+   "_c": 1.0423785507434349
+  },
+  {
+   "Pearson": {
+    "FPR confounded pairs": 0.78336250729349,
+    "FPR other null pairs": 0.656570917332082,
+    "power (p<0.05)": 0.94,
+    "BH discoveries": 272562,
+    "BH empirical FDR": 0.9994790176180098,
+    "BH power": 0.9466666666666667
+   },
+   "MANTIS-SCI": {
+    "FPR confounded pairs": 0.21672084687838628,
+    "FPR other null pairs": 0.1623346989710019,
+    "power (p<0.05)": 0.17333333333333334,
+    "BH discoveries": 14604,
+    "BH empirical FDR": 0.9993837304847987,
+    "BH power": 0.06
+   },
+   "MANTIS-SPC-CT": {
+    "FPR confounded pairs": 0.6168208718846379,
+    "FPR other null pairs": 0.03656539977775085,
+    "power (p<0.05)": 0.20666666666666667,
+    "BH discoveries": 472,
+    "BH empirical FDR": 1.0,
+    "BH power": 0.0
+   },
+   "ReSPAIR": {
+    "FPR confounded pairs": 0.0518462949070601,
+    "FPR other null pairs": 0.05061969354368794,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 157,
+    "BH empirical FDR": 0.06369426751592357,
+    "BH power": 0.98
+   },
+   "Z-only + Pearson": {
+    "FPR confounded pairs": 0.827456864216054,
+    "FPR other null pairs": 0.19452730802649457,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 50689,
+    "BH empirical FDR": 0.997040778078084,
+    "BH power": 1.0
+   },
+   "Z-only + spectral test": {
+    "FPR confounded pairs": 0.5873968492123031,
+    "FPR other null pairs": 0.05630225884549043,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 1179,
+    "BH empirical FDR": 0.8753180661577609,
+    "BH power": 0.98
+   },
+   "Hidden factors + Pearson": {
+    "FPR confounded pairs": 0.15428857214303576,
+    "FPR other null pairs": 0.1361237376016171,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 9866,
+    "BH empirical FDR": 0.9847962700182444,
+    "BH power": 1.0
+   },
+   "ReSPAIR (uncalibrated)": {
+    "FPR confounded pairs": 0.062182212219721596,
+    "FPR other null pairs": 0.05822051137931123,
+    "power (p<0.05)": 1.0,
+    "BH discoveries": 172,
+    "BH empirical FDR": 0.14534883720930233,
+    "BH power": 0.98
+   },
+   "_K": 10,
+   "_c": 1.0325346544447245
+  }
+ ],
+ "mean": {
+  "Pearson": {
+   "FPR confounded pairs": 0.8246007233588015,
+   "FPR other null pairs": 0.5882273951096859,
+   "power (p<0.05)": 0.9600000000000002,
+   "BH discoveries": 244009.6,
+   "BH empirical FDR": 0.9994045602517921,
+   "BH power": 0.9639999999999999
+  },
+  "MANTIS-SCI": {
+   "FPR confounded pairs": 0.365730417492737,
+   "FPR other null pairs": 0.1702444784570713,
+   "power (p<0.05)": 0.20933333333333332,
+   "BH discoveries": 20451.2,
+   "BH empirical FDR": 0.9994395925662101,
+   "BH power": 0.07466666666666667
+  },
+  "MANTIS-SPC-CT": {
+   "FPR confounded pairs": 0.6294130349641445,
+   "FPR other null pairs": 0.02052991512714538,
+   "power (p<0.05)": 0.14533333333333331,
+   "BH discoveries": 807.0,
+   "BH empirical FDR": 0.8,
+   "BH power": 0.0
+  },
+  "ReSPAIR": {
+   "FPR confounded pairs": 0.05248348981913875,
+   "FPR other null pairs": 0.05007350635667786,
+   "power (p<0.05)": 1.0,
+   "BH discoveries": 156.4,
+   "BH empirical FDR": 0.06880741997848984,
+   "BH power": 0.9706666666666667
+  },
+  "Z-only + Pearson": {
+   "FPR confounded pairs": 0.8806364698933496,
+   "FPR other null pairs": 0.19951591742676708,
+   "power (p<0.05)": 1.0,
+   "BH discoveries": 54897.6,
+   "BH empirical FDR": 0.9972676050973327,
+   "BH power": 0.9973333333333333
+  },
+  "Z-only + spectral test": {
+   "FPR confounded pairs": 0.7014827597858133,
+   "FPR other null pairs": 0.055772061798826475,
+   "power (p<0.05)": 0.9893333333333333,
+   "BH discoveries": 3585.2,
+   "BH empirical FDR": 0.9118811431252036,
+   "BH power": 0.9546666666666667
+  },
+  "Hidden factors + Pearson": {
+   "FPR confounded pairs": 0.1521652380516561,
+   "FPR other null pairs": 0.13583004635181298,
+   "power (p<0.05)": 1.0,
+   "BH discoveries": 9867.8,
+   "BH empirical FDR": 0.9848304400667705,
+   "BH power": 0.9973333333333333
+  },
+  "ReSPAIR (uncalibrated)": {
+   "FPR confounded pairs": 0.06175300059518094,
+   "FPR other null pairs": 0.058575679599144025,
+   "power (p<0.05)": 1.0,
+   "BH discoveries": 175.4,
+   "BH empirical FDR": 0.163578770403007,
+   "BH power": 0.9773333333333334
+  }
+ },
+ "sd": {
+  "Pearson": {
+   "FPR confounded pairs": 0.06849200288543941,
+   "FPR other null pairs": 0.03811858440824022,
+   "power (p<0.05)": 0.012649110640673554,
+   "BH discoveries": 16182.278264817967,
+   "BH empirical FDR": 4.2881918991553346e-05,
+   "BH power": 0.009977753031397203
+  },
+  "MANTIS-SCI": {
+   "FPR confounded pairs": 0.12396298827215232,
+   "FPR other null pairs": 0.029324404461093797,
+   "power (p<0.05)": 0.04100948399794586,
+   "BH discoveries": 10182.547920830031,
+   "BH empirical FDR": 6.075553694552156e-05,
+   "BH power": 0.03636848452529562
+  },
+  "MANTIS-SPC-CT": {
+   "FPR confounded pairs": 0.18634726164261795,
+   "FPR other null pairs": 0.008192440597411161,
+   "power (p<0.05)": 0.04410089442277661,
+   "BH discoveries": 1119.5256138204254,
+   "BH empirical FDR": 0.4,
+   "BH power": 0.0
+  },
+  "ReSPAIR": {
+   "FPR confounded pairs": 0.0021299043831276305,
+   "FPR other null pairs": 0.0004638644779126287,
+   "power (p<0.05)": 0.0,
+   "BH discoveries": 2.576819745345025,
+   "BH empirical FDR": 0.022658269010099045,
+   "BH power": 0.017688665548562115
+  },
+  "Z-only + Pearson": {
+   "FPR confounded pairs": 0.08608409521398797,
+   "FPR other null pairs": 0.00697937385801406,
+   "power (p<0.05)": 0.0,
+   "BH discoveries": 2835.62413588261,
+   "BH empirical FDR": 0.0001430124631155348,
+   "BH power": 0.005333333333333324
+  },
+  "Z-only + spectral test": {
+   "FPR confounded pairs": 0.13584634503141332,
+   "FPR other null pairs": 0.005215028604744826,
+   "power (p<0.05)": 0.009043106644166996,
+   "BH discoveries": 2340.584405655989,
+   "BH empirical FDR": 0.08210410358615763,
+   "BH power": 0.019043809142780945
+  },
+  "Hidden factors + Pearson": {
+   "FPR confounded pairs": 0.006816892921929524,
+   "FPR other null pairs": 0.0006922011423712602,
+   "power (p<0.05)": 0.0,
+   "BH discoveries": 233.33015235926968,
+   "BH empirical FDR": 0.00038863517064185153,
+   "BH power": 0.003265986323710925
+  },
+  "ReSPAIR (uncalibrated)": {
+   "FPR confounded pairs": 0.0016455582565750415,
+   "FPR other null pairs": 0.0006067086832590684,
+   "power (p<0.05)": 0.0,
+   "BH discoveries": 4.176122603564219,
+   "BH empirical FDR": 0.02695038747389032,
+   "BH power": 0.010832051206181274
+  }
+ }
+}
