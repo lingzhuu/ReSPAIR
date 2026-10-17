@@ -6,6 +6,7 @@
 3. 残差投影到空间频率基上，T_jk = sum_l g_jl m_kl。
 4. 零假设方差 Var0 = sum_l s_g,jl s_m,kl（按频带平滑的功率谱），z = T / sqrt(Var0)。
 5. K 用负对照配对选：取负对照 z 的膨胀系数 lambda_GC 首次低于阈值的最小 K。
+6. 经验校准：按负对照配对 |z| 的 95% 分位数把所有 z 缩放到名义水平。
 """
 import numpy as np
 from scipy import sparse
@@ -123,6 +124,11 @@ def pvals(z):
     return 2 * norm.sf(np.abs(z))
 
 
+def calibration_factor(z_neg, q=0.95):
+    """负对照 |z| 的 q 分位数与标准正态对应分位数之比。"""
+    return np.quantile(np.abs(z_neg), q) / norm.isf((1 - q) / 2)
+
+
 def lambda_gc(z):
     """膨胀系数：z² 的中位数 / χ²₁ 的中位数。"""
     return np.median(z ** 2) / 0.4549364
@@ -144,11 +150,13 @@ def bh(p, alpha=0.1):
 # ---------- 主流程 ----------
 
 def fit(G_counts, M_int, coords, Z=None, K=None, K_grid=range(0, 31, 2),
-        neg_genes=None, gc_target=1.1, band_size=10, knn=8, gene_resid=None, met_resid=None):
+        neg_genes=None, gc_target=1.1, band_size=10, knn=8, gene_resid=None, met_resid=None,
+        calibrate=True):
     """
     G_counts: n × p 基因计数；M_int: n × q 代谢物强度；coords: n × 2；Z: n × c 已知结构（可选）。
     K: 隐藏模式个数；为 None 时用负对照基因 neg_genes（索引）按 lambda_GC 自动选。
-    返回 dict：z, p, K, lambda_gc 曲线, 基, 因子。
+    calibrate: 有负对照时按负对照经验分布缩放 z（见 calibration_factor）。
+    返回 dict：z, p, K, lambda_gc 曲线, 校准系数 c, 基, 因子。
     """
     Yg = pearson_residuals(G_counts) if gene_resid is None else gene_resid
     Ym = standardize(log_standardize(M_int)) if met_resid is None else met_resid
@@ -182,6 +190,9 @@ def fit(G_counts, M_int, coords, Z=None, K=None, K_grid=range(0, 31, 2),
     nL = U.shape[1]
     scales = [(0, nL // 20), (nL // 20, nL // 4), (nL // 4, nL)]
     res = spectral_z(Eg, Em, U, band_size, scales=scales)
-    return {"z": res["z"], "p": pvals(res["z"]), "z_scale": res["z_scale"],
-            "scales": scales, "K": K, "gc_curve": curve, "F": F, "evals": evals,
-            "Eg": Eg, "Em": Em}
+    z = res["z"]
+    c = calibration_factor(z[neg_genes]) if (calibrate and neg_genes is not None) else 1.0
+    z = z / c
+    return {"z": z, "p": pvals(z), "z_scale": [zs / c for zs in res["z_scale"]],
+            "scales": scales, "K": K, "gc_curve": curve, "c": float(c), "F": F, "evals": evals,
+            "Eg": Eg, "Em": Em, "z_uncalibrated": res["z"]}

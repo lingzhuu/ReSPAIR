@@ -41,7 +41,9 @@ def run(seed):
     fit = sj.fit(d["G"], d["M"], d["coords"], Z=Z, neg_genes=d["neg_genes"],
                  gene_resid=Yg, met_resid=Ym)
     out["扣隐藏模式+普通相关"] = evaluate(sj.naive_z(fit["Eg"], fit["Em"]), d["truth"], d["conf_pair"])
-    out["简化版(扣隐藏模式+空间检验)"] = evaluate(fit["z"], d["truth"], d["conf_pair"])
+    out["简化版(未校准)"] = evaluate(fit["z_uncalibrated"], d["truth"], d["conf_pair"])
+    out["简化版(负对照校准)"] = evaluate(fit["z"], d["truth"], d["conf_pair"])
+    out["_c"] = fit["c"]
     out["_K"] = fit["K"]
     out["_gc曲线"] = {int(k): round(float(v), 3) for k, v in fit["gc_curve"].items()}
     return out
@@ -52,4 +54,7 @@ if __name__ == "__main__":
     results = [run(s) for s in range(n_seeds)]
     methods = [k for k in results[0] if not k.startswith("_")]
     summary = {m: {k: float(np.mean([r[m][k] for r in results])) for k in results[0][m]} for m in methods}
+    out_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "results", f"sim_{n_seeds}seeds.json")
+    with open(out_path, "w") as f:
+        json.dump({"每个种子": results, "平均": summary}, f, ensure_ascii=False, indent=1)
     print(json.dumps({"每个种子": results, "平均": summary}, ensure_ascii=False, indent=1))
