@@ -18,7 +18,7 @@ from sklearn.metrics import roc_curve, roc_auc_score
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # benchmarks/
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
-from respair.simulate import simulate
+from simulate import simulate
 from run_sim import all_pvals
 from plot_sim import SERIES, INK, INK2, MUTED, GRID, SURF  # same colours and fonts
 

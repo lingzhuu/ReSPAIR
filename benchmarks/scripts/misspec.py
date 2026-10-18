@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # benchmarks/
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
-from respair.simulate import simulate
+from simulate import simulate
 from compare import METHODS, roc_stats, scores
 from plot_sim import GRID, INK2, SURF
 

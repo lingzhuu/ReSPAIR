@@ -12,7 +12,7 @@ import numpy as np
 from scipy.spatial.distance import cdist
 from sklearn.linear_model import Lasso
 
-from .core import standardize
+from respair.core import standardize
 
 
 def _zscore(A):
@@ -133,7 +133,7 @@ def liana_global(G_counts, M_int, coords, bandwidth=3.0, nz_prop=0.05):
     import anndata as ad
     import liana as li
     from scipy.stats import norm
-    from .core import log_standardize
+    from respair.core import log_standardize
     Xg = _logcpm(G_counts)
     Xm = log_standardize(M_int)  # log with a small offset, so MSI zeros stay finite
     Xm = Xm - Xm.min() + 1e-3

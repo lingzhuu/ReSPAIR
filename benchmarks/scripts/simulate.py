@@ -152,7 +152,7 @@ def semi_synthetic(G_real, M_real, coords, seed=0, p=2000, q=200, n_links=150, l
     """
     from sklearn.cluster import KMeans
 
-    from .core import pearson_residuals
+    from respair.core import pearson_residuals
     rng = np.random.default_rng(seed)
     G_real = np.asarray(G_real); M_real = np.asarray(M_real, float); coords = np.asarray(coords, float)
     n = len(coords)

@@ -7,8 +7,8 @@ import sys, os, json
 import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # benchmarks/
 from respair import core as sj
-from respair import benchmarks as bm
-from respair.simulate import simulate
+import baselines as bm
+from simulate import simulate
 
 # Main comparison (existing methods vs ReSPAIR) and ablation (each step of ReSPAIR)
 MAIN = ["Pearson", "MANTIS-SCI", "MANTIS-SPC-CT", "ReSPAIR"]

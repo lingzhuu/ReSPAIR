@@ -41,6 +41,7 @@ packages = ["src/respair"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = ["--import-mode=importlib", "-ra"]
+filterwarnings = ["ignore:respair.fit:DeprecationWarning"]
 markers = ["slow: full-size simulations, skipped unless --runslow"]
 
 [tool.ruff]
@@ -60,7 +61,7 @@ ignore = [
 "benchmarks/**" = ["E401", "E402", "F401", "I001", "B007", "B905"]
 "tests/**" = ["E402"]
 # baseline wrappers import their optional dependencies inside functions
-"src/respair/benchmarks.py" = ["E401", "I001"]
+"benchmarks/scripts/baselines.py" = ["E401", "I001"]
 
 [tool.coverage.run]
 source = ["respair"]

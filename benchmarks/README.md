@@ -25,9 +25,13 @@ python benchmarks/scripts/plot_sim.py    # figures                -> results/fig
 | `scripts/roc.py` | supplementary: ROC of ReSPAIR's ablations (each step on its own) |
 | `scripts/sweep_sim.py` | sweep over confounder strength and link strength |
 | `scripts/plot_sim.py` | figures 1–4 |
+| `scripts/full_vs_simple.py` | full vs simplified estimator on the benchmark simulation and variants (isozymes, shifted grid, network prior, …) |
+| `scripts/full_vs_simple_external.py` | full vs simplified estimator on the `misspec.py` scenarios and the semi-synthetic data |
+| `scripts/plot_full_vs_simple.py` | figure for the two scripts above |
+| `scripts/simulate.py`, `scripts/baselines.py` | simulator and baseline methods (not part of the `respair` package) |
 | `results/` | committed outputs used in the README and manuscript |
 
-The simulator is `respair.simulate.simulate`. Baselines live in `respair.benchmarks`: the MANTIS re-implementation
+The simulator is `scripts/simulate.py` (`simulate`, `semi_synthetic`). Baselines live in `scripts/baselines.py`: the MANTIS re-implementation
 (needs scikit-learn) and wrappers for LIANA+/SpatialDM, Lee's L, and the Dutilleul modified t-test. The LIANA+ wrapper imports `liana` only when called.
 
 Only methods that test each gene–metabolite pair are benchmarked. Integration and factor models without a pairwise test

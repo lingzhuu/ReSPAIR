@@ -21,9 +21,9 @@ from sklearn.metrics import roc_auc_score, roc_curve
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # benchmarks/
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
-from respair import benchmarks as bm
+import baselines as bm
 from respair import core as sj
-from respair.simulate import simulate
+from simulate import simulate
 from plot_sim import INK, MUTED, GRID, SURF
 
 CACHE = os.path.join(ROOT, "cache")

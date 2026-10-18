@@ -5,7 +5,7 @@ Usage: python benchmarks/scripts/sweep_sim.py [n_seeds per setting]
 import sys, os, json
 import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # benchmarks/
-from respair.simulate import simulate
+from simulate import simulate
 from run_sim import evaluate, all_pvals, MAIN
 
 CONF = [0.0, 0.3, 0.6, 1.0]

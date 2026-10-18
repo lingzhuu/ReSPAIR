@@ -1,6 +1,11 @@
+import os
+import sys
+
 import pytest
 
-from respair.simulate import simulate
+# the simulator is benchmark code, not part of the package
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "benchmarks", "scripts"))
+from simulate import simulate  # noqa: E402
 
 
 def pytest_addoption(parser):

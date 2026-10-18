@@ -81,7 +81,7 @@ def test_fixed_K_and_no_calibration(small_sim):
 
 @pytest.mark.slow
 def test_full_size_simulation_calibrated():
-    from respair.simulate import simulate
+    from simulate import simulate  # benchmarks/scripts, put on sys.path by conftest.py
 
     d = simulate(seed=0)
     res = respair.fit(d["G"], d["M"], d["coords"], Z=d["Z"], neg_genes=d["neg_genes"])

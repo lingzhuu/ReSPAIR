@@ -53,7 +53,9 @@ Statistically, this corresponds to the identifiability conditions for "low-rank 
 
 There are two versions, corresponding to point 5 of the proposal ("simple version first, then the full version").
 
-### Simplified version (do first; can be running within days)
+### Simplified version (deprecated)
+
+Implemented as `respair.fit`; deprecated in favour of the full version below and kept only to reproduce earlier benchmarks.
 
 1. **Fit the confounding model**: concatenate $G$ and $M$ and fit `[G, M] = Z B + F Λ + residual`. Counts (genes) can initially be handled with GLM-PCA or a negative binomial factor model, with metabolites log-transformed; spatial smoothing can be omitted at first, or an off-the-shelf MEFISTO / NSF can be used to obtain a GP-based $F$.
 2. **Extract residuals**: $\hat E_g$ ($n \times$ 30,000) and $\hat E_m$ ($n \times$ 1,000), using Pearson residuals.

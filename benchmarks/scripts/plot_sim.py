@@ -12,7 +12,7 @@ from matplotlib.colors import LinearSegmentedColormap
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # benchmarks/
 from respair import core as sj
-from respair.simulate import simulate
+from simulate import simulate
 
 FIG = os.path.join(ROOT, "results", "figures")
 os.makedirs(FIG, exist_ok=True)

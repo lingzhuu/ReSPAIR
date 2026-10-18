@@ -1,7 +1,7 @@
 """Full vs simplified ReSPAIR on the same simulations, including scenarios that break the model's assumptions.
 
 Scenarios
-- base 0.5 / base 0.2: ``respair.simulate`` (the benchmark simulation), link strength 0.5 and 0.2.
+- base 0.5 / base 0.2: ``simulate.py`` (the benchmark simulation), link strength 0.5 and 0.2.
 - the rest are generated here at link strength 0.2 with one change each:
   - low depth: 500 counts per spot instead of 4000 (count noise dominates).
   - isozyme decoys: for 100 of the 150 linked genes, a second unlinked gene whose local residual is correlated
@@ -33,7 +33,7 @@ from sklearn.metrics import roc_auc_score, roc_curve
 
 import respair
 from respair.full import fit_full, kernel_map, two_groups_pip
-from respair.simulate import gp_samples, simulate
+from simulate import gp_samples, simulate
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # benchmarks/
 OUT = os.environ.get("RESPAIR_OUT", os.path.join(ROOT, "results", "full_vs_simple.json"))

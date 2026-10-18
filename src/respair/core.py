@@ -12,6 +12,8 @@ Steps
    is invisible to the median and K came out as 0.)
 6. Empirical calibration: rescale all z so the 95% quantile of negative-control |z| matches the nominal level.
 """
+import warnings
+
 import numpy as np
 from scipy import sparse
 from scipy.sparse.csgraph import laplacian
@@ -164,7 +166,10 @@ def bh(p, alpha=0.1):
 def fit(G_counts, M_int, coords, Z=None, K=None,
         neg_genes=None, band_size=10, knn=8, gene_resid=None, met_resid=None,
         calibrate=True):
-    """Test every gene–metabolite pair for a pair-specific spatial link.
+    """Test every gene–metabolite pair for a pair-specific spatial link (simplified estimator; deprecated).
+
+    .. deprecated:: 0.2.0
+       Use :func:`respair.fit_full`. The simplified estimator is kept only to reproduce earlier benchmarks.
 
     Parameters
     ----------
@@ -197,6 +202,8 @@ def fit(G_counts, M_int, coords, Z=None, K=None,
 
     See ``docs/model.md`` for the model and its rationale.
     """
+    warnings.warn("respair.fit (simplified estimator) is deprecated; use respair.fit_full", DeprecationWarning,
+                  stacklevel=2)
     Yg = pearson_residuals(G_counts) if gene_resid is None else gene_resid
     Ym = standardize(log_standardize(M_int)) if met_resid is None else met_resid
     Rg = _residualize(Yg, Z)

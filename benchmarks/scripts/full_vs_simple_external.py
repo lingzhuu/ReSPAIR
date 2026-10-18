@@ -11,7 +11,7 @@ import numpy as np
 from sklearn.metrics import roc_auc_score, roc_curve
 import respair
 from respair.full import fit_full
-from respair.simulate import simulate, semi_synthetic
+from simulate import simulate, semi_synthetic
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # benchmarks/
 sys.path.insert(0, os.path.join(ROOT, "scripts"))

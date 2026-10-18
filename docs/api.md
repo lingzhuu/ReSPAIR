@@ -8,8 +8,8 @@
 .. autosummary::
    :toctree: generated
 
-   fit
    fit_full
+   fit
 ```
 
 ## Building blocks
@@ -45,16 +45,4 @@
    kernel_map
    conditional_test
    two_groups_pip
-```
-
-## Simulation and baselines
-
-```{eval-rst}
-.. currentmodule:: respair
-
-.. autosummary::
-   :toctree: generated
-
-   simulate.simulate
-   benchmarks.mantis
 ```

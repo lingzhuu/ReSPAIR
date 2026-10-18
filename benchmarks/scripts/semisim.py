@@ -1,7 +1,7 @@
 """Semi-synthetic benchmark on a real tissue section (SMA mouse brain, Visium + MALDI-MSI).
 
 Genes are the real counts; metabolites keep the large-scale maps of real metabolites, with real residual variance,
-real zeros and planted links to the denoised expression of real genes (see `respair.simulate.semi_synthetic`). Run prepare_sma.py first.
+real zeros and planted links to the denoised expression of real genes (see `simulate.semi_synthetic`). Run prepare_sma.py first.
 Scenarios: links on the gene's whole expression (not ReSPAIR's model) at two strengths, and links on the gene's
 fine-scale part only (ReSPAIR's model) as reference.
 
@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # benchmarks/
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
-from respair.simulate import semi_synthetic
+from simulate import semi_synthetic
 from compare import GRID_FPR, METHODS, roc_stats, scores
 from plot_sim import GRID, INK, MUTED, SURF
 

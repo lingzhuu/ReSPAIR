@@ -11,6 +11,14 @@ All notable changes to this project are documented here. The format follows
   the uncertainty in F, optional reaction-network prior, and separate gene / metabolite grids.
 - `benchmarks/scripts/full_vs_simple.py`: full vs simplified estimator on the same simulations.
 
+### Deprecated
+- `respair.fit` (simplified estimator). Use `respair.fit_full`; `fit` is kept to reproduce earlier benchmarks.
+
+### Changed
+- The package `respair` now contains only the method (`core`, `full`). The simulator moved from `respair.simulate` to
+  `benchmarks/scripts/simulate.py`, and the baseline methods from `respair.benchmarks` to
+  `benchmarks/scripts/baselines.py`.
+
 ### Changed
 - Repository reorganised into a `src/` layout with `hatchling` packaging, tests, CI and Sphinx docs.
 - Simulation and benchmark scripts moved to `benchmarks/`; all text, result keys and figures are in English.
