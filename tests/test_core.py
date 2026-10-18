@@ -1,5 +1,4 @@
 import numpy as np
-import pytest
 
 import respair
 from respair import core
@@ -48,41 +47,3 @@ def test_residualize_removes_covariates():
     X = C @ rng.standard_normal((3, 5)) + 0.1 * rng.standard_normal((200, 5))
     R = core._residualize(X, C)
     np.testing.assert_allclose(C.T @ R, 0, atol=1e-8)
-
-
-def test_fit_outputs(small_sim):
-    d = small_sim
-    res = respair.fit(d["G"], d["M"], d["coords"], Z=d["Z"], neg_genes=d["neg_genes"])
-    p, q = d["truth"].shape
-    assert res["z"].shape == (p, q)
-    assert res["p"].shape == (p, q)
-    assert np.all((res["p"] >= 0) & (res["p"] <= 1))
-    assert len(res["z_scale"]) == 3
-    assert res["K"] >= 0 and res["F"].shape[1] == res["K"]
-
-
-def test_fit_controls_false_positives_and_finds_links(small_sim):
-    d = small_sim
-    res = respair.fit(d["G"], d["M"], d["coords"], Z=d["Z"], neg_genes=d["neg_genes"])
-    null = ~d["truth"]
-    fpr = (res["p"][null] < 0.05).mean()
-    power = (res["p"][d["truth"]] < 0.05).mean()
-    assert fpr < 0.08
-    assert power > 0.6
-
-
-def test_fixed_K_and_no_calibration(small_sim):
-    d = small_sim
-    res = respair.fit(d["G"], d["M"], d["coords"], Z=d["Z"], K=2, calibrate=False)
-    assert res["K"] == 2
-    assert res["c"] == 1.0
-    np.testing.assert_array_equal(res["z"], res["z_uncalibrated"])
-
-
-@pytest.mark.slow
-def test_full_size_simulation_calibrated():
-    from simulate import simulate  # benchmarks/scripts, put on sys.path by conftest.py
-
-    d = simulate(seed=0)
-    res = respair.fit(d["G"], d["M"], d["coords"], Z=d["Z"], neg_genes=d["neg_genes"])
-    assert (res["p"][~d["truth"]] < 0.05).mean() < 0.06

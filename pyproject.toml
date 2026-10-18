@@ -41,7 +41,6 @@ packages = ["src/respair"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = ["--import-mode=importlib", "-ra"]
-filterwarnings = ["ignore:respair.fit:DeprecationWarning"]
 markers = ["slow: full-size simulations, skipped unless --runslow"]
 
 [tool.ruff]

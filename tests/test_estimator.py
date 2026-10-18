@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from respair import full
+from respair import estimator as full
 
 
 def test_gp_basis_unit_prior_variance():
@@ -38,9 +38,9 @@ def test_two_groups_pip_is_monotone_without_prior():
     assert np.all(np.diff(pip[order]) >= -1e-12)
 
 
-def test_fit_full_outputs_and_power(small_sim):
+def test_fit_outputs_and_power(small_sim):
     d = small_sim
-    res = full.fit_full(d["G"], d["M"], d["coords"], Z=d["Z"], neg_genes=d["neg_genes"], n_iter=4, n_draws=2)
+    res = full.fit(d["G"], d["M"], d["coords"], Z=d["Z"], neg_genes=d["neg_genes"], n_iter=4, n_draws=2)
     p, q = d["truth"].shape
     assert res["z"].shape == (p, q) and res["pip"].shape == (p, q)
     assert res["W"].shape == (q, p)

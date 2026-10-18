@@ -10,7 +10,6 @@ installation
 quickstart
 api
 model
-full_model
 benchmarks
 changelog
 ```

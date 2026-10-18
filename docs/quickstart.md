@@ -7,7 +7,7 @@ sys.path.insert(0, "benchmarks/scripts")      # simulated example data; run from
 from simulate import simulate
 
 d = simulate(seed=0)
-res = respair.fit_full(d["G"], d["M"], d["coords"], Z=d["Z"], neg_genes=d["neg_genes"])
+res = respair.fit(d["G"], d["M"], d["coords"], Z=d["Z"], neg_genes=d["neg_genes"])
 
 res["z"].shape          # (n_genes, n_metabolites)
 res["K"]                # hidden factors removed

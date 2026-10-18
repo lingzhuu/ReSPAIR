@@ -51,24 +51,13 @@ Statistically, this corresponds to the identifiability conditions for "low-rank 
 
 ## 3. Estimation
 
-There are two versions, corresponding to point 5 of the proposal ("simple version first, then the full version").
+`respair.fit` estimates $F$, $\Lambda$ and $W$ jointly:
 
-### Simplified version (deprecated)
-
-Implemented as `respair.fit`; deprecated in favour of the full version below and kept only to reproduce earlier benchmarks.
-
-1. **Fit the confounding model**: concatenate $G$ and $M$ and fit `[G, M] = Z B + F Λ + residual`. Counts (genes) can initially be handled with GLM-PCA or a negative binomial factor model, with metabolites log-transformed; spatial smoothing can be omitted at first, or an off-the-shelf MEFISTO / NSF can be used to obtain a GP-based $F$.
-2. **Extract residuals**: $\hat E_g$ ($n \times$ 30,000) and $\hat E_m$ ($n \times$ 1,000), using Pearson residuals.
-3. **Obtain the statistics for all pairs with a single matrix multiplication**: $T = \hat E_g^{\top} \hat E_m$ (30,000 $\times$ 1,000).
-4. **Apply spatial calibration to each pair** (see Section 4) to obtain p-values.
-
-Because the gene residuals are essentially uncorrelated after confounding has been removed ($D_g$ approximately diagonal), the "marginal" residual correlation here is equivalent to testing whether the corresponding entry of $W$ is zero; there is no need to run a 30,000-dimensional regression for each metabolite. The original proposal's advantage of "fit once, compute all combinations together" is retained.
-
-### Full version
-
-Implemented as `respair.fit_full`; see {doc}`full_model` for what it does and how it compares with the simplified version.
-
-Estimate $F$, $\Lambda$ and $W$ jointly in a single model: a sparse / inducing-point GP for $F$, an L1 or spike-and-slab prior on $W$, and a negative binomial likelihood for the genes. The benefits are that the estimation uncertainty in $F$ propagates to $W$, and that reaction-network priors can be used (Section 5).
+- **Genes** follow a Poisson–log-normal model: $\log \text{rate}(G) = o + a + Z B_g^{\top} + F \Lambda_g^{\top} + E_g$. It has the same mean–variance relation as the negative binomial (overdispersion $1/\theta \approx e^{\sigma^2} - 1$), but its latent log-scale residual $E_g$ is Gaussian and can enter the metabolite equation linearly. $\hat E_g$ is the Laplace posterior mean.
+- **Hidden factors** are continuous spatial functions, $F_r(s) = \Phi_r(s)\alpha_r$ (inducing-point GP basis, one length scale per factor chosen by marginal likelihood), so they can be evaluated at the gene spots and at the metabolite pixels separately. A kernel map $A$ averages gene spots around each metabolite pixel for the link term $(A E_g)W^{\top}$.
+- **Alternating updates**: Laplace E-step for the latent gene log-rates and least-squares M-steps for the loadings; the sparse $W$; metabolite loadings after removing the link term; a closed-form Gaussian update of $\alpha$. The link term is removed before $F$ is re-estimated, so $F$ does not absorb links. $F$ is initialised from a weighted PCA of Pearson residuals of both blocks, with $K$ from the singular-value spectrum.
+- **Sparse $W$**: a lasso per metabolite whose per-pair penalty equals a z-threshold on the spectral null variance (Section 4), followed by a least-squares refit on the support. A reaction-network prior lowers the threshold for network pairs.
+- **Test**: each pair is tested on the residuals with the spectral test of Section 4, conditionally on the other genes selected for the same metabolite (which separates an enzyme from a correlated isozyme only partly, because both are noisy measurements). The test is repeated over posterior draws of $F$ and combined with Rubin's rules, and z is calibrated with negative-control genes. With a network prior, a two-groups empirical-Bayes model on z gives a posterior inclusion probability per pair.
 
 ## 4. Significance testing: accounting for spatial autocorrelation on both sides
 
@@ -126,8 +115,8 @@ After confounding is removed, the correlation among pair statistics comes mainly
 | 7. Two-sided spatial test not designed | Frequency-decomposition correction, validated in a small simulation ✔ |
 | 9. Orthogonality constraint only blocks linear relationships | $Z^{\top} F_s = 0$ is no longer needed; nonlinear tissue effects are absorbed by the latent patterns ✔ |
 | 10. Uncertainty in / circularity of $Z$ | Errors in estimating $Z$ are absorbed by the latent patterns; $Z$ is used mainly for interpretation (partly ✔) |
-| 11. Gaussian noise | Pearson residuals (simplified version); Poisson–log-normal likelihood (full version) ✔ |
-| 12. Different grids on the two sides | Simplified version: aggregate MSI pixels to Visium spots first. Full version: the GP factors are evaluated at each modality's own coordinates (partly ✔) |
+| 11. Gaussian noise | Poisson–log-normal likelihood for the genes ✔ |
+| 12. Different grids on the two sides | The GP factors are evaluated at each modality's own coordinates (partly ✔) |
 | 13. Multi-scale analysis limited by resolution | Decomposition by frequency band, with the lower scale limit stated according to resolution ✔ |
 | 8. Circular simulation design | Still to be designed; see below |
 

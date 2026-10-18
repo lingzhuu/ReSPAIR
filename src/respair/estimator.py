@@ -1,14 +1,14 @@
-"""Full estimator: joint fit of the low-rank + sparse model.
+"""ReSPAIR estimator: joint fit of the low-rank + sparse model.
 
     log-rate(G) = o + a + Z B_g + F Λ_g + E_g,     G | log-rate ~ Poisson       (Poisson–log-normal)
     M           = c + Z B_m + F Λ_m + (A E_g) Wᵀ + E_m
 
-Compared with the simplified estimator (``respair.core.fit``):
+Estimation and testing:
 
 - Genes use a count likelihood. The Poisson–log-normal model is the log-normal counterpart of the negative binomial
   (same mean–variance relation, overdispersion 1/θ ≈ exp(σ²) − 1). It is used instead of the gamma-mixed NB because
   its latent log-scale residual E_g is Gaussian and can enter the metabolite equation linearly; E_g is the Laplace
-  posterior mean, not a Pearson residual.
+  posterior mean.
 - F is a continuous spatial function, F_r(s) = Φ_r(s) α_r with an inducing-point GP basis and a length scale per
   factor, so it can be evaluated at the gene spots and at the metabolite pixels separately (different grids).
   A maps gene spots to metabolite pixels for the link term.
@@ -237,10 +237,10 @@ def two_groups_pip(z, prior=None, n_iter=200):
 # ---------- main entry point ----------
 
 
-def fit_full(G_counts, M_int, coords, coords_m=None, Z=None, Z_m=None, K=None, neg_genes=None,
+def fit(G_counts, M_int, coords, coords_m=None, Z=None, Z_m=None, K=None, neg_genes=None,
              prior_pairs=None, z_select=4.0, z_select_prior=2.5, n_iter=8, n_draws=4,
              band_size=10, knn=8, length_grid=(2, 3, 4, 6, 8, 12, 16), calibrate=True, seed=0, verbose=False):
-    """Joint low-rank + sparse fit and conditional pair test (full ReSPAIR estimator).
+    """Test every gene–metabolite pair for a pair-specific spatial link (joint low-rank + sparse fit).
 
     Parameters
     ----------
@@ -252,7 +252,7 @@ def fit_full(G_counts, M_int, coords, coords_m=None, Z=None, Z_m=None, K=None, n
         Known tissue structure at the gene spots and at the metabolite pixels. ``Z_m`` defaults to ``Z`` mapped
         to the metabolite grid.
     K
-        Number of hidden factors; ``None`` uses the same spectrum rule as the simplified estimator.
+        Number of hidden factors; ``None`` uses the singular-value spectrum rule of ``respair.core.select_K``.
     neg_genes
         Negative-control genes for the empirical calibration of z.
     prior_pairs
@@ -283,7 +283,7 @@ def fit_full(G_counts, M_int, coords, coords_m=None, Z=None, Z_m=None, K=None, n
     n, p = Y.shape
     q = Ym.shape[1]
 
-    # --- initialisation from the simplified estimator's factors (on the gene grid)
+    # --- initialisation: weighted PCA factors of Pearson residuals (on the gene grid)
     Yg0 = core.pearson_residuals(Y)
     Rg0 = core._residualize(Yg0, Z)
     Rm0 = core._residualize(_apply(kernel_map(coords_m, coords), Ym), Z)

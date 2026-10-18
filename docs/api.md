@@ -8,7 +8,6 @@
 .. autosummary::
    :toctree: generated
 
-   fit_full
    fit
 ```
 
@@ -32,10 +31,10 @@
    lambda_gc
 ```
 
-## Full estimator
+## Estimator internals
 
 ```{eval-rst}
-.. currentmodule:: respair.full
+.. currentmodule:: respair.estimator
 
 .. autosummary::
    :toctree: generated

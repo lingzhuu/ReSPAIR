@@ -31,7 +31,7 @@ M = Z B_mᵀ + F Λ_mᵀ + E_g Wᵀ + E_m
 where `Z` is known structure (e.g. cell-type proportions), `F` are hidden spatial factors treated as confounding,
 and the sparse matrix `W` holds the links to be tested: does metabolite *k* follow the *local residual* of gene *j*?
 
-`respair.fit_full` estimates `F`, the loadings and `W` jointly:
+`respair.fit` estimates `F`, the loadings and `W` jointly:
 
 1. Genes follow a Poisson–log-normal count model; the gene residual `E_g` is the posterior mean of its latent
    log-scale deviation. Metabolites are log-transformed.
@@ -70,7 +70,7 @@ sys.path.insert(0, "benchmarks/scripts")      # simulated example data; run from
 from simulate import simulate
 
 d = simulate(seed=0)                        # or your own data, see below
-res = respair.fit_full(
+res = respair.fit(
     d["G"],                                 # n_spots × n_genes counts
     d["M"],                                 # n_pixels × n_metabolites intensities
     d["coords"],                            # n_spots × 2 gene coordinates
@@ -85,7 +85,7 @@ res["pip"]                                  # posterior inclusion probability
 hits = respair.bh(res["p"], alpha=0.1)      # Benjamini–Hochberg
 ```
 
-See [docs/full_model.md](docs/full_model.md) for the estimator and how it was evaluated.
+See [docs/model.md](docs/model.md) for the model and the estimator.
 
 ## Simulation benchmark
 

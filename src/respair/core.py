@@ -1,19 +1,10 @@
-"""Simplified estimator: low-rank confounding + sparse pairwise links between spatial transcriptomics and metabolomics.
+"""Building blocks of the ReSPAIR estimator (``respair.fit``): normalisation, spatial frequency basis, initial hidden
+factors, band power spectra and calibration.
 
-Steps
-1. Normalise: analytic Pearson residuals for genes (approximately negative binomial), log + standardise for metabolites.
-2. Remove known structure Z and K hidden factors F (weighted PCA of both blocks concatenated).
-3. Project residuals onto the spatial frequency basis, T_jk = sum_l g_jl m_kl.
-4. Null variance Var0 = sum_l s_g,jl s_m,kl (band-smoothed power spectra), z = T / sqrt(Var0).
-5. By default K comes from the singular-value spectrum: count singular values more than 10% above the "plateau"
-   (median of singular values 15–25) and add 2. Removing a few extra factors costs little (sparse pairwise links are
-   not absorbed by broad patterns), while removing too few leaves confounding, so err on the high side.
-   (An earlier version chose K from the median negative-control lambda_GC; confounding that touches only a few pairs
-   is invisible to the median and K came out as 0.)
-6. Empirical calibration: rescale all z so the 95% quantile of negative-control |z| matches the nominal level.
+K (number of hidden factors) comes from the singular-value spectrum: count singular values more than 10% above the
+"plateau" (median of singular values 15–25) and add 2. Removing a few extra factors costs little (sparse pairwise
+links are not absorbed by broad patterns), while removing too few leaves confounding, so err on the high side.
 """
-import warnings
-
 import numpy as np
 from scipy import sparse
 from scipy.sparse.csgraph import laplacian
@@ -159,68 +150,3 @@ def bh(p, alpha=0.1):
     rej = np.zeros(m, bool)
     rej[order[:k]] = True
     return rej.reshape(p.shape)
-
-
-# ---------- main entry point ----------
-
-def fit(G_counts, M_int, coords, Z=None, K=None,
-        neg_genes=None, band_size=10, knn=8, gene_resid=None, met_resid=None,
-        calibrate=True):
-    """Test every gene–metabolite pair for a pair-specific spatial link (simplified estimator; deprecated).
-
-    .. deprecated:: 0.2.0
-       Use :func:`respair.fit_full`. The simplified estimator is kept only to reproduce earlier benchmarks.
-
-    Parameters
-    ----------
-    G_counts
-        ``n × p`` gene counts (spots × genes).
-    M_int
-        ``n × q`` metabolite intensities on the same spots.
-    coords
-        ``n × 2`` spatial coordinates.
-    Z
-        ``n × c`` known tissue structure (e.g. cell-type proportions), optional.
-    K
-        Number of hidden factors to remove. ``None`` picks it from the singular-value spectrum.
-    neg_genes
-        Indices of negative-control genes, used to calibrate the z-scores.
-    band_size
-        Number of Laplacian eigenvectors per frequency band when estimating the null power spectrum.
-    knn
-        Number of neighbours for the spatial kNN graph.
-    gene_resid, met_resid
-        Pre-normalised ``n × p`` / ``n × q`` matrices that replace the default normalisation.
-    calibrate
-        If ``True`` and ``neg_genes`` is given, rescale z so negative-control pairs are at nominal level.
-
-    Returns
-    -------
-    dict
-        ``z`` and ``p`` (``p × q``), ``z_scale`` (z on large / medium / small spatial scales),
-        ``K``, calibration factor ``c``, hidden factors ``F``, residuals ``Eg`` / ``Em`` and ``z_uncalibrated``.
-
-    See ``docs/model.md`` for the model and its rationale.
-    """
-    warnings.warn("respair.fit (simplified estimator) is deprecated; use respair.fit_full", DeprecationWarning,
-                  stacklevel=2)
-    Yg = pearson_residuals(G_counts) if gene_resid is None else gene_resid
-    Ym = standardize(log_standardize(M_int)) if met_resid is None else met_resid
-    Rg = _residualize(Yg, Z)
-    Rm = _residualize(Ym, Z)
-    evals, U = spatial_basis(coords, k=knn)
-
-    if K is None:
-        K = select_K(Rg, Rm)
-    F = hidden_factors(Rg, Rm, K)
-    Eg = _residualize(Rg, F)
-    Em = _residualize(Rm, F)
-    nL = U.shape[1]
-    scales = [(0, nL // 20), (nL // 20, nL // 4), (nL // 4, nL)]
-    res = spectral_z(Eg, Em, U, band_size, scales=scales)
-    z = res["z"]
-    c = calibration_factor(z[neg_genes]) if (calibrate and neg_genes is not None) else 1.0
-    z = z / c
-    return {"z": z, "p": pvals(z), "z_scale": [zs / c for zs in res["z_scale"]],
-            "scales": scales, "K": K, "c": float(c), "F": F, "evals": evals,
-            "Eg": Eg, "Em": Em, "z_uncalibrated": res["z"]}

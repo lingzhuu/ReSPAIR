@@ -5,21 +5,18 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
-### Added
-- Full estimator `respair.fit_full` (`respair.full`): Poisson–log-normal gene likelihood, continuous GP hidden
-  factors re-estimated jointly with the loadings and a sparse W, conditional (isozyme-aware) pair test, propagation of
-  the uncertainty in F, optional reaction-network prior, and separate gene / metabolite grids.
-- `benchmarks/scripts/full_vs_simple.py`: full vs simplified estimator on the same simulations.
-
-### Deprecated
-- `respair.fit` (simplified estimator). Use `respair.fit_full`; `fit` is kept to reproduce earlier benchmarks.
-
 ### Changed
-- The package `respair` now contains only the method (`core`, `full`). The simulator moved from `respair.simulate` to
-  `benchmarks/scripts/simulate.py`, and the baseline methods from `respair.benchmarks` to
-  `benchmarks/scripts/baselines.py`.
+- `respair.fit` is now the joint estimator: Poisson–log-normal gene likelihood, continuous GP hidden factors
+  re-estimated jointly with the loadings and a sparse W, conditional (isozyme-aware) pair test, propagation of the
+  uncertainty in F, optional reaction-network prior, and separate gene / metabolite grids.
+- The package contains only the method. The simulator (`respair.simulate`) and the baseline methods
+  (`respair.benchmarks`) moved to `benchmarks/scripts/simulate.py` and `benchmarks/scripts/baselines.py`.
 
-### Changed
+### Removed
+- The step-wise (simplified) estimator and `respair.naive_z`, `respair.spectral_z`, `respair.lambda_gc` from the
+  top-level API.
+
+### Other
 - Repository reorganised into a `src/` layout with `hatchling` packaging, tests, CI and Sphinx docs.
 - Simulation and benchmark scripts moved to `benchmarks/`; all text, result keys and figures are in English.
 - `benchmarks/results/sim_5seeds.json` regenerated with the current spectrum-based choice of K (was K = 4).

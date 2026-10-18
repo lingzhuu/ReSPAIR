@@ -22,6 +22,7 @@ from sklearn.metrics import roc_auc_score, roc_curve
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # benchmarks/
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import baselines as bm
+import respair
 from respair import core as sj
 from simulate import simulate
 from plot_sim import INK, MUTED, GRID, SURF
@@ -63,8 +64,7 @@ def _dutilleul(d):
 
 
 def _respair(d):
-    Yg, Ym = _prep(d)
-    fit = sj.fit(d["G"], d["M"], d["coords"], Z=d["Z"], neg_genes=d["neg_genes"], gene_resid=Yg, met_resid=Ym)
+    fit = respair.fit(d["G"], d["M"], d["coords"], Z=d["Z"], neg_genes=d["neg_genes"])
     return {"ReSPAIR": _neglog(fit["p"])}
 
 
