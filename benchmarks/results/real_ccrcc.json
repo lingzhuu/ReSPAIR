@@ -1,0 +1,275 @@
+{
+ "group": "ccrcc",
+ "genes": 1000,
+ "metabolites": 295,
+ "sections": {
+  "R114": {
+   "spots": 2201,
+   "null transform": "rotate 0 deg, reflect True",
+   "null overlap": 0.8932303498409814,
+   "methods": {
+    "Pearson": {
+     "seconds": 0.11467576026916504,
+     "BH5% hits": 40488,
+     "null FPR at p<0.05": 0.19343389830508476,
+     "null BH5% hits": 21316
+    },
+    "MANTIS-SCI": {
+     "seconds": 57.2073974609375,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.035989830508474575,
+     "null BH5% hits": 0
+    },
+    "SpatialDM (Moran's R)": {
+     "seconds": 1.785611867904663,
+     "BH5% hits": 290948,
+     "null FPR at p<0.05": 0.9542847457627118,
+     "null BH5% hits": 281365
+    },
+    "Lee's L": {
+     "seconds": 1.785611867904663
+    },
+    "Modified t-test": {
+     "seconds": 2.866795301437378,
+     "BH5% hits": 1,
+     "null FPR at p<0.05": 0.04396949152542373,
+     "null BH5% hits": 0
+    },
+    "ReSPAIR": {
+     "seconds": 3.886894464492798,
+     "BH5% hits": 14,
+     "null FPR at p<0.05": 0.06566779661016948,
+     "null BH5% hits": 0
+    },
+    "ReSPAIR (full)": {
+     "seconds": 93.03696417808533,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.05217966101694915,
+     "null BH5% hits": 0
+    }
+   }
+  },
+  "S15": {
+   "spots": 2841,
+   "null transform": "rotate 0 deg, reflect True",
+   "null overlap": 0.8099260823653643,
+   "methods": {
+    "Pearson": {
+     "seconds": 0.34598875045776367,
+     "BH5% hits": 99950,
+     "null FPR at p<0.05": 0.21804745762711863,
+     "null BH5% hits": 26547
+    },
+    "MANTIS-SCI": {
+     "seconds": 121.79757928848267,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.021677966101694916,
+     "null BH5% hits": 0
+    },
+    "SpatialDM (Moran's R)": {
+     "seconds": 1.2101716995239258,
+     "BH5% hits": 266983,
+     "null FPR at p<0.05": 0.8504474576271186,
+     "null BH5% hits": 249355
+    },
+    "Lee's L": {
+     "seconds": 1.2101716995239258
+    },
+    "Modified t-test": {
+     "seconds": 5.790653705596924,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.02623050847457627,
+     "null BH5% hits": 0
+    },
+    "ReSPAIR": {
+     "seconds": 5.038498163223267,
+     "BH5% hits": 1,
+     "null FPR at p<0.05": 0.06126101694915254,
+     "null BH5% hits": 5
+    },
+    "ReSPAIR (full)": {
+     "seconds": 144.40376019477844,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.05184745762711864,
+     "null BH5% hits": 0
+    }
+   }
+  },
+  "X49": {
+   "spots": 3024,
+   "null transform": "rotate 180 deg, reflect True",
+   "null overlap": 0.9120370370370371,
+   "methods": {
+    "Pearson": {
+     "seconds": 0.19287872314453125,
+     "BH5% hits": 96042,
+     "null FPR at p<0.05": 0.30707457627118645,
+     "null BH5% hits": 55795
+    },
+    "MANTIS-SCI": {
+     "seconds": 119.06487393379211,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.02565762711864407,
+     "null BH5% hits": 0
+    },
+    "SpatialDM (Moran's R)": {
+     "seconds": 0.9214963912963867,
+     "BH5% hits": 283545,
+     "null FPR at p<0.05": 0.8995728813559322,
+     "null BH5% hits": 264676
+    },
+    "Lee's L": {
+     "seconds": 0.9214963912963867
+    },
+    "Modified t-test": {
+     "seconds": 5.364781618118286,
+     "BH5% hits": 2,
+     "null FPR at p<0.05": 0.04675593220338983,
+     "null BH5% hits": 0
+    },
+    "ReSPAIR": {
+     "seconds": 5.193766117095947,
+     "BH5% hits": 82,
+     "null FPR at p<0.05": 0.06889491525423729,
+     "null BH5% hits": 8
+    },
+    "ReSPAIR (full)": {
+     "seconds": 91.02709674835205,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.054464406779661016,
+     "null BH5% hits": 0
+    }
+   }
+  },
+  "Y27": {
+   "spots": 3023,
+   "null transform": "rotate 180 deg, reflect False",
+   "null overlap": 0.8878597419781674,
+   "methods": {
+    "Pearson": {
+     "seconds": 0.16115522384643555,
+     "BH5% hits": 108965,
+     "null FPR at p<0.05": 0.3459559322033898,
+     "null BH5% hits": 73127
+    },
+    "MANTIS-SCI": {
+     "seconds": 104.46245384216309,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.03714576271186441,
+     "null BH5% hits": 0
+    },
+    "SpatialDM (Moran's R)": {
+     "seconds": 0.8458850383758545,
+     "BH5% hits": 280702,
+     "null FPR at p<0.05": 0.9422237288135593,
+     "null BH5% hits": 277750
+    },
+    "Lee's L": {
+     "seconds": 0.8458850383758545
+    },
+    "Modified t-test": {
+     "seconds": 4.578346252441406,
+     "BH5% hits": 4258,
+     "null FPR at p<0.05": 0.05395254237288136,
+     "null BH5% hits": 0
+    },
+    "ReSPAIR": {
+     "seconds": 5.470137596130371,
+     "BH5% hits": 49,
+     "null FPR at p<0.05": 0.06414915254237288,
+     "null BH5% hits": 5
+    },
+    "ReSPAIR (full)": {
+     "seconds": 79.47329616546631,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.05369830508474576,
+     "null BH5% hits": 0
+    }
+   }
+  },
+  "Y7": {
+   "spots": 1914,
+   "null transform": "rotate 180 deg, reflect True",
+   "null overlap": 0.8646812957157785,
+   "methods": {
+    "Pearson": {
+     "seconds": 0.10179662704467773,
+     "BH5% hits": 60603,
+     "null FPR at p<0.05": 0.2516271186440678,
+     "null BH5% hits": 41457
+    },
+    "MANTIS-SCI": {
+     "seconds": 41.943676471710205,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.0524,
+     "null BH5% hits": 0
+    },
+    "SpatialDM (Moran's R)": {
+     "seconds": 0.397733211517334,
+     "BH5% hits": 248035,
+     "null FPR at p<0.05": 0.8222508474576271,
+     "null BH5% hits": 240395
+    },
+    "Lee's L": {
+     "seconds": 0.397733211517334
+    },
+    "Modified t-test": {
+     "seconds": 1.7145299911499023,
+     "BH5% hits": 83,
+     "null FPR at p<0.05": 0.04888135593220339,
+     "null BH5% hits": 0
+    },
+    "ReSPAIR": {
+     "seconds": 2.5503287315368652,
+     "BH5% hits": 47,
+     "null FPR at p<0.05": 0.06094576271186441,
+     "null BH5% hits": 10
+    },
+    "ReSPAIR (full)": {
+     "seconds": 51.43775248527527,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.05109491525423729,
+     "null BH5% hits": 0
+    }
+   }
+  }
+ },
+ "reproducibility": {
+  "Pearson": {
+   "mean top-1000 overlap": 0.0876,
+   "min": 0.011,
+   "max": 0.305
+  },
+  "MANTIS-SCI": {
+   "mean top-1000 overlap": 0.045099999999999994,
+   "min": 0.005,
+   "max": 0.135
+  },
+  "SpatialDM (Moran's R)": {
+   "mean top-1000 overlap": 0.3587,
+   "min": 0.287,
+   "max": 0.459
+  },
+  "Lee's L": {
+   "mean top-1000 overlap": 0.0795,
+   "min": 0.005,
+   "max": 0.215
+  },
+  "Modified t-test": {
+   "mean top-1000 overlap": 0.029200000000000004,
+   "min": 0.009,
+   "max": 0.081
+  },
+  "ReSPAIR": {
+   "mean top-1000 overlap": 0.0081,
+   "min": 0.005,
+   "max": 0.014
+  },
+  "ReSPAIR (full)": {
+   "mean top-1000 overlap": 0.0033,
+   "min": 0.002,
+   "max": 0.005
+  }
+ },
+ "chance top-K overlap": 0.003389830508474576
+}
