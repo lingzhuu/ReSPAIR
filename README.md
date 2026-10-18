@@ -87,22 +87,11 @@ hits = respair.bh(res["p"], alpha=0.1)      # Benjamini–Hochberg
 
 See [docs/model.md](docs/model.md) for the model and the estimator.
 
-## Simulation benchmark
+## Benchmarks
 
-50 × 50 grid, 2,000 genes, 200 metabolites, 3 cell types as known structure, one unlabeled smooth confounder
-affecting 300 genes and 40 metabolites, private hidden factors on each side, 150 true links (strength 0.5),
-negative-binomial counts. Mean over 5 seeds:
-
-| Method | AUC (all null pairs) | Power at 5% FPR | AUC (confounded pairs only) | Power at 5% FPR |
-|---|---|---|---|---|
-| Pearson correlation | 0.888 | 0.544 | 0.763 | 0.275 |
-| MANTIS-SCI | 0.539 | 0.069 | 0.389 | 0.029 |
-| MANTIS-SPC-CT | 0.762 | 0.203 | 0.194 | 0.000 |
-| **ReSPAIR** | **1.000** | **1.000** | **1.000** | **1.000** |
-
-This simulation follows ReSPAIR's own model, so it favours ReSPAIR. Scenarios that break the model and a
-semi-synthetic benchmark on a real SMA section are in [`benchmarks/`](benchmarks/README.md); MANTIS is our
-re-implementation of the bioRxiv preprint.
+Simulation, misspecification and semi-synthetic benchmarks are in [`benchmarks/`](benchmarks/README.md). The
+default simulation follows ReSPAIR's own model and therefore favours it; results on real data will replace this
+section.
 
 ## Documentation
 
