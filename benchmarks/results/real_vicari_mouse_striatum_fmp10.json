@@ -1,0 +1,1222 @@
+{
+ "group": "vicari_mouse_striatum_fmp10",
+ "genes": 1005,
+ "metabolites": 300,
+ "sections": {
+  "V11L12-109_A1": {
+   "spots": 2206,
+   "null transform": "rotate 180 deg, reflect False",
+   "null overlap": 0.8096101541251133,
+   "methods": {
+    "Pearson": {
+     "seconds": 0.10746359825134277,
+     "BH5% hits": 25956,
+     "null FPR at p<0.05": 0.09993698175787728,
+     "null BH5% hits": 2588,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 4,
+       "-log10p": 69.36784958214643,
+       "BH5% (dopamine column)": true
+      },
+      "Tac1": {
+       "rank": 8,
+       "-log10p": 53.760605602236126,
+       "BH5% (dopamine column)": true
+      },
+      "Penk": {
+       "rank": 128,
+       "-log10p": 8.2525865780492,
+       "BH5% (dopamine column)": true
+      },
+      "Cartpt": {
+       "rank": 556,
+       "-log10p": 1.0195006030103222,
+       "BH5% (dopamine column)": false
+      },
+      "Th": {
+       "rank": 276,
+       "-log10p": 3.487464986327449,
+       "BH5% (dopamine column)": true
+      },
+      "Slc6a3": {
+       "rank": 806,
+       "-log10p": 0.2568981128925558,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 11,
+       "-log10p": 45.96771943072356,
+       "BH5% (dopamine column)": true
+      },
+      "Drd2": {
+       "rank": 21,
+       "-log10p": 32.29339857280456,
+       "BH5% (dopamine column)": true
+      },
+      "Ppp1r1b": {
+       "rank": 3,
+       "-log10p": 69.59465045298923,
+       "BH5% (dopamine column)": true
+      }
+     },
+     "dopamine top genes": [
+      "Hpca",
+      "Pde1b",
+      "Ppp1r1b",
+      "Pcp4",
+      "Gpr88",
+      "Rasd2",
+      "Rgs9",
+      "Tac1",
+      "Ptpn5",
+      "Ppp3ca"
+     ]
+    },
+    "MANTIS-SCI": {
+     "seconds": 12.64949631690979,
+     "BH5% hits": 1324,
+     "null FPR at p<0.05": 0.08271973466003317,
+     "null BH5% hits": 0,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 1,
+       "-log10p": 3.3331736850194855,
+       "BH5% (dopamine column)": false
+      },
+      "Tac1": {
+       "rank": 7,
+       "-log10p": 3.0990904789861173,
+       "BH5% (dopamine column)": false
+      },
+      "Penk": {
+       "rank": 198,
+       "-log10p": 1.2488527993194496,
+       "BH5% (dopamine column)": false
+      },
+      "Cartpt": {
+       "rank": 299,
+       "-log10p": 0.9610510693892235,
+       "BH5% (dopamine column)": false
+      },
+      "Th": {
+       "rank": 489,
+       "-log10p": 0.648328323375073,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 889,
+       "-log10p": 0.11482577191070917,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 15,
+       "-log10p": 2.57621173370578,
+       "BH5% (dopamine column)": false
+      },
+      "Drd2": {
+       "rank": 29,
+       "-log10p": 2.3331736850194855,
+       "BH5% (dopamine column)": false
+      },
+      "Ppp1r1b": {
+       "rank": 2,
+       "-log10p": 3.3331736850194855,
+       "BH5% (dopamine column)": false
+      }
+     },
+     "dopamine top genes": [
+      "Pcp4",
+      "Ppp1r1b",
+      "Pde1b",
+      "Hpca",
+      "Gpr88",
+      "Rasd2",
+      "Tac1",
+      "Rgs9",
+      "Ptpn5",
+      "Ppp3ca"
+     ]
+    },
+    "SpatialDM (Moran's R)": {
+     "seconds": 2.3066136837005615,
+     "BH5% hits": 212547,
+     "null FPR at p<0.05": 0.6307562189054726,
+     "null BH5% hits": 180076,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 4,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Tac1": {
+       "rank": 45,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Penk": {
+       "rank": 1,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Cartpt": {
+       "rank": 187,
+       "-log10p": 145.9491370780555,
+       "BH5% (dopamine column)": true
+      },
+      "Th": {
+       "rank": 1004,
+       "-log10p": -0.0,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 1005,
+       "-log10p": -0.0,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 112,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Drd2": {
+       "rank": 113,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Ppp1r1b": {
+       "rank": 5,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      }
+     },
+     "dopamine top genes": [
+      "Penk",
+      "Slc17a7",
+      "Cck",
+      "Pcp4",
+      "Ppp1r1b",
+      "Olfm1",
+      "Pde1b",
+      "Stmn1",
+      "Hpca",
+      "Vsnl1"
+     ]
+    },
+    "Lee's L": {
+     "seconds": 2.3066136837005615,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 15,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Tac1": {
+       "rank": 2,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Penk": {
+       "rank": 17,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Cartpt": {
+       "rank": 139,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Th": {
+       "rank": 1004,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Slc6a3": {
+       "rank": 1005,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Drd1": {
+       "rank": 12,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Drd2": {
+       "rank": 16,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Ppp1r1b": {
+       "rank": 3,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      }
+     },
+     "dopamine top genes": [
+      "Rgs9",
+      "Tac1",
+      "Ppp1r1b",
+      "Gpr88",
+      "Pde1b",
+      "Rasd2",
+      "Hpca",
+      "Gng7",
+      "Pde10a",
+      "Adcy5"
+     ]
+    },
+    "Modified t-test": {
+     "seconds": 2.694678783416748,
+     "BH5% hits": 5881,
+     "null FPR at p<0.05": 0.057300165837479274,
+     "null BH5% hits": 1,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 15,
+       "-log10p": 2.401858891056083,
+       "BH5% (dopamine column)": false
+      },
+      "Tac1": {
+       "rank": 42,
+       "-log10p": 2.0178543656753978,
+       "BH5% (dopamine column)": false
+      },
+      "Penk": {
+       "rank": 525,
+       "-log10p": 0.4325077736333082,
+       "BH5% (dopamine column)": false
+      },
+      "Cartpt": {
+       "rank": 813,
+       "-log10p": 0.12073237787518547,
+       "BH5% (dopamine column)": false
+      },
+      "Th": {
+       "rank": 25,
+       "-log10p": 2.2573621660469794,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 652,
+       "-log10p": 0.2569293025011385,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 12,
+       "-log10p": 2.4322844126589573,
+       "BH5% (dopamine column)": false
+      },
+      "Drd2": {
+       "rank": 44,
+       "-log10p": 1.976495612329126,
+       "BH5% (dopamine column)": false
+      },
+      "Ppp1r1b": {
+       "rank": 30,
+       "-log10p": 2.186051349948473,
+       "BH5% (dopamine column)": false
+      }
+     },
+     "dopamine top genes": [
+      "Vti1b",
+      "Ppp1ca",
+      "Hpca",
+      "Anks1b",
+      "Fbxl16",
+      "Gnas",
+      "Ap1s1",
+      "St8sia3",
+      "Sub1",
+      "Gpx1"
+     ]
+    },
+    "ReSPAIR": {
+     "seconds": 46.49691390991211,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.04899170812603648,
+     "null BH5% hits": 0,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 126,
+       "-log10p": 0.9416005869629428,
+       "BH5% (dopamine column)": false
+      },
+      "Tac1": {
+       "rank": 140,
+       "-log10p": 0.8941845135088343,
+       "BH5% (dopamine column)": false
+      },
+      "Penk": {
+       "rank": 169,
+       "-log10p": 0.818365692756829,
+       "BH5% (dopamine column)": false
+      },
+      "Cartpt": {
+       "rank": 453,
+       "-log10p": 0.3696569085590253,
+       "BH5% (dopamine column)": false
+      },
+      "Th": {
+       "rank": 50,
+       "-log10p": 1.3611836530757944,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 850,
+       "-log10p": 0.08179152649587641,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 195,
+       "-log10p": 0.7600895469434954,
+       "BH5% (dopamine column)": false
+      },
+      "Drd2": {
+       "rank": 714,
+       "-log10p": 0.1681929812193581,
+       "BH5% (dopamine column)": false
+      },
+      "Ppp1r1b": {
+       "rank": 436,
+       "-log10p": 0.3922200644206838,
+       "BH5% (dopamine column)": false
+      }
+     },
+     "dopamine top genes": [
+      "Cplx1",
+      "Psmd2",
+      "Clta",
+      "Vamp2",
+      "Kif1b",
+      "Lamp1",
+      "Mdh1",
+      "Calr",
+      "Tcf25",
+      "Txn2"
+     ]
+    }
+   }
+  },
+  "V11L12-109_B1": {
+   "spots": 2526,
+   "null transform": "rotate 180 deg, reflect False",
+   "null overlap": 0.783452098178939,
+   "methods": {
+    "Pearson": {
+     "seconds": 0.11228466033935547,
+     "BH5% hits": 29453,
+     "null FPR at p<0.05": 0.10082255389718077,
+     "null BH5% hits": 2840,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 6,
+       "-log10p": 68.18460499999554,
+       "BH5% (dopamine column)": true
+      },
+      "Tac1": {
+       "rank": 26,
+       "-log10p": 33.03722440605281,
+       "BH5% (dopamine column)": true
+      },
+      "Penk": {
+       "rank": 134,
+       "-log10p": 8.390819699859826,
+       "BH5% (dopamine column)": true
+      },
+      "Cartpt": {
+       "rank": 875,
+       "-log10p": 0.17230079637993934,
+       "BH5% (dopamine column)": false
+      },
+      "Th": {
+       "rank": 551,
+       "-log10p": 1.0724048900889225,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 714,
+       "-log10p": 0.5355733419941924,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 12,
+       "-log10p": 53.934108443129546,
+       "BH5% (dopamine column)": true
+      },
+      "Drd2": {
+       "rank": 31,
+       "-log10p": 30.011665772228994,
+       "BH5% (dopamine column)": true
+      },
+      "Ppp1r1b": {
+       "rank": 4,
+       "-log10p": 79.55238089419704,
+       "BH5% (dopamine column)": true
+      }
+     },
+     "dopamine top genes": [
+      "Gpr88",
+      "Pde1b",
+      "Hpca",
+      "Ppp1r1b",
+      "Ppp3ca",
+      "Pcp4",
+      "Rgs9",
+      "Scn4b",
+      "Rasd2",
+      "Arpp21"
+     ]
+    },
+    "MANTIS-SCI": {
+     "seconds": 14.917513370513916,
+     "BH5% hits": 2439,
+     "null FPR at p<0.05": 0.09312437810945273,
+     "null BH5% hits": 0,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 5,
+       "-log10p": 3.002180465978061,
+       "BH5% (dopamine column)": false
+      },
+      "Tac1": {
+       "rank": 24,
+       "-log10p": 2.422396869361251,
+       "BH5% (dopamine column)": false
+      },
+      "Penk": {
+       "rank": 263,
+       "-log10p": 1.073443321380087,
+       "BH5% (dopamine column)": false
+      },
+      "Cartpt": {
+       "rank": 603,
+       "-log10p": 0.473006862716338,
+       "BH5% (dopamine column)": false
+      },
+      "Th": {
+       "rank": 629,
+       "-log10p": 0.44435257402135137,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 958,
+       "-log10p": 0.05334384592320913,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 10,
+       "-log10p": 2.798060483322136,
+       "BH5% (dopamine column)": false
+      },
+      "Drd2": {
+       "rank": 42,
+       "-log10p": 2.1870456493412473,
+       "BH5% (dopamine column)": false
+      },
+      "Ppp1r1b": {
+       "rank": 2,
+       "-log10p": 3.0643283727269055,
+       "BH5% (dopamine column)": false
+      }
+     },
+     "dopamine top genes": [
+      "Pde1b",
+      "Ppp1r1b",
+      "Hpca",
+      "Gpr88",
+      "Pcp4",
+      "Ppp3ca",
+      "Rgs9",
+      "Scn4b",
+      "Arpp21",
+      "Drd1"
+     ]
+    },
+    "SpatialDM (Moran's R)": {
+     "seconds": 0.6368134021759033,
+     "BH5% hits": 230063,
+     "null FPR at p<0.05": 0.648,
+     "null BH5% hits": 186282,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 4,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Tac1": {
+       "rank": 44,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Penk": {
+       "rank": 1,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Cartpt": {
+       "rank": 565,
+       "-log10p": 38.790424577517484,
+       "BH5% (dopamine column)": true
+      },
+      "Th": {
+       "rank": 1004,
+       "-log10p": -0.0,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 1005,
+       "-log10p": -0.0,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 115,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Drd2": {
+       "rank": 116,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Ppp1r1b": {
+       "rank": 5,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      }
+     },
+     "dopamine top genes": [
+      "Penk",
+      "Slc17a7",
+      "Cck",
+      "Pcp4",
+      "Ppp1r1b",
+      "Olfm1",
+      "Pde1b",
+      "Stmn1",
+      "Hpca",
+      "Vsnl1"
+     ]
+    },
+    "Lee's L": {
+     "seconds": 0.6368134021759033,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 16,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Tac1": {
+       "rank": 7,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Penk": {
+       "rank": 22,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Cartpt": {
+       "rank": 437,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Th": {
+       "rank": 1004,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Slc6a3": {
+       "rank": 1005,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Drd1": {
+       "rank": 5,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Drd2": {
+       "rank": 15,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Ppp1r1b": {
+       "rank": 2,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      }
+     },
+     "dopamine top genes": [
+      "Gpr88",
+      "Ppp1r1b",
+      "Rgs9",
+      "Pde1b",
+      "Drd1",
+      "Scn4b",
+      "Tac1",
+      "Pde10a",
+      "Adcy5",
+      "Gng7"
+     ]
+    },
+    "Modified t-test": {
+     "seconds": 3.4674549102783203,
+     "BH5% hits": 11686,
+     "null FPR at p<0.05": 0.06590713101160862,
+     "null BH5% hits": 0,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 14,
+       "-log10p": 3.315728184169166,
+       "BH5% (dopamine column)": true
+      },
+      "Tac1": {
+       "rank": 83,
+       "-log10p": 1.8045126147428403,
+       "BH5% (dopamine column)": false
+      },
+      "Penk": {
+       "rank": 562,
+       "-log10p": 0.396385820365471,
+       "BH5% (dopamine column)": false
+      },
+      "Cartpt": {
+       "rank": 957,
+       "-log10p": 0.027115095694627396,
+       "BH5% (dopamine column)": false
+      },
+      "Th": {
+       "rank": 486,
+       "-log10p": 0.5119883421257729,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 518,
+       "-log10p": 0.47344703711944763,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 16,
+       "-log10p": 3.26803438525672,
+       "BH5% (dopamine column)": true
+      },
+      "Drd2": {
+       "rank": 68,
+       "-log10p": 1.9949034959840302,
+       "BH5% (dopamine column)": false
+      },
+      "Ppp1r1b": {
+       "rank": 27,
+       "-log10p": 2.879754175247806,
+       "BH5% (dopamine column)": true
+      }
+     },
+     "dopamine top genes": [
+      "Anks1b",
+      "Hpca",
+      "Ppp1ca",
+      "Foxp1",
+      "St8sia3",
+      "Gpr88",
+      "Ppp3ca",
+      "Fbxl16",
+      "Scn4b",
+      "Car11"
+     ]
+    },
+    "ReSPAIR": {
+     "seconds": 44.02440357208252,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.04841791044776119,
+     "null BH5% hits": 0,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 985,
+       "-log10p": 0.010050661290375662,
+       "BH5% (dopamine column)": false
+      },
+      "Tac1": {
+       "rank": 185,
+       "-log10p": 0.7862976414384992,
+       "BH5% (dopamine column)": false
+      },
+      "Penk": {
+       "rank": 384,
+       "-log10p": 0.4316100182703499,
+       "BH5% (dopamine column)": false
+      },
+      "Cartpt": {
+       "rank": 921,
+       "-log10p": 0.041062813673618984,
+       "BH5% (dopamine column)": false
+      },
+      "Th": {
+       "rank": 366,
+       "-log10p": 0.4597220507175167,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 914,
+       "-log10p": 0.0434890016719292,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 269,
+       "-log10p": 0.6248018194203451,
+       "BH5% (dopamine column)": false
+      },
+      "Drd2": {
+       "rank": 777,
+       "-log10p": 0.12093951615083369,
+       "BH5% (dopamine column)": false
+      },
+      "Ppp1r1b": {
+       "rank": 944,
+       "-log10p": 0.02779333410694665,
+       "BH5% (dopamine column)": false
+      }
+     },
+     "dopamine top genes": [
+      "Sec62",
+      "Mbd3",
+      "Nnat",
+      "Ubald1",
+      "Rpl3",
+      "Stmn1",
+      "Tmem158",
+      "Rpl22",
+      "Arf1",
+      "Anks1b"
+     ]
+    }
+   }
+  },
+  "V11L12-109_C1": {
+   "spots": 2379,
+   "null transform": "rotate 90 deg, reflect True",
+   "null overlap": 0.594787725935267,
+   "methods": {
+    "Pearson": {
+     "seconds": 0.11326265335083008,
+     "BH5% hits": 32398,
+     "null FPR at p<0.05": 0.08719402985074627,
+     "null BH5% hits": 5030,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 6,
+       "-log10p": 132.609555779081,
+       "BH5% (dopamine column)": true
+      },
+      "Tac1": {
+       "rank": 28,
+       "-log10p": 68.53089009440647,
+       "BH5% (dopamine column)": true
+      },
+      "Penk": {
+       "rank": 160,
+       "-log10p": 12.751161298377713,
+       "BH5% (dopamine column)": true
+      },
+      "Cartpt": {
+       "rank": 548,
+       "-log10p": 2.0619087620293852,
+       "BH5% (dopamine column)": true
+      },
+      "Th": {
+       "rank": 922,
+       "-log10p": 0.1568544494451417,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 989,
+       "-log10p": 0.021356900283842586,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 34,
+       "-log10p": 62.93269419839949,
+       "BH5% (dopamine column)": true
+      },
+      "Drd2": {
+       "rank": 31,
+       "-log10p": 64.67812289968165,
+       "BH5% (dopamine column)": true
+      },
+      "Ppp1r1b": {
+       "rank": 2,
+       "-log10p": 162.5874501796513,
+       "BH5% (dopamine column)": true
+      }
+     },
+     "dopamine top genes": [
+      "mt-Nd3",
+      "Ppp1r1b",
+      "Ppp3ca",
+      "Gpr88",
+      "Scn4b",
+      "Pcp4",
+      "Hpca",
+      "Pde1b",
+      "Tmem158",
+      "Rasd2"
+     ]
+    },
+    "MANTIS-SCI": {
+     "seconds": 16.355916023254395,
+     "BH5% hits": 0,
+     "null FPR at p<0.05": 0.04241791044776119,
+     "null BH5% hits": 0,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 1,
+       "-log10p": 4.178271725033742,
+       "BH5% (dopamine column)": true
+      },
+      "Tac1": {
+       "rank": 30,
+       "-log10p": 3.4001204746500986,
+       "BH5% (dopamine column)": true
+      },
+      "Penk": {
+       "rank": 238,
+       "-log10p": 1.3620304250419593,
+       "BH5% (dopamine column)": false
+      },
+      "Cartpt": {
+       "rank": 317,
+       "-log10p": 1.179141183746371,
+       "BH5% (dopamine column)": false
+      },
+      "Th": {
+       "rank": 801,
+       "-log10p": 0.3654251880666709,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 982,
+       "-log10p": 0.03616395330243558,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 27,
+       "-log10p": 3.70115047031408,
+       "BH5% (dopamine column)": true
+      },
+      "Drd2": {
+       "rank": 37,
+       "-log10p": 3.2240292155944172,
+       "BH5% (dopamine column)": true
+      },
+      "Ppp1r1b": {
+       "rank": 2,
+       "-log10p": 4.178271725033742,
+       "BH5% (dopamine column)": true
+      }
+     },
+     "dopamine top genes": [
+      "Pcp4",
+      "Ppp1r1b",
+      "Pde1b",
+      "Hpca",
+      "Gpr88",
+      "Rasd2",
+      "Ppp3ca",
+      "Atp2b1",
+      "Rgs9",
+      "Tmem158"
+     ]
+    },
+    "SpatialDM (Moran's R)": {
+     "seconds": 0.681565523147583,
+     "BH5% hits": 218819,
+     "null FPR at p<0.05": 0.5614295190713101,
+     "null BH5% hits": 154295,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 5,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Tac1": {
+       "rank": 64,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Penk": {
+       "rank": 1,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Cartpt": {
+       "rank": 418,
+       "-log10p": 187.04488799054266,
+       "BH5% (dopamine column)": true
+      },
+      "Th": {
+       "rank": 1004,
+       "-log10p": -0.0,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 1005,
+       "-log10p": -0.0,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 288,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Drd2": {
+       "rank": 289,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      },
+      "Ppp1r1b": {
+       "rank": 6,
+       "-log10p": 300.0,
+       "BH5% (dopamine column)": true
+      }
+     },
+     "dopamine top genes": [
+      "Penk",
+      "Slc17a7",
+      "Nrgn",
+      "Cck",
+      "Pcp4",
+      "Ppp1r1b",
+      "Olfm1",
+      "Pde1b",
+      "Stmn1",
+      "Hpca"
+     ]
+    },
+    "Lee's L": {
+     "seconds": 0.681565523147583,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 28,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Tac1": {
+       "rank": 2,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Penk": {
+       "rank": 31,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Cartpt": {
+       "rank": 309,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Th": {
+       "rank": 1004,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Slc6a3": {
+       "rank": 1005,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Drd1": {
+       "rank": 10,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Drd2": {
+       "rank": 15,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      },
+      "Ppp1r1b": {
+       "rank": 5,
+       "-log10p": null,
+       "BH5% (dopamine column)": null
+      }
+     },
+     "dopamine top genes": [
+      "Gpr88",
+      "Tac1",
+      "Scn4b",
+      "Rgs9",
+      "Ppp1r1b",
+      "Pde10a",
+      "Rasd2",
+      "Pde1b",
+      "Tmem158",
+      "Drd1"
+     ]
+    },
+    "Modified t-test": {
+     "seconds": 3.722850799560547,
+     "BH5% hits": 10737,
+     "null FPR at p<0.05": 0.052676616915422886,
+     "null BH5% hits": 0,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 59,
+       "-log10p": 2.217797751453788,
+       "BH5% (dopamine column)": false
+      },
+      "Tac1": {
+       "rank": 12,
+       "-log10p": 2.912568529660763,
+       "BH5% (dopamine column)": false
+      },
+      "Penk": {
+       "rank": 573,
+       "-log10p": 0.4413576363550669,
+       "BH5% (dopamine column)": false
+      },
+      "Cartpt": {
+       "rank": 779,
+       "-log10p": 0.18547720186942498,
+       "BH5% (dopamine column)": false
+      },
+      "Th": {
+       "rank": 888,
+       "-log10p": 0.09457198706532569,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 973,
+       "-log10p": 0.021359198172779866,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 40,
+       "-log10p": 2.4362496912089986,
+       "BH5% (dopamine column)": false
+      },
+      "Drd2": {
+       "rank": 43,
+       "-log10p": 2.4098530489994103,
+       "BH5% (dopamine column)": false
+      },
+      "Ppp1r1b": {
+       "rank": 11,
+       "-log10p": 2.927523886512688,
+       "BH5% (dopamine column)": false
+      }
+     },
+     "dopamine top genes": [
+      "mt-Nd3",
+      "Gpr88",
+      "Anks1b",
+      "Ptpn5",
+      "Cpne5",
+      "Tmem158",
+      "Kcnip2",
+      "mt-Atp8",
+      "St8sia3",
+      "Gnb5"
+     ]
+    },
+    "ReSPAIR": {
+     "seconds": 47.04499840736389,
+     "BH5% hits": 1,
+     "null FPR at p<0.05": 0.04829519071310116,
+     "null BH5% hits": 0,
+     "dopamine": {
+      "Pcp4": {
+       "rank": 823,
+       "-log10p": 0.0911734159791277,
+       "BH5% (dopamine column)": false
+      },
+      "Tac1": {
+       "rank": 483,
+       "-log10p": 0.357462415768438,
+       "BH5% (dopamine column)": false
+      },
+      "Penk": {
+       "rank": 340,
+       "-log10p": 0.5155867462456807,
+       "BH5% (dopamine column)": false
+      },
+      "Cartpt": {
+       "rank": 783,
+       "-log10p": 0.12515950833096945,
+       "BH5% (dopamine column)": false
+      },
+      "Th": {
+       "rank": 190,
+       "-log10p": 0.7991950970078812,
+       "BH5% (dopamine column)": false
+      },
+      "Slc6a3": {
+       "rank": 270,
+       "-log10p": 0.6343452807306268,
+       "BH5% (dopamine column)": false
+      },
+      "Drd1": {
+       "rank": 3,
+       "-log10p": 2.967974186358944,
+       "BH5% (dopamine column)": false
+      },
+      "Drd2": {
+       "rank": 148,
+       "-log10p": 0.9247175734528392,
+       "BH5% (dopamine column)": false
+      },
+      "Ppp1r1b": {
+       "rank": 354,
+       "-log10p": 0.4970563239063167,
+       "BH5% (dopamine column)": false
+      }
+     },
+     "dopamine top genes": [
+      "Ncdn",
+      "Meg3",
+      "Drd1",
+      "Rps29",
+      "Rpl6",
+      "Wfs1",
+      "Slc25a5",
+      "Cd81",
+      "Atp6v1f",
+      "Rps10"
+     ]
+    }
+   }
+  }
+ },
+ "reproducibility": {
+  "Pearson": {
+   "mean top-1000 overlap": 0.613,
+   "min": 0.593,
+   "max": 0.624
+  },
+  "MANTIS-SCI": {
+   "mean top-1000 overlap": 0.22533333333333336,
+   "min": 0.165,
+   "max": 0.256
+  },
+  "SpatialDM (Moran's R)": {
+   "mean top-1000 overlap": 0.5106666666666667,
+   "min": 0.417,
+   "max": 0.638
+  },
+  "Lee's L": {
+   "mean top-1000 overlap": 0.6466666666666667,
+   "min": 0.622,
+   "max": 0.675
+  },
+  "Modified t-test": {
+   "mean top-1000 overlap": 0.4206666666666667,
+   "min": 0.323,
+   "max": 0.537
+  },
+  "ReSPAIR": {
+   "mean top-1000 overlap": 0.006000000000000001,
+   "min": 0.004,
+   "max": 0.008
+  }
+ },
+ "chance top-K overlap": 0.003316749585406302
+}

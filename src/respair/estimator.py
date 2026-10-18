@@ -357,7 +357,7 @@ def fit(G_counts, M_int, coords, coords_m=None, Z=None, Z_m=None, K=None, neg_ge
         Gw = (Lg * wg[:, None]).T @ Lg
         Mw = (Lm * wm[:, None]).T @ Lm
         sizes = [P.shape[1] for P in Phi_g]
-        offs = np.r_[0, np.cumsum(sizes)]
+        offs = np.r_[0, np.cumsum(sizes)].astype(int)
         P_alpha = np.eye(offs[-1])
         rhs = np.zeros(offs[-1])
         bg = Xg_t @ (Lg * wg[:, None])                  # n × K
